@@ -1,0 +1,5738 @@
+{
+  "apidoc": {
+    "version": "0.11.23"
+  },
+  "name": "fulfillment",
+  "organization": {
+    "key": "flow"
+  },
+  "application": {
+    "key": "fulfillment"
+  },
+  "namespace": "io.flow.fulfillment.v0",
+  "version": "0.0.12",
+  "info": {},
+  "headers": [],
+  "imports": [
+    {
+      "uri": "http://www.apidoc.me/flow/common/0.0.12/service.json",
+      "namespace": "io.flow.common.v0",
+      "organization": {
+        "key": "flow"
+      },
+      "application": {
+        "key": "common"
+      },
+      "version": "0.0.12",
+      "enums": [
+        "calendar",
+        "capability",
+        "change_type",
+        "exception_type",
+        "holiday_calendar",
+        "schedule_exception_status",
+        "sort_direction",
+        "unit_of_measurement",
+        "unit_of_time",
+        "value_added_service",
+        "visibility"
+      ],
+      "unions": [
+        "expandable_location",
+        "expandable_organization",
+        "expandable_user"
+      ],
+      "models": [
+        "contact",
+        "datetime_range",
+        "dimension",
+        "error",
+        "exception",
+        "healthcheck",
+        "location",
+        "location_reference",
+        "measurement",
+        "name",
+        "organization",
+        "organization_reference",
+        "organization_summary",
+        "price",
+        "schedule",
+        "user",
+        "user_reference",
+        "user_summary"
+      ]
+    }
+  ],
+  "enums": [
+    {
+      "name": "calendar",
+      "plural": "calendars",
+      "values": [
+        {
+          "name": "Weekdays",
+          "attributes": [],
+          "description": "Mon - Fri"
+        },
+        {
+          "name": "Everyday",
+          "attributes": [],
+          "description": "7 days per week"
+        },
+        {
+          "name": "Unknown",
+          "attributes": [],
+          "description": "We do not yet know the calendar"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "capability",
+      "plural": "capabilities",
+      "values": [
+        {
+          "name": "crossdock",
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "commercial_term",
+      "plural": "commercial_terms",
+      "values": [
+        {
+          "name": "DDP",
+          "attributes": []
+        },
+        {
+          "name": "DDU",
+          "attributes": []
+        },
+        {
+          "name": "CPT",
+          "attributes": []
+        },
+        {
+          "name": "CIP",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "The international commercial term reference of the shipment."
+    },
+    {
+      "name": "content_type",
+      "plural": "content_types",
+      "values": [
+        {
+          "name": "zpl",
+          "attributes": []
+        },
+        {
+          "name": "pdf",
+          "attributes": []
+        },
+        {
+          "name": "png",
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "dimension_type",
+      "plural": "dimension_types",
+      "values": [
+        {
+          "name": "product",
+          "attributes": [],
+          "description": "The standalone dimensions of an item."
+        },
+        {
+          "name": "package",
+          "attributes": [],
+          "description": "The boxed dimensions of an item."
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "eel_pfc",
+      "plural": "eel_pfcs",
+      "values": [
+        {
+          "name": "NOEEI_30_37_a",
+          "attributes": []
+        },
+        {
+          "name": "NOEEI_30_37_h",
+          "attributes": []
+        },
+        {
+          "name": "NOEEI_30_36",
+          "attributes": []
+        },
+        {
+          "name": "AES_ITN",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "EEL / PFC type of the shipment. For most shipments from the US to CA, 'NOEEI_30_36' is applicable; for most other shipments from the US, 'NOEEI_30_37_a' is applicable."
+    },
+    {
+      "name": "reason",
+      "plural": "reasons",
+      "values": [
+        {
+          "name": "prohibited",
+          "attributes": [],
+          "description": "Absolutely cannot ship"
+        },
+        {
+          "name": "restricted",
+          "attributes": [],
+          "description": "May be able to ship depending on criteria"
+        },
+        {
+          "name": "risk",
+          "attributes": [],
+          "description": "Known to cause delays at customs"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "rule_operation",
+      "plural": "rule_operations",
+      "values": [
+        {
+          "name": "equals",
+          "attributes": []
+        },
+        {
+          "name": "not_equals",
+          "attributes": []
+        },
+        {
+          "name": "greater_than",
+          "attributes": []
+        },
+        {
+          "name": "less_than",
+          "attributes": []
+        },
+        {
+          "name": "in",
+          "attributes": []
+        },
+        {
+          "name": "not_in",
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "status",
+      "plural": "statuses",
+      "values": [
+        {
+          "name": "delivered",
+          "attributes": []
+        },
+        {
+          "name": "transit",
+          "attributes": []
+        },
+        {
+          "name": "other",
+          "attributes": []
+        },
+        {
+          "name": "exception",
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "tier_strategy",
+      "plural": "tier_strategies",
+      "values": [
+        {
+          "name": "fastest",
+          "attributes": [],
+          "description": "Optimize for fastest first, then cheapest"
+        },
+        {
+          "name": "cheapest",
+          "attributes": [],
+          "description": "Optimize for cheapest first, then fastest"
+        }
+      ],
+      "attributes": []
+    }
+  ],
+  "unions": [
+    {
+      "name": "credentials",
+      "plural": "credentialses",
+      "types": [
+        {
+          "type": "dhl_credentials",
+          "attributes": []
+        },
+        {
+          "type": "fedex_credentials",
+          "attributes": []
+        },
+        {
+          "type": "ups_credentials",
+          "attributes": []
+        },
+        {
+          "type": "usps_credentials",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_booking",
+      "plural": "expandable_bookings",
+      "types": [
+        {
+          "type": "booking",
+          "attributes": []
+        },
+        {
+          "type": "booking_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_carrier",
+      "plural": "expandable_carriers",
+      "types": [
+        {
+          "type": "carrier",
+          "attributes": []
+        },
+        {
+          "type": "carrier_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_carrier_account",
+      "plural": "expandable_carrier_accounts",
+      "types": [
+        {
+          "type": "carrier_account",
+          "attributes": []
+        },
+        {
+          "type": "carrier_account_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_center",
+      "plural": "expandable_centers",
+      "types": [
+        {
+          "type": "center",
+          "attributes": []
+        },
+        {
+          "type": "center_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_delivery",
+      "plural": "expandable_deliveries",
+      "types": [
+        {
+          "type": "delivery",
+          "attributes": []
+        },
+        {
+          "type": "delivery_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_experience",
+      "plural": "expandable_experiences",
+      "types": [
+        {
+          "type": "experience",
+          "attributes": []
+        },
+        {
+          "type": "experience_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_label",
+      "plural": "expandable_labels",
+      "types": [
+        {
+          "type": "label",
+          "attributes": []
+        },
+        {
+          "type": "label_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_lane",
+      "plural": "expandable_lanes",
+      "types": [
+        {
+          "type": "lane",
+          "attributes": []
+        },
+        {
+          "type": "lane_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_option",
+      "plural": "expandable_options",
+      "types": [
+        {
+          "type": "option",
+          "attributes": []
+        },
+        {
+          "type": "option_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_quote",
+      "plural": "expandable_quotes",
+      "types": [
+        {
+          "type": "quote",
+          "attributes": []
+        },
+        {
+          "type": "quote_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_service",
+      "plural": "expandable_services",
+      "types": [
+        {
+          "type": "service",
+          "attributes": []
+        },
+        {
+          "type": "service_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_shipment",
+      "plural": "expandable_shipments",
+      "types": [
+        {
+          "type": "shipment",
+          "attributes": []
+        },
+        {
+          "type": "shipment_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "expandable_tier",
+      "plural": "expandable_tiers",
+      "types": [
+        {
+          "type": "tier",
+          "attributes": []
+        },
+        {
+          "type": "tier_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
+      "name": "rule_outcome",
+      "plural": "rule_outcomes",
+      "types": [
+        {
+          "type": "free_shipping",
+          "attributes": []
+        },
+        {
+          "type": "at_cost",
+          "attributes": []
+        },
+        {
+          "type": "flat_rate",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator",
+      "description": "Possible outcome types from a tier rule"
+    }
+  ],
+  "models": [
+    {
+      "name": "address",
+      "plural": "addresses",
+      "fields": [
+        {
+          "name": "contact",
+          "type": "io.flow.common.v0.models.contact",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "location",
+          "type": "io.flow.common.v0.models.location",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "at_cost",
+      "plural": "at_costs",
+      "fields": [
+        {
+          "name": "at_cost",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Rule outcome where shipping surfaced in quote is actual cost of the service"
+    },
+    {
+      "name": "booking",
+      "plural": "bookings",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "quote",
+          "type": "expandable_quote",
+          "required": true,
+          "attributes": [],
+          "description": "Reference to quote being booked by the organization"
+        },
+        {
+          "name": "options",
+          "type": "[expandable_option]",
+          "required": true,
+          "attributes": [],
+          "description": "Selected list of options for the quote"
+        }
+      ],
+      "attributes": [],
+      "description": "Represents second step of two-step purchase of Flow services."
+    },
+    {
+      "name": "booking_form",
+      "plural": "booking_forms",
+      "fields": [
+        {
+          "name": "number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "quote",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Reference to quote being booked by the organization"
+        },
+        {
+          "name": "options",
+          "type": "[string]",
+          "required": true,
+          "attributes": [],
+          "description": "Selected list of options for the quote"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "booking_reference",
+      "plural": "booking_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "booking_version",
+      "plural": "booking_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "booking",
+          "type": "expandable_booking",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "carrier",
+      "plural": "carriers",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "DHL, Fedex, etc."
+        },
+        {
+          "name": "visibility",
+          "type": "io.flow.common.v0.enums.visibility",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Partner that actually take a shipment between places (ex: FedEx, DHL, SF Express)"
+    },
+    {
+      "name": "carrier_account",
+      "plural": "carrier_accounts",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "carrier",
+          "type": "carrier",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "User-friendly name to reference the carrier_account"
+        },
+        {
+          "name": "credentials",
+          "type": "credentials",
+          "required": false,
+          "attributes": [],
+          "description": "Carrier carrier_account credentials necessary to integrate with organization's carrier carrier_account on their behalf."
+        }
+      ],
+      "attributes": [],
+      "description": "carrier_account an organization has with a carrier, including credentials. A carrier can have multiple carrier_accounts with a single carrier, each with their own set of credentials. This represents the many-to-many relationship between organizations and carriers."
+    },
+    {
+      "name": "carrier_account_form",
+      "plural": "carrier_account_forms",
+      "fields": [
+        {
+          "name": "carrier",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "attributes": []
+        },
+        {
+          "name": "credentials",
+          "type": "credentials",
+          "required": false,
+          "attributes": [],
+          "description": "Carrier carrier_account credentials necessary to integrate with organization's carrier carrier_account on their behalf."
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "carrier_account_reference",
+      "plural": "carrier_account_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "carrier_account_version",
+      "plural": "carrier_account_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "carrier_account",
+          "type": "expandable_carrier_account",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "carrier_form",
+      "plural": "carrier_forms",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Name of the carrier",
+          "minimum": 3
+        },
+        {
+          "name": "visibility",
+          "type": "io.flow.common.v0.enums.visibility",
+          "required": false,
+          "attributes": [],
+          "description": "Public vs private carrier"
+        },
+        {
+          "name": "partner",
+          "type": "string",
+          "required": false,
+          "attributes": [],
+          "description": "Parter API source providing access to this carrier. Defaults to carrier itself"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "carrier_reference",
+      "plural": "carrier_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "carrier_version",
+      "plural": "carrier_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "carrier",
+          "type": "expandable_carrier",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "center",
+      "plural": "centers",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "capabilities",
+          "type": "[capability]",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "address",
+          "type": "address",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Long name of the facility. ex: Fosdick CT, Quiet Logistics Andover"
+        },
+        {
+          "name": "schedule",
+          "type": "io.flow.common.v0.models.schedule",
+          "required": true,
+          "attributes": [],
+          "description": "Schedule of the origin location where shipment is originating. Contains normal operating hours, holiday periods, and cutoff."
+        },
+        {
+          "name": "timezone",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Represents a facility capable of fulfilling a shipment"
+    },
+    {
+      "name": "center_form",
+      "plural": "center_forms",
+      "fields": [
+        {
+          "name": "capabilities",
+          "type": "[capability]",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "address",
+          "type": "address",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Organization-provided name for the center",
+          "minimum": 3
+        },
+        {
+          "name": "schedule",
+          "type": "io.flow.common.v0.models.schedule",
+          "required": true,
+          "attributes": [],
+          "description": "Schedule of the origin location where shipment is originating. Contains normal operating hours, holiday periods, and cutoff."
+        },
+        {
+          "name": "timezone",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "center_reference",
+      "plural": "center_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "center_version",
+      "plural": "center_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "center",
+          "type": "expandable_center",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "customs",
+      "plural": "customses",
+      "fields": [
+        {
+          "name": "signer",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Name of the person who created the customs declaration and is responsible for the validity of all information provided."
+        },
+        {
+          "name": "commercial_term",
+          "type": "commercial_term",
+          "required": true,
+          "attributes": [],
+          "description": "The international commercial term reference of the shipment."
+        }
+      ],
+      "attributes": [],
+      "description": "Customs-related form information that need to be filled, either by Flow based on the customer's setup, or manually by the customer through the API"
+    },
+    {
+      "name": "delivery",
+      "plural": "deliveries",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "items",
+          "type": "[item]",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "options",
+          "type": "[option]",
+          "required": true,
+          "attributes": [],
+          "minimum": 1
+        }
+      ],
+      "attributes": [],
+      "description": "Represents a collection of items, the available delivery option tier for that collection of items, and metadata about those options"
+    },
+    {
+      "name": "delivery_form",
+      "plural": "delivery_forms",
+      "fields": [
+        {
+          "name": "quote",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "items",
+          "type": "[item]",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "customs",
+          "type": "customs",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "destination",
+          "type": "address",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "delivery_reference",
+      "plural": "delivery_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "delivery_version",
+      "plural": "delivery_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "delivery",
+          "type": "expandable_delivery",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "dhl_credentials",
+      "plural": "dhl_credentialses",
+      "fields": [
+        {
+          "name": "account_number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "site_id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Credentials used to communicate with DHL on behalf of client organization."
+    },
+    {
+      "name": "dimension",
+      "plural": "dimensions",
+      "fields": [
+        {
+          "name": "type",
+          "type": "dimension_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "depth",
+          "type": "io.flow.common.v0.models.measurement",
+          "required": false,
+          "attributes": []
+        },
+        {
+          "name": "length",
+          "type": "io.flow.common.v0.models.measurement",
+          "required": false,
+          "attributes": []
+        },
+        {
+          "name": "weight",
+          "type": "io.flow.common.v0.models.measurement",
+          "required": false,
+          "attributes": []
+        },
+        {
+          "name": "width",
+          "type": "io.flow.common.v0.models.measurement",
+          "required": false,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "estimated_window",
+      "plural": "estimated_windows",
+      "fields": [
+        {
+          "name": "from",
+          "type": "integer",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "to",
+          "type": "integer",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "unit",
+          "type": "io.flow.common.v0.enums.unit_of_time",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "experience",
+      "plural": "experiences",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "view",
+          "type": "view_reference",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "tiers",
+          "type": "[tier]",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "country",
+          "type": "string",
+          "required": false,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Grouping of Service tier that could later be associated with a catalog view or experience. e.g. China-specific Experience Tier Group of Services. Default Global tier group of available Services"
+    },
+    {
+      "name": "experience_form",
+      "plural": "experience_forms",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "attributes": []
+        },
+        {
+          "name": "view",
+          "type": "string",
+          "required": false,
+          "attributes": []
+        },
+        {
+          "name": "country",
+          "type": "string",
+          "required": false,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "experience_reference",
+      "plural": "experience_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "experience_version",
+      "plural": "experience_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "experience",
+          "type": "expandable_experience",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "fedex_credentials",
+      "plural": "fedex_credentialses",
+      "fields": [
+        {
+          "name": "account_number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "meter_number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "username_password",
+          "type": "username_password",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "smartpost_hub_id",
+          "type": "string",
+          "required": false,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Credentials used to communicate with Fedex on behalf of client organization."
+    },
+    {
+      "name": "file",
+      "plural": "files",
+      "fields": [
+        {
+          "name": "url",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "content_type",
+          "type": "content_type",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "flat_rate",
+      "plural": "flat_rates",
+      "fields": [
+        {
+          "name": "price",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Rule outcome where shipping surfaced in quote is pre-defined flat rate"
+    },
+    {
+      "name": "free_shipping",
+      "plural": "free_shippings",
+      "fields": [
+        {
+          "name": "free_shipping",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Rule outcome where shipping surfaced in quote is free"
+    },
+    {
+      "name": "item",
+      "plural": "items",
+      "fields": [
+        {
+          "name": "number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "categories",
+          "type": "[string]",
+          "required": true,
+          "attributes": [],
+          "default": "[]"
+        },
+        {
+          "name": "dimensions",
+          "type": "[dimension]",
+          "required": true,
+          "attributes": [],
+          "default": "[]"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "price",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Represents metadata about the customer's line item product"
+    },
+    {
+      "name": "label",
+      "plural": "labels",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "service",
+          "type": "service",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "tracking_number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "window",
+          "type": "io.flow.common.v0.models.datetime_range",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "files",
+          "type": "[file]",
+          "required": true,
+          "attributes": [],
+          "minimum": 0
+        }
+      ],
+      "attributes": [],
+      "description": "Top-level information on shipment tracking label number"
+    },
+    {
+      "name": "label_form",
+      "plural": "label_forms",
+      "fields": [
+        {
+          "name": "service",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Service associated with this label."
+        },
+        {
+          "name": "tracking_number",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Carrier-issued reference number used to track a shipment."
+        },
+        {
+          "name": "data",
+          "type": "string",
+          "required": false,
+          "attributes": [],
+          "description": "Actual zpl contents of the label to be generated."
+        },
+        {
+          "name": "window",
+          "type": "io.flow.common.v0.models.datetime_range",
+          "required": true,
+          "attributes": [],
+          "description": "Carrier-provided information on actual delivery date range."
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "label_reference",
+      "plural": "label_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "label_version",
+      "plural": "label_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "label",
+          "type": "expandable_label",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "lane",
+      "plural": "lanes",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "service",
+          "type": "service",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Origin country for a shipment. The ISO 3166-3 country code. Case insensitive. See https://reference.api.flow.io/countries."
+        },
+        {
+          "name": "destination",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Destination country for a shipment. The ISO 3166-3 country code. Case insensitive. See https://reference.api.flow.io/countries"
+        },
+        {
+          "name": "window",
+          "type": "estimated_window",
+          "required": true,
+          "attributes": [],
+          "description": "Minimum to maximum amount of time a typical shipment would take",
+          "example": "1 to 3 days"
+        },
+        {
+          "name": "exceptions",
+          "type": "[lane_exception]",
+          "required": true,
+          "attributes": [],
+          "description": "List of exceptions for this lane - can be prohibited, restricted, or terms known to cause customs/shipping delays"
+        }
+      ],
+      "attributes": [],
+      "description": "Available origin/destination mapping and available metadata for lanes of a carrier Service. e.g. UPS Ground only US-US, UPS Intl only US-Intl, etc"
+    },
+    {
+      "name": "lane_exception",
+      "plural": "lane_exceptions",
+      "fields": [
+        {
+          "name": "keyword",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "reason",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "lane_form",
+      "plural": "lane_forms",
+      "fields": [
+        {
+          "name": "service",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Carrier service level associated with this lane"
+        },
+        {
+          "name": "origin_country",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Origin country for a shipment. The ISO 3166-3 country code. Case insensitive. See https://reference.api.flow.io/countries",
+          "example": "USA"
+        },
+        {
+          "name": "destination_country",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Destination country for a shipment. The ISO 3166-3 country code. Case insensitive. See https://reference.api.flow.io/countries",
+          "example": "USA"
+        },
+        {
+          "name": "window",
+          "type": "estimated_window",
+          "required": true,
+          "attributes": [],
+          "description": "Min and max window of delivery for this lane"
+        },
+        {
+          "name": "exceptions",
+          "type": "[lane_exception]",
+          "required": true,
+          "attributes": [],
+          "description": "List of exceptions for this lane - can be prohibited, restricted, or terms known to cause customs/shipping delays"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "lane_reference",
+      "plural": "lane_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "lane_version",
+      "plural": "lane_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "lane",
+          "type": "expandable_lane",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "option",
+      "plural": "options",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "price",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "service",
+          "type": "service",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "tier",
+          "type": "tier_summary",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "window",
+          "type": "io.flow.common.v0.models.datetime_range",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "delivery",
+          "type": "delivery_reference",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Represents a way to fulfill a delivery, including an estimates for the date range and cost"
+    },
+    {
+      "name": "option_form",
+      "plural": "option_forms",
+      "fields": [
+        {
+          "name": "delivery",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "items",
+          "type": "[item]",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "customs",
+          "type": "customs",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "destination",
+          "type": "address",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "option_reference",
+      "plural": "option_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "option_version",
+      "plural": "option_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "option",
+          "type": "expandable_option",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "quote",
+      "plural": "quotes",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "destination",
+          "type": "address",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "deliveries",
+          "type": "[delivery]",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "exceptions",
+          "type": "[quote_exception]",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "customs",
+          "type": "customs",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Represents a collection of deliveries and available options for fulfillment of that delivery"
+    },
+    {
+      "name": "quote_exception",
+      "plural": "quote_exceptions",
+      "fields": [
+        {
+          "name": "items",
+          "type": "[item]",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "reason",
+          "type": "reason",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "For whatever reason, if an item cannot be shipped and slotted into a quote delivery, then item(s) are exceptions to shipping and surface a reason."
+    },
+    {
+      "name": "quote_form",
+      "plural": "quote_forms",
+      "fields": [
+        {
+          "name": "customs",
+          "type": "customs",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "items",
+          "type": "[item]",
+          "required": true,
+          "attributes": [],
+          "minimum": 1
+        },
+        {
+          "name": "destination",
+          "type": "address",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "origin",
+          "type": "address",
+          "required": false,
+          "attributes": [],
+          "description": "Generate quote based on specific origin location, if provided."
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "quote_reference",
+      "plural": "quote_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "quote_version",
+      "plural": "quote_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "quote",
+          "type": "expandable_quote",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "rule",
+      "plural": "rules",
+      "fields": [
+        {
+          "name": "query",
+          "type": "[rule_query]",
+          "required": true,
+          "attributes": [],
+          "description": "Filter for incoming quotes. e.g. 'destination.country=US', 'sum(items.price) >= 100 USD'"
+        },
+        {
+          "name": "outcome",
+          "type": "rule_outcome",
+          "required": true,
+          "attributes": [],
+          "description": "Resulting cost function applied if query is met. e.g. service cost, free shipping, flat rate - 88.88 RMB"
+        }
+      ],
+      "attributes": [],
+      "description": "System to filter incoming quote for a shipment request based on a query and output corresponding outcomes."
+    },
+    {
+      "name": "rule_query",
+      "plural": "rule_queries",
+      "fields": [
+        {
+          "name": "field",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Name of the field to be used. e.g. destination.address.country, sum(items.price)"
+        },
+        {
+          "name": "operation",
+          "type": "rule_operation",
+          "required": true,
+          "attributes": [],
+          "description": "Operation on the fields. e.g. equals, not equals, greater than, in, not in"
+        },
+        {
+          "name": "values",
+          "type": "[string]",
+          "required": true,
+          "attributes": [],
+          "description": "List of valid values derived from the operatio on the fields."
+        }
+      ],
+      "attributes": [],
+      "description": "Criteria to be used to filter incoming quote, items, origin, destination to see if this tier is applicable."
+    },
+    {
+      "name": "service",
+      "plural": "services",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "carrier",
+          "type": "expandable_carrier",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Specific service rendered by the carrier (fedex ground saturday, ups overnight weekend, etc)"
+    },
+    {
+      "name": "service_form",
+      "plural": "service_forms",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Name of the Service",
+          "minimum": 3
+        },
+        {
+          "name": "carrier",
+          "type": "string",
+          "required": true,
+          "attributes": [],
+          "description": "Flow ID of carrier using this Service."
+        },
+        {
+          "name": "partner_key",
+          "type": "string",
+          "required": false,
+          "attributes": [],
+          "description": "Mapping of what this Service is referenced by in the partner. Defaults to generated ID."
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "service_reference",
+      "plural": "service_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "service_version",
+      "plural": "service_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "service",
+          "type": "expandable_service",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "shipment",
+      "plural": "shipments",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "booking",
+          "type": "expandable_booking",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "option",
+          "type": "expandable_option",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "labels",
+          "type": "[label]",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "shipment_reference",
+      "plural": "shipment_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "shipment_version",
+      "plural": "shipment_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "shipment",
+          "type": "expandable_shipment",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "tier",
+      "plural": "tiers",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "experience",
+          "type": "expandable_experience",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "strategy",
+          "type": "tier_strategy",
+          "required": true,
+          "attributes": [],
+          "description": "If multiple available return outcomes for a single tier, strategy picks the top one based on cost or timing."
+        },
+        {
+          "name": "visibility",
+          "type": "io.flow.common.v0.enums.visibility",
+          "required": true,
+          "attributes": [],
+          "description": "Public or Private. Private ones appear as inactive/disabled to the public"
+        },
+        {
+          "name": "rules",
+          "type": "[rule]",
+          "required": true,
+          "attributes": [],
+          "description": "Ordered set of rules for this tier"
+        },
+        {
+          "name": "services",
+          "type": "[service]",
+          "required": true,
+          "attributes": [],
+          "description": "Services assocaited with this tier"
+        }
+      ],
+      "attributes": [],
+      "description": "Service shipping tier available in this tier gorup. e.g. Standard tier, Express tier, Economy tier"
+    },
+    {
+      "name": "tier_form",
+      "plural": "tier_forms",
+      "fields": [
+        {
+          "name": "experience",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "strategy",
+          "type": "tier_strategy",
+          "required": true,
+          "attributes": [],
+          "description": "If multiple available return outcomes for a single tier, strategy picks the top one based on cost or timing."
+        },
+        {
+          "name": "visibility",
+          "type": "io.flow.common.v0.enums.visibility",
+          "required": true,
+          "attributes": [],
+          "description": "Public or Private. Private ones appear as inactive/disabled to the public"
+        },
+        {
+          "name": "rules",
+          "type": "[rule]",
+          "required": true,
+          "attributes": [],
+          "description": "Ordered set of rules for this tier"
+        },
+        {
+          "name": "services",
+          "type": "[string]",
+          "required": true,
+          "attributes": [],
+          "description": "Services associated with this tier"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "tier_reference",
+      "plural": "tier_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "tier_summary",
+      "plural": "tier_summaries",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "tier_version",
+      "plural": "tier_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "tier",
+          "type": "expandable_tier",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "ups_credentials",
+      "plural": "ups_credentialses",
+      "fields": [
+        {
+          "name": "account_number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "username_password",
+          "type": "username_password",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Credentials used to communicate with UPS on behalf of client organization."
+    },
+    {
+      "name": "username_password",
+      "plural": "username_passwords",
+      "fields": [
+        {
+          "name": "username",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Username and password credentials."
+    },
+    {
+      "name": "usps_credentials",
+      "plural": "usps_credentialses",
+      "fields": [
+        {
+          "name": "account_number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "username_password",
+          "type": "username_password",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Credentials used to communicate with USPS on behalf of client organization."
+    },
+    {
+      "name": "view_reference",
+      "plural": "view_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    }
+  ],
+  "resources": [
+    {
+      "type": "booking",
+      "plural": "bookings",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/bookings/versions",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "booking",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "booking"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[booking_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/bookings",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "number",
+              "type": "string",
+              "location": "Query",
+              "required": false
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "-created_at"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "quote"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[booking]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/bookings/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "quote"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "booking"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/bookings",
+          "parameters": [
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "quote"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "booking"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "booking_form",
+            "attributes": []
+          }
+        }
+      ],
+      "attributes": [],
+      "path": "/bookings"
+    },
+    {
+      "type": "carrier",
+      "plural": "carriers",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/carriers/versions",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "carrier",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "carrier"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[carrier_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/carriers",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "lower(name)"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[carrier]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/carriers/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "carrier"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/carriers",
+          "parameters": [],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "carrier"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "carrier_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/carriers/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "carrier"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "carrier"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "carrier_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/carriers/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 204
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "path": "/carriers"
+    },
+    {
+      "type": "carrier_account",
+      "plural": "carrier_accounts",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/:organization/carrier_accounts/versions",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "carrier_account",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "carrier_account"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[carrier_account_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/:organization/carrier_accounts",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "location": "Query",
+              "required": false
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "lower(name)"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[carrier_account]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/:organization/carrier_accounts/:id",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "carrier_account"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/:organization/carrier_accounts",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "carrier_account"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "carrier_account_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/:organization/carrier_accounts/:id",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "carrier_account"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "carrier_account"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "carrier_account_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/:organization/carrier_accounts/:id",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 204
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "path": "/:organization/carrier_accounts"
+    },
+    {
+      "type": "center",
+      "plural": "centers",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/:organization/centers/versions",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "center",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "center"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[center_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/:organization/centers",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "lower(name)"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[center]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/:organization/centers/:id",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "center"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/:organization/centers",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "center"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "center_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/:organization/centers/:id",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "center"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "center"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "center_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/:organization/centers/:id",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 204
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "path": "/:organization/centers"
+    },
+    {
+      "type": "experience",
+      "plural": "experiences",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/:organization/experiences/versions",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "experience",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "experience"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[experience_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/:organization/experiences",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "lower(name)"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[experience]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/:organization/experiences/:id",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "experience"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/:organization/experiences",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "experience"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "experience_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/:organization/experiences/:id",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "experience"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "experience"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "experience_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/:organization/experiences/:id",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 204
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "path": "/:organization/experiences"
+    },
+    {
+      "type": "label",
+      "plural": "labels",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/labels/versions",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "label",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "label"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[label_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/labels",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "carrier",
+              "type": "string",
+              "location": "Query",
+              "required": false
+            },
+            {
+              "name": "tracking_number",
+              "type": "string",
+              "location": "Query",
+              "required": false
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "-created_at"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[label]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/labels/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "label"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/labels",
+          "parameters": [],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "label"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "label_form",
+            "attributes": []
+          }
+        }
+      ],
+      "attributes": [],
+      "path": "/labels"
+    },
+    {
+      "type": "lane",
+      "plural": "lanes",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/lanes/versions",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "lane",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "lane"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[lane_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/lanes",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "-created_at"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[lane]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/lanes/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "lane"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/lanes",
+          "parameters": [],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "lane"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "lane_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/lanes/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "lane"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "lane"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "lane_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/lanes/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 204
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "path": "/lanes"
+    },
+    {
+      "type": "quote",
+      "plural": "quotes",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/:organization/quotes/versions",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "quote",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "quote"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[quote_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/:organization/quotes",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "-created_at"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[quote]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": [],
+          "description": "Search quotes. Always paginated."
+        },
+        {
+          "method": "GET",
+          "path": "/:organization/quotes/:id",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "quote"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/:organization/quotes",
+          "parameters": [
+            {
+              "name": "organization",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "[quote]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "quote_form",
+            "attributes": []
+          }
+        }
+      ],
+      "attributes": [],
+      "path": "/:organization/quotes"
+    },
+    {
+      "type": "service",
+      "plural": "services",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/services/versions",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "service",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "service"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[service_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/services",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "lower(name)"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "carrier"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[service]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/services/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 1,
+              "example": "carrier"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "service"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/services",
+          "parameters": [
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 1,
+              "example": "carrier"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "service"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "service_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/services/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 1,
+              "example": "carrier"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "service"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "service"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "service_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/services/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 204
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "path": "/services"
+    },
+    {
+      "type": "shipment",
+      "plural": "shipments",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/shipments/versions",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "booking",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "shipment"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[shipment_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/shipments",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "number",
+              "type": "string",
+              "location": "Query",
+              "required": false
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "-created_at"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 2,
+              "example": "booking, option"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[shipment]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/shipments/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 2,
+              "example": "booking, option"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "shipment"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "path": "/shipments"
+    },
+    {
+      "type": "tier",
+      "plural": "tiers",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/tiers/versions",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "tier",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "tier"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[tier_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/tiers",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "lower(name)"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 1,
+              "example": "experience"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[tier]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/tiers/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 1,
+              "example": "experience"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "tier"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/tiers",
+          "parameters": [
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 1,
+              "example": "experience"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "tier"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "tier_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/tiers/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 1,
+              "example": "experience"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "tier"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "tier"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "tier_form",
+            "attributes": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/tiers/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 204
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "path": "/tiers"
+    }
+  ],
+  "attributes": []
+}
