@@ -1,0 +1,11 @@
+{{#resources}}
+import {{objectName plural}} from './{{slug plural}}';
+{{/resources}}
+
+export default class {{className name}}Client {
+  constructor(host, auth, headers) {
+    {{#resources}}
+    this.{{plural}} = new {{objectName plural}}(host, auth, headers);
+    {{/resources}}
+  }
+}

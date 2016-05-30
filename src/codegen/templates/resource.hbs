@@ -1,0 +1,23 @@
+import Client from '{{clientImportPath}}/client';
+
+export default class {{objectName plural}} extends Client {
+  constructor(host, auth, headers) {
+    super({
+      serviceName: '{{serviceName}}',
+    });
+
+    this.host = host;
+    this.auth = auth;
+    this.headers = headers;
+  }
+
+  {{#operations}}
+  {{operationName this ../path}}({{parameterList this}}) {
+    {{#nonGetMethod this}}
+    Object.assign(options, { method: '{{../method}}' });
+    {{/nonGetMethod}}
+    return this.makeRequest(`${this.host}{{operationPath this}}`, options);
+  }
+
+  {{/operations}}
+}
