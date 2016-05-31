@@ -16,11 +16,9 @@ h2 {
 }
 
 h3 {
-  background-color: #fff;
   font-family: Roboto, sans-serif;
   font-weight: 400;
   font-style: italic;
-  padding: 1rem;
 }
 
 h5 {
@@ -37,9 +35,9 @@ a:hover {
   text-decoration: underline;
 }
 
-.resource {
-  /*background-color: #fff;
-  padding: 1rem;*/
+.header-block {
+  background-color: #fff;
+  padding: 1rem;
 }
 
 .operation-name {
@@ -51,29 +49,30 @@ a:hover {
   padding: .5rem;
 }
 
-.parameter-name {
+.parameter-name, .field-name, .enum-name {
   font-weight: 700;
 }
 
-.parameter-optional {
+.parameter-optional, .field-optional {
   color: #939da3;
   font-weight: 300;
   font-size: .875rem;
 }
 
-.parameter-required {
+.parameter-required, .field-required {
   color: #C10C0C;
   font-weight: 300;
   font-size: .875rem;
   text-transform: uppercase;
 }
 
-.parameter-default strong {
+.parameter-default strong,
+.field-default strong {
   color: #939da3;
   font-size: .875rem;
 }
 
-.operation {
+.operation, .fields, .values {
   background-color: #fff;
   margin-bottom: 1rem;
   padding: 1rem;

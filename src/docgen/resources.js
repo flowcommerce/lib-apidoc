@@ -128,7 +128,7 @@ export function generateOperation(operation) {
 export function generateResource(resource) {
   return `
     <section class="resource">
-      <h3 class="h3">${resource.plural}</h3>
+      <h3 class="h3 header-block">${resource.plural}</h3>
       ${resource.operations.map((operation) => generateOperation(operation)).join('\n')}
     </section>
   `;

@@ -1,4 +1,7 @@
 import resources from './resources';
+import models from './models';
+import unions from './unions';
+import enums from './enums';
 
 export function generate(service) {
   return `
@@ -16,6 +19,9 @@ export function generate(service) {
         <h1 class="h1">${service.name}</h1>
         <p class="service-description">${service.description}</p>
         ${resources.generate(service.resources)}
+        ${models.generate(service.models)}
+        ${enums.generate(service.enums)}
+        ${unions.generate(service.unions)}
       </section>
     </body>
   </html>
