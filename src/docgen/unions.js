@@ -1,3 +1,10 @@
+export function slug(string) {
+  return string
+    .replace(/[^a-zA-Z0-9\-_\s]/gi, '')
+    .replace(/(\s+|_)/gi, '-')
+    .toLowerCase();
+}
+
 export function linkType(type) {
   let normalizedType = type;
 
@@ -5,13 +12,13 @@ export function linkType(type) {
     normalizedType = type.replace('[', '').replace(']', '');
   }
 
-  return type.replace(normalizedType, `<a href="#type-${normalizedType}">${normalizedType}</a>`);
+  return type.replace(normalizedType, `<a href="#type-${slug(normalizedType)}">${normalizedType}</a>`);
 }
 
 export function generateUnion(union) {
   const types = union.types.map((t) => linkType(t.type));
   return `
-    <div class="flex my2">
+    <div id="type-${slug(union.name)}" class="flex my2">
       <div class="union-name col-2 mr3 right-align">${union.name}</div>
       <div class="union-types flex-auto">${types.join(', ')}</div>
     </div>

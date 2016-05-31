@@ -1,3 +1,10 @@
+export function slug(string) {
+  return string
+    .replace(/[^a-zA-Z0-9\-_\s]/gi, '')
+    .replace(/(\s+|_)/gi, '-')
+    .toLowerCase();
+}
+
 export function linkType(type) {
   let normalizedType = type;
 
@@ -5,7 +12,10 @@ export function linkType(type) {
     normalizedType = type.replace('[', '').replace(']', '');
   }
 
-  return type.replace(normalizedType, `<a href="#type-${normalizedType}">${normalizedType}</a>`);
+  return type.replace(
+    normalizedType,
+    `<a href="#type-${slug(normalizedType)}">${normalizedType}</a>`
+  );
 }
 
 export function parameterMaximum(parameter) {
@@ -128,7 +138,7 @@ export function generateOperation(operation) {
 export function generateResource(resource) {
   return `
     <section class="resource">
-      <h3 class="h3 header-block">${resource.plural}</h3>
+      <h3 id="resource-${slug(resource.plural)}" class="h3 header-block">${resource.plural}</h3>
       ${resource.operations.map((operation) => generateOperation(operation)).join('\n')}
     </section>
   `;

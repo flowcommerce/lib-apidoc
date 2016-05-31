@@ -1,3 +1,10 @@
+export function slug(string) {
+  return string
+    .replace(/[^a-zA-Z0-9\-_\s]/gi, '')
+    .replace(/(\s+|_)/gi, '-')
+    .toLowerCase();
+}
+
 export function generateValue(value) {
   return `
     <div class="flex my2">
@@ -10,7 +17,7 @@ export function generateValue(value) {
 export function generateEnums(enumerator) {
   return `
     <section class="enum">
-      <header class="header-block">
+      <header id="type-${slug(enumerator.name)}" class="header-block">
         <h3 class="h3">${enumerator.name}</h3>
         <p>${enumerator.description}</p>
       </header>

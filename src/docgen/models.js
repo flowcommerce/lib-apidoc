@@ -1,3 +1,10 @@
+export function slug(string) {
+  return string
+    .replace(/[^a-zA-Z0-9\-_\s]/gi, '')
+    .replace(/(\s+|_)/gi, '-')
+    .toLowerCase();
+}
+
 export function linkType(type) {
   let normalizedType = type;
 
@@ -5,7 +12,10 @@ export function linkType(type) {
     normalizedType = type.replace('[', '').replace(']', '');
   }
 
-  return type.replace(normalizedType, `<a href="#type-${normalizedType}">${normalizedType}</a>`);
+  return type.replace(
+    normalizedType,
+    `<a href="#type-${slug(normalizedType)}">${normalizedType}</a>`
+  );
 }
 
 export function fieldMaximum(field) {
@@ -81,7 +91,7 @@ export function generateField(field) {
 export function generateModel(model) {
   return `
     <section class="model">
-      <h3 class="h3 header-block">${model.name}</h3>
+      <h3 id="type-${slug(model.name)}" class="h3 header-block">${model.name}</h3>
       <section class="fields">
         <h5 class="h4">Fields</h5>
         <div class="flex my2">
