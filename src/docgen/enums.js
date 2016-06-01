@@ -17,7 +17,7 @@ export function generateValue(value) {
 export function generateEnums(enumerator) {
   return `
     <section class="enum">
-      <header id="type-${slug(enumerator.name)}" class="header-block">
+      <header id="type-${slug(enumerator.name)}">
         <h3 class="h3">${enumerator.name}</h3>
         <p>${enumerator.description}</p>
       </header>

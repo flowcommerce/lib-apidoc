@@ -77,8 +77,8 @@ export function generateParameter(parameter) {
         ${optionalRequired(parameter)}
         ${parameterDefault(parameter)}
       </div>
-      <div class="parameter-type col-1 mr3">${linkType(parameter.type)}</div>
-      <div class="parameter-desc flex-auto">
+      <div class="parameter-type col-2 mr3">${linkType(parameter.type)}</div>
+      <div class="parameter-desc col-8">
         ${paramaterDescription(parameter)}
         ${parameterExample(parameter)}
         ${parameterMinimum(parameter)}
@@ -102,7 +102,7 @@ export function generateResponse(response) {
   return `
     <div class="flex my2">
       <div class="parameter col-2 mr3 right-align">${response.code.integer.value}</div>
-      <div class="parameter-type col-1 mr3">${linkType(response.type)}</div>
+      <div class="parameter-type col-2 mr3">${linkType(response.type)}</div>
     </div>
   `;
 }
@@ -117,8 +117,8 @@ export function generateOperation(operation) {
       <h5 class="h4">Parameters</h5>
       <div class="flex my2">
         <div class="parameter table-header col-2 mr3 right-align">Name</div>
-        <div class="parameter-type table-header col-1 mr3">Type</div>
-        <div class="parameter-desc table-header flex-auto">Description</div>
+        <div class="parameter-type table-header col-2 mr3">Type</div>
+        <div class="parameter-desc table-header col-8">Description</div>
       </div>
       ${operation.parameters.map((parameter) => generateParameter(parameter)).join('\n')}
     </section>
@@ -127,7 +127,7 @@ export function generateOperation(operation) {
       <h5 class="h4">Responses</h5>
       <div class="flex my2">
         <div class="parameter table-header col-2 mr3 right-align">Code</div>
-        <div class="parameter-type table-header col-1 mr3">Type</div>
+        <div class="parameter-type table-header col-2 mr3">Type</div>
       </div>
       ${operation.responses.map((response) => generateResponse(response)).join('\n')}
     </section>

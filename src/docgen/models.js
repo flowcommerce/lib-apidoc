@@ -78,7 +78,7 @@ export function generateField(field) {
         ${fieldDefault(field)}
       </div>
       <div class="field-type col-2 mr3">${linkType(field.type)}</div>
-      <div class="field-desc flex-auto">
+      <div class="field-desc col-8">
         ${fieldDescription(field)}
         ${fieldExample(field)}
         ${fieldMinimum(field)}
@@ -91,13 +91,13 @@ export function generateField(field) {
 export function generateModel(model) {
   return `
     <section class="model">
-      <h3 id="type-${slug(model.name)}" class="h3 header-block">${model.name}</h3>
+      <h3 id="type-${slug(model.name)}" class="h3">${model.name}</h3>
       <section class="fields">
         <h5 class="h4">Fields</h5>
         <div class="flex my2">
           <div class="field table-header col-2 mr3 right-align">Name</div>
           <div class="field-type table-header col-2 mr3">Type</div>
-          <div class="field-desc table-header flex-auto">Description</div>
+          <div class="field-desc table-header col-8">Description</div>
         </div>
         ${model.fields.map((field) => generateField(field)).join('\n')}
       </section>
