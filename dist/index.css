@@ -70,6 +70,14 @@ a:hover {
   width: 240px;
 }
 
+.navigation-stuck .left-navigation {
+  height: 100vh;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  width: 215px;
+}
+
 .left-navigation a:link,
 .left-navigation a:active,
 .left-navigation a:visited {
@@ -102,6 +110,10 @@ a:hover {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.navigation-stuck .main-content {
+  margin-left: 240px;
 }
 
 .header-block {

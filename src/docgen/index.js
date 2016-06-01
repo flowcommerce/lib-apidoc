@@ -6,7 +6,7 @@ import navigation from './navigation';
 
 export function generate(service) {
   return `
-  <DOCTYPE html>
+  <!DOCTYPE html>
   <html>
     <head>
       <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'>
@@ -32,6 +32,7 @@ export function generate(service) {
           ${unions.generate(service.unions)}
         </section>
       </main>
+      <script src="index.js"></script>
     </body>
   </html>
   `;
