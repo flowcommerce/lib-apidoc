@@ -61,14 +61,19 @@ export function generateResources(resources) {
   `;
 }
 
+/**
+ *   ${generateModels(service.models)}
+   ${generateEnums(service.enums)}
+   ${generateUnions(service.unions)}
+
+ * @param  {[type]} service [description]
+ * @return {[type]}         [description]
+ */
 export function generate(service) {
   return `
     <nav class="left-navigation">
       <section class="title">API Reference</section>
       ${generateResources(service.resources)}
-      ${generateModels(service.models)}
-      ${generateEnums(service.enums)}
-      ${generateUnions(service.unions)}
     </nav>
   `;
 }

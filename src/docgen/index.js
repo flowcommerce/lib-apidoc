@@ -17,7 +17,7 @@ export function generate(service) {
     </head>
     <body>
       <nav class="top-navigation">
-        <img class="logo" src="flow_logo.svg" />
+        <img class="logo" src="/assets/0.0.1/img/flow_logo.svg" />
         <span class="pipe">|</span>
         <span class="title">API Documentation</span>
       </nav>

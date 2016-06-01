@@ -31,7 +31,7 @@ export function generate(unions) {
       <header>
         <h2 class="h2">Unions</h2>
       </header>
-      <section class="fields">
+      <section class="unions">
         <div class="flex my2">
           <div class="union table-header col-2 mr3 right-align">Name</div>
           <div class="union-types table-header flex-auto">Types</div>
