@@ -1,0 +1,165 @@
+body {
+  background-color: #EDEEEF;
+  color: #4c555a;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-family: Roboto, sans-serif;
+  font-weight: 300;
+}
+
+h2 {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 400;
+}
+
+h3 {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+h5 {
+  font-family: Roboto, sans-serif;
+  font-weight: 300;
+}
+
+a:link, a:active, a:visited {
+  color: #1F69D5;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.top-navigation {
+  background: #000000;
+  color: #fff;
+  height: 56px;
+  line-height: 56px;
+}
+
+.top-navigation .logo {
+  height: 29px;
+  margin: 0 0 0 25px;
+  vertical-align: middle;
+  width: 90px;
+}
+
+.top-navigation .pipe {
+  font-size: 35px;
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 300;
+  padding: 0 10px;
+  vertical-align: middle;
+}
+
+.top-navigation .title {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+.left-navigation {
+  background-color: #1A1A1A;
+  color: #fff;
+  padding: 25px 0 0 25px;
+  width: 240px;
+}
+
+.navigation-stuck .left-navigation {
+  height: 100vh;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  width: 215px;
+}
+
+.left-navigation a:link,
+.left-navigation a:active,
+.left-navigation a:visited {
+  color: #fff;
+}
+
+.left-navigation a:hover {
+  text-decoration: underline;
+}
+
+.left-navigation .title {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.left-navigation .header {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+.left-navigation h3 {
+  color: #939da3;
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+}
+
+.left-navigation ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation-stuck .main-content {
+  margin-left: 240px;
+}
+
+.header-block {
+  background-color: #fff;
+  padding: 1rem;
+}
+
+.operation-name {
+  background-color: #fafafb;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ccc;
+  padding: .5rem;
+}
+
+.parameter-name, .field-name, .enum-name {
+  font-weight: 700;
+}
+
+.parameter-optional, .field-optional {
+  color: #939da3;
+  font-weight: 300;
+  font-size: .875rem;
+}
+
+.parameter-required, .field-required {
+  color: #C10C0C;
+  font-weight: 300;
+  font-size: .875rem;
+  text-transform: uppercase;
+}
+
+.parameter-default strong,
+.field-default strong {
+  color: #939da3;
+  font-size: .875rem;
+}
+
+.operation, .model, .enum {
+  background-color: #fff;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.table-header {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700;
+}

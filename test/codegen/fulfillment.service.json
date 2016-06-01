@@ -85,7 +85,8 @@
           "description": "We do not yet know the calendar"
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Standard hours of operation a center might follow"
     },
     {
       "name": "capability",
@@ -96,7 +97,8 @@
           "attributes": []
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Capability of a center"
     },
     {
       "name": "commercial_term",
@@ -139,7 +141,8 @@
           "attributes": []
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Content format of a generated label"
     },
     {
       "name": "dimension_type",
@@ -202,61 +205,8 @@
           "description": "Known to cause delays at customs"
         }
       ],
-      "attributes": []
-    },
-    {
-      "name": "rule_operation",
-      "plural": "rule_operations",
-      "values": [
-        {
-          "name": "equals",
-          "attributes": []
-        },
-        {
-          "name": "not_equals",
-          "attributes": []
-        },
-        {
-          "name": "greater_than",
-          "attributes": []
-        },
-        {
-          "name": "less_than",
-          "attributes": []
-        },
-        {
-          "name": "in",
-          "attributes": []
-        },
-        {
-          "name": "not_in",
-          "attributes": []
-        }
-      ],
-      "attributes": []
-    },
-    {
-      "name": "status",
-      "plural": "statuses",
-      "values": [
-        {
-          "name": "delivered",
-          "attributes": []
-        },
-        {
-          "name": "transit",
-          "attributes": []
-        },
-        {
-          "name": "other",
-          "attributes": []
-        },
-        {
-          "name": "exception",
-          "attributes": []
-        }
-      ],
-      "attributes": []
+      "attributes": [],
+      "description": "Exception reasons"
     },
     {
       "name": "tier_strategy",
@@ -273,7 +223,8 @@
           "description": "Optimize for cheapest first, then fastest"
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Strategy to apply when there are multiple rates available for a tier"
     }
   ],
   "unions": [
@@ -446,6 +397,22 @@
       "discriminator": "discriminator"
     },
     {
+      "name": "expandable_order",
+      "plural": "expandable_orders",
+      "types": [
+        {
+          "type": "order",
+          "attributes": []
+        },
+        {
+          "type": "order_reference",
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "discriminator": "discriminator"
+    },
+    {
       "name": "expandable_quote",
       "plural": "expandable_quotes",
       "types": [
@@ -540,13 +507,15 @@
           "name": "contact",
           "type": "io.flow.common.v0.models.contact",
           "required": true,
-          "attributes": []
+          "attributes": [],
+          "description": "Contact information of entity at the address"
         },
         {
           "name": "location",
           "type": "io.flow.common.v0.models.location",
           "required": true,
-          "attributes": []
+          "attributes": [],
+          "description": "Attributes on physical location"
         }
       ],
       "attributes": []
@@ -624,7 +593,8 @@
           "description": "Selected list of options for the quote"
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Represents second step of two-step purchase of Flow services."
     },
     {
       "name": "booking_reference",
@@ -828,7 +798,8 @@
           "description": "Parter API source providing access to this carrier. Defaults to carrier itself"
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Partner that actually take a shipment between places (ex: FedEx, DHL, SF Express)"
     },
     {
       "name": "carrier_reference",
@@ -888,7 +859,8 @@
           "name": "capabilities",
           "type": "[capability]",
           "required": true,
-          "attributes": []
+          "attributes": [],
+          "description": "List of standard capabilities that this center offers"
         },
         {
           "name": "address",
@@ -1082,7 +1054,8 @@
           "attributes": []
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Represents a collection of items, the available delivery option tier for that collection of items, and metadata about those options"
     },
     {
       "name": "delivery_reference",
@@ -1208,7 +1181,8 @@
           "attributes": []
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Range of time given a from and to number and the unit. For example: 1-4 hours or 4-7 days"
     },
     {
       "name": "experience",
@@ -1239,10 +1213,18 @@
           "attributes": []
         },
         {
+          "name": "currency",
+          "type": "string",
+          "required": false,
+          "attributes": [],
+          "description": "Standard currency to use for prices on this shipping experience"
+        },
+        {
           "name": "country",
           "type": "string",
           "required": false,
-          "attributes": []
+          "attributes": [],
+          "description": "Destination country for this shipping experience"
         }
       ],
       "attributes": [],
@@ -1268,10 +1250,19 @@
           "name": "country",
           "type": "string",
           "required": false,
-          "attributes": []
+          "attributes": [],
+          "description": "Destination country for this shipping experience"
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": false,
+          "attributes": [],
+          "description": "Standard currency to use for prices on this shipping experience"
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Grouping of Service tier that could later be associated with a catalog view or experience. e.g. China-specific Experience Tier Group of Services. Default Global tier group of available Services"
     },
     {
       "name": "experience_reference",
@@ -1357,7 +1348,8 @@
           "name": "url",
           "type": "string",
           "required": true,
-          "attributes": []
+          "attributes": [],
+          "description": "Signed URL in S3 containing the label contents"
         },
         {
           "name": "content_type",
@@ -1366,7 +1358,8 @@
           "attributes": []
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Represents a label file including where to download"
     },
     {
       "name": "flat_rate",
@@ -1479,7 +1472,7 @@
         }
       ],
       "attributes": [],
-      "description": "Top-level information on shipment tracking label number"
+      "description": "Top-level information on shipment tracking label and number"
     },
     {
       "name": "label_form",
@@ -1514,7 +1507,8 @@
           "description": "Carrier-provided information on actual delivery date range."
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Top-level information on shipment tracking label and number"
     },
     {
       "name": "label_reference",
@@ -1786,7 +1780,8 @@
           "name": "customs",
           "type": "customs",
           "required": true,
-          "attributes": []
+          "attributes": [],
+          "description": "Standard customs object used to print on customs declaration"
         },
         {
           "name": "destination",
@@ -1795,7 +1790,8 @@
           "attributes": []
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Represents a way to fulfill a delivery, including an estimates for the date range and cost"
     },
     {
       "name": "option_reference",
@@ -1835,6 +1831,144 @@
         {
           "name": "option",
           "type": "expandable_option",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "order",
+      "plural": "orders",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "price",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "destination",
+          "type": "address",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "customs",
+          "type": "customs",
+          "required": false,
+          "attributes": []
+        },
+        {
+          "name": "items",
+          "type": "[item]",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Model representing a confirmed group of items to be shipped to a destination. For clients not using flow for label-generation, this represents pre-advice to notify Flow and its partners of an incoming order and its shipments."
+    },
+    {
+      "name": "order_form",
+      "plural": "order_forms",
+      "fields": [
+        {
+          "name": "currency",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "price",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "destination",
+          "type": "address",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "customs",
+          "type": "customs",
+          "required": false,
+          "attributes": []
+        },
+        {
+          "name": "items",
+          "type": "[item]",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Model representing a confirmed group of items to be shipped to a destination. For clients not using flow for label-generation, this represents pre-advice to notify Flow and its partners of an incoming order and its shipments."
+    },
+    {
+      "name": "order_reference",
+      "plural": "order_references",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "name": "order_version",
+      "plural": "order_versions",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "timestamp",
+          "type": "date-time-iso8601",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "type",
+          "type": "io.flow.common.v0.enums.change_type",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "order",
+          "type": "expandable_order",
           "required": true,
           "attributes": []
         }
@@ -1982,10 +2116,10 @@
       "fields": [
         {
           "name": "query",
-          "type": "[rule_query]",
+          "type": "[string]",
           "required": true,
           "attributes": [],
-          "description": "Filter for incoming quotes. e.g. 'destination.country=US', 'sum(items.price) >= 100 USD'"
+          "description": "Search API query"
         },
         {
           "name": "outcome",
@@ -1997,35 +2131,6 @@
       ],
       "attributes": [],
       "description": "System to filter incoming quote for a shipment request based on a query and output corresponding outcomes."
-    },
-    {
-      "name": "rule_query",
-      "plural": "rule_queries",
-      "fields": [
-        {
-          "name": "field",
-          "type": "string",
-          "required": true,
-          "attributes": [],
-          "description": "Name of the field to be used. e.g. destination.address.country, sum(items.price)"
-        },
-        {
-          "name": "operation",
-          "type": "rule_operation",
-          "required": true,
-          "attributes": [],
-          "description": "Operation on the fields. e.g. equals, not equals, greater than, in, not in"
-        },
-        {
-          "name": "values",
-          "type": "[string]",
-          "required": true,
-          "attributes": [],
-          "description": "List of valid values derived from the operatio on the fields."
-        }
-      ],
-      "attributes": [],
-      "description": "Criteria to be used to filter incoming quote, items, origin, destination to see if this tier is applicable."
     },
     {
       "name": "service",
@@ -2080,7 +2185,8 @@
           "description": "Mapping of what this Service is referenced by in the partner. Defaults to generated ID."
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Specific service rendered by the carrier (fedex ground saturday, ups overnight weekend, etc)"
     },
     {
       "name": "service_reference",
@@ -2137,14 +2243,20 @@
           "attributes": []
         },
         {
-          "name": "booking",
-          "type": "expandable_booking",
+          "name": "order",
+          "type": "order_reference",
           "required": true,
           "attributes": []
         },
         {
-          "name": "option",
-          "type": "expandable_option",
+          "name": "tracking_number",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "items",
+          "type": "[item]",
           "required": true,
           "attributes": []
         },
@@ -2155,7 +2267,34 @@
           "attributes": []
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Represents a subset of items from an order grouped into a single physical shipment. Flow provides a generated tracking number to track this shipment across multiple possible hops and carriers."
+    },
+    {
+      "name": "shipment_form",
+      "plural": "shipment_forms",
+      "fields": [
+        {
+          "name": "order",
+          "type": "string",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "items",
+          "type": "[item]",
+          "required": true,
+          "attributes": []
+        },
+        {
+          "name": "labels",
+          "type": "[label]",
+          "required": true,
+          "attributes": []
+        }
+      ],
+      "attributes": [],
+      "description": "Represents a subset of items from an order grouped into a single physical shipment."
     },
     {
       "name": "shipment_reference",
@@ -2300,7 +2439,8 @@
           "description": "Services associated with this tier"
         }
       ],
-      "attributes": []
+      "attributes": [],
+      "description": "Service shipping tier available in this tier gorup. e.g. Standard tier, Express tier, Economy tier"
     },
     {
       "name": "tier_reference",
@@ -4597,6 +4737,216 @@
       "path": "/lanes"
     },
     {
+      "type": "order",
+      "plural": "orders",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/orders/versions",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "journal_timestamp"
+            },
+            {
+              "name": "expand",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "minimum": 0,
+              "maximum": 1,
+              "example": "order"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[order_version]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/orders",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "[string]",
+              "location": "Query",
+              "required": false,
+              "maximum": 100
+            },
+            {
+              "name": "number",
+              "type": "string",
+              "location": "Query",
+              "required": false
+            },
+            {
+              "name": "limit",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "25",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "name": "offset",
+              "type": "long",
+              "location": "Query",
+              "required": true,
+              "default": "0",
+              "minimum": 0
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "location": "Query",
+              "required": true,
+              "default": "-created_at"
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "[order]"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "GET",
+          "path": "/orders/:id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "string",
+              "location": "Path",
+              "required": true
+            }
+          ],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 200
+                }
+              },
+              "type": "order"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 404
+                }
+              },
+              "type": "unit"
+            }
+          ],
+          "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/orders",
+          "parameters": [],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "order"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "order_form",
+            "attributes": []
+          }
+        }
+      ],
+      "attributes": [],
+      "path": "/orders"
+    },
+    {
       "type": "quote",
       "plural": "quotes",
       "operations": [
@@ -5200,13 +5550,6 @@
               "maximum": 100
             },
             {
-              "name": "booking",
-              "type": "[string]",
-              "location": "Query",
-              "required": false,
-              "maximum": 100
-            },
-            {
               "name": "limit",
               "type": "long",
               "location": "Query",
@@ -5300,15 +5643,6 @@
               "location": "Query",
               "required": true,
               "default": "-created_at"
-            },
-            {
-              "name": "expand",
-              "type": "[string]",
-              "location": "Query",
-              "required": false,
-              "minimum": 0,
-              "maximum": 2,
-              "example": "booking, option"
             }
           ],
           "responses": [
@@ -5340,15 +5674,6 @@
               "type": "string",
               "location": "Path",
               "required": true
-            },
-            {
-              "name": "expand",
-              "type": "[string]",
-              "location": "Query",
-              "required": false,
-              "minimum": 0,
-              "maximum": 2,
-              "example": "booking, option"
             }
           ],
           "responses": [
@@ -5378,6 +5703,42 @@
             }
           ],
           "attributes": []
+        },
+        {
+          "method": "POST",
+          "path": "/shipments",
+          "parameters": [],
+          "responses": [
+            {
+              "code": {
+                "integer": {
+                  "value": 201
+                }
+              },
+              "type": "shipment"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 401
+                }
+              },
+              "type": "unit"
+            },
+            {
+              "code": {
+                "integer": {
+                  "value": 422
+                }
+              },
+              "type": "[io.flow.common.v0.models.error]"
+            }
+          ],
+          "attributes": [],
+          "body": {
+            "type": "shipment_form",
+            "attributes": []
+          }
         }
       ],
       "attributes": [],
@@ -5734,5 +6095,6 @@
       "path": "/tiers"
     }
   ],
-  "attributes": []
+  "attributes": [],
+  "description": "Fullfillment provides access to all of the configuration and setup required to then select available shipping routes for each consumer order."
 }
