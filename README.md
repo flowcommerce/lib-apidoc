@@ -14,7 +14,7 @@ Only outputs the HTML, with some assumptions on the location of the css and
 javascript assets
 
 ### Usage
-
+```JavaScript
     import fs from 'fs';
     import path from 'path';
     import { docgen } from '@flowio/lib-apidoc';
@@ -23,11 +23,11 @@ javascript assets
     const markup = docgen.generate(fulfillment);
 
     fs.writeFile(path.join(process.cwd(), 'dist/index.html'));
-
+```
 ### API
-
+```JavaScript
     generate(service, additionalDocumentation = [])
-
+```
 - `service` - Object - JSON representation of a service. The `service.json`
 provided by apidoc
 - `additionalDocumentation` - Array - List of DocParts created by `docparse`.
@@ -74,7 +74,7 @@ Valid types are:
 - `enum` - enum <enum_name>
 
 ### Usage
-
+```JavaScript
     import fs from 'fs';
     import path from 'path';
     import { docgen, docparse } from '@flowio/lib-apidoc';
@@ -87,3 +87,4 @@ Valid types are:
         const markup = docgen.generate(fulfillment);
         fs.writeFile(path.join(process.cwd(), 'dist/index.html'));
       });
+```
