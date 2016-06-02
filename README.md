@@ -21,7 +21,7 @@ The module exports the following modules:
     provided by apidoc
 - docgen
   - `generate(service, additionalDocumentation = [])`
-    - - **service** - Object - JSON representation of a service. The `service.json`
+    - **service** - Object - JSON representation of a service. The `service.json`
     provided by apidoc
     - **additionalDocumentation** - Array - List of DocParts created by `docparse`.
     Will inject additional documentation in the appropriate place in generated
