@@ -1,12 +1,12 @@
 /* global describe, it */
 import { expect } from 'chai';
 
-import generate from '../../src/codegen';
+import codegen from '../../src/codegen';
 import fulfillmentService from './fulfillment.service.json';
 
 describe('generate', () => {
   it('should return a package containing files', () => {
-    const pack = generate(fulfillmentService);
+    const pack = codegen.generate(fulfillmentService);
 
     expect(pack).to.be.an('object');
     expect(pack.files).to.be.an('array');
@@ -17,7 +17,7 @@ describe('generate', () => {
   });
 
   it('should modify client import path', () => {
-    const pack = generate(fulfillmentService, { clientImportPath: '../lib' });
+    const pack = codegen.generate(fulfillmentService, { clientImportPath: '../lib' });
     const filesWithClientImport = pack.files.filter((f) => f.contents.includes('../lib/client'));
     expect(filesWithClientImport).to.have.length.above(0);
   });

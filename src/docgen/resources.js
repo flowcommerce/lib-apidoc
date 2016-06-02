@@ -1,3 +1,5 @@
+import marked from 'marked';
+
 export function slug(string) {
   return string
     .replace(/[^a-zA-Z0-9\-_\s]/gi, '')
@@ -107,11 +109,27 @@ export function generateResponse(response) {
   `;
 }
 
-export function generateOperation(operation) {
+export function getOperationDoc(operation, additionalDocs) {
+  const doc = additionalDocs.find((docPart) =>
+    docPart.method === operation.method && operation.path === docPart.path
+  );
+
+  if (doc) {
+    return `
+      ${marked(doc.content)}
+    `;
+  }
+
+  return '';
+}
+
+
+export function generateOperation(operation, additionalDocs) {
   return `
   <section class="operation">
     <pre class="operation-name border rounded p1">${operation.method} ${operation.path}</pre>
     ${operationDescription(operation)}
+    ${getOperationDoc(operation, additionalDocs)}
 
     <section class="parameters">
       <h5 class="h4">Parameters</h5>
@@ -135,22 +153,23 @@ export function generateOperation(operation) {
   `;
 }
 
-export function generateResource(resource) {
+export function generateResource(resource, additionalDocs) {
   return `
     <section class="resource">
       <h3 id="resource-${slug(resource.plural)}" class="h3 header-block">${resource.plural}</h3>
-      ${resource.operations.map((operation) => generateOperation(operation)).join('\n')}
+      ${resource.operations.map((operation) =>
+        generateOperation(operation, additionalDocs)).join('\n')}
     </section>
   `;
 }
 
-export function generate(resources) {
+export function generate(resources, additionalDocs) {
   return `
 <section>
   <header>
     <h2 class="h2">Resources</h2>
   </header>
-  ${resources.map((resource) => generateResource(resource)).join('\n')}
+  ${resources.map((resource) => generateResource(resource, additionalDocs)).join('\n')}
 </section>
   `;
 }

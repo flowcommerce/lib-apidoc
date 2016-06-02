@@ -4,7 +4,7 @@ import unions from './unions';
 import enums from './enums';
 import navigation from './navigation';
 
-export function generate(service) {
+export function generate(service, additionalDocs = []) {
   return `
   <!DOCTYPE html>
   <html>
@@ -26,10 +26,10 @@ export function generate(service) {
         <section class="p2 main-content">
           <h1 class="h1">${service.name}</h1>
           <p class="service-description">${service.description}</p>
-          ${resources.generate(service.resources)}
-          ${models.generate(service.models)}
-          ${enums.generate(service.enums)}
-          ${unions.generate(service.unions)}
+          ${resources.generate(service.resources, additionalDocs)}
+          ${models.generate(service.models, additionalDocs)}
+          ${enums.generate(service.enums, additionalDocs)}
+          ${unions.generate(service.unions, additionalDocs)}
         </section>
       </main>
       <script src="index.js"></script>
