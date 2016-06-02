@@ -118,21 +118,15 @@ export function parseFile(fileContents, opts) {
   let docPartContent = '';
 
   lines.forEach((line, lineNumber) => {
-    // console.log(`${lineNumber}: ${line}`);
     try {
       if (isDocParse(line)) {
-        // console.log('found docparse');
         if (docPart) {
-          // console.log('existing docparse');
           docParts = docParts.concat(Object.assign(docPart, { content: docPartContent }));
         }
         docPartContent = '';
         docPart = getDocPart(line);
-        // console.log('new docPart is', docPart);
       } else {
-        // console.log('content line...');
         if (docPart) {
-          // console.log('appending content...');
           docPartContent += `${line}\n`;
         }
       }
