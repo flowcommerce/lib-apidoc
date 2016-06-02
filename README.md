@@ -28,9 +28,9 @@ javascript assets
 ```JavaScript
     generate(service, additionalDocumentation = [])
 ```
-- `service` - Object - JSON representation of a service. The `service.json`
+- **service** - Object - JSON representation of a service. The `service.json`
 provided by apidoc
-- `additionalDocumentation` - Array - List of DocParts created by `docparse`.
+- **additionalDocumentation** - Array - List of DocParts created by `docparse`.
 Will inject additional documentation in the appropriate place in generated
 documentation.
 
@@ -68,10 +68,10 @@ Example file:
 
 Valid types are:
 
-- resource - `resource <resource_name>`
-- resource:operation - `resource:operation <method> <path>`
-- model - `model <model_name>`
-- enum - `enum <enum_name>`
+- **resource** - `resource <resource_name>`
+- **resource:operation** - `resource:operation <method> <path>`
+- **model** - `model <model_name>`
+- **enum** - `enum <enum_name>`
 
 ### Usage
 ```JavaScript
