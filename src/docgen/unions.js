@@ -12,7 +12,10 @@ export function linkType(type) {
     normalizedType = type.replace('[', '').replace(']', '');
   }
 
-  return type.replace(normalizedType, `<a href="#type-${slug(normalizedType)}">${normalizedType}</a>`);
+  return type.replace(
+    normalizedType,
+    `<a href="#type-${slug(normalizedType)}">${normalizedType}</a>`
+  );
 }
 
 export function generateUnion(union) {
