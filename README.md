@@ -1,17 +1,42 @@
 # lib-apidoc
 Code and Document Generators for apidoc
 
+## Requirements
+
+- **apidoc** - This library depends on data from apidoc -
+[http://www.apidoc.me](http://www.apidoc.me). An api hosted here generates a
+`service.json` file. The JSON representation of the service.
+
 ## Install
 
-    npm install @flowio/lib-apidoc
+    npm install --save-dev @flowio/lib-apidoc
+
+## API
+
+The module exports the following modules:
+
+- codegen
+  - `generate(service)`
+    - **service** - Object - JSON representation of a service. The `service.json`
+    provided by apidoc
+- docgen
+  - `generate(service, additionalDocumentation = [])`
+    - - **service** - Object - JSON representation of a service. The `service.json`
+    provided by apidoc
+    - **additionalDocumentation** - Array - List of DocParts created by `docparse`.
+    Will inject additional documentation in the appropriate place in generated
+    documentation.
+- docparse
+  - `parse(glob)`
+    - **glob** - String - a [glob](https://www.npmjs.com/package/glob) for files to parse
 
 ## docgen
 
 Generates pretty API documentation for a service from its service JSON document
 provided by [apidoc.me](http://www.apidoc.me).
 
-Only outputs the HTML, with some assumptions on the location of the css and
-javascript assets
+This function only outputs the HTML, with some assumptions on the location of the css and
+javascript assets.
 
 ### Usage
 ```JavaScript
@@ -24,16 +49,6 @@ javascript assets
 
     fs.writeFile(path.join(process.cwd(), 'dist/index.html'));
 ```
-### API
-```JavaScript
-    generate(service, additionalDocumentation = [])
-```
-- **service** - Object - JSON representation of a service. The `service.json`
-provided by apidoc
-- **additionalDocumentation** - Array - List of DocParts created by `docparse`.
-Will inject additional documentation in the appropriate place in generated
-documentation.
-
 
 ## docparse
 
@@ -68,8 +83,8 @@ Example file:
 
 Valid types are:
 
-- **resource** - `resource <resource_name>`
-- **resource:operation** - `resource:operation <method> <path>`
+- **resource** - `resource <resource_name>` - the 'plural' name of the resource from service.json
+- **resource:operation** - `resource:operation <method> <path>` - the method (GET, POST, etc) and operation path. Must match exactly as defined in the service.json.
 - **model** - `model <model_name>`
 - **enum** - `enum <enum_name>`
 
