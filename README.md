@@ -68,10 +68,10 @@ Example file:
 
 Valid types are:
 
-- `resource` - resource <resource_name>
-- `resource:operation` - resource:operation <method> <path>
-- `model` - model <model_name>
-- `enum` - enum <enum_name>
+- resource - `resource <resource_name>``
+- resource:operation - `resource:operation <method> <path>``
+- model - `model <model_name>``
+- enum - `enum <enum_name>``
 
 ### Usage
 ```JavaScript
