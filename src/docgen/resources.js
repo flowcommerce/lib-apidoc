@@ -109,10 +109,12 @@ export function generateResponse(response) {
   `;
 }
 
-export function getOperationDoc(operation, additionalDocs) {
-  const doc = additionalDocs.find((docPart) =>
-    docPart.method === operation.method && operation.path === docPart.path
-  );
+export function getResourceOperationDoc(operation, additionalDocs) {
+  const doc = additionalDocs
+    .filter((d) => d.type === 'resource:operation')
+    .find((docPart) =>
+      docPart.method === operation.method && operation.path === docPart.path
+    );
 
   if (doc) {
     return `
@@ -123,13 +125,12 @@ export function getOperationDoc(operation, additionalDocs) {
   return '';
 }
 
-
 export function generateOperation(operation, additionalDocs) {
   return `
   <section class="operation">
     <pre class="operation-name border rounded p1">${operation.method} ${operation.path}</pre>
     ${operationDescription(operation)}
-    ${getOperationDoc(operation, additionalDocs)}
+    ${getResourceOperationDoc(operation, additionalDocs)}
 
     <section class="parameters">
       <h5 class="h4">Parameters</h5>
@@ -153,10 +154,28 @@ export function generateOperation(operation, additionalDocs) {
   `;
 }
 
+export function getResourceDoc(resource, additionalDocs) {
+  const doc = additionalDocs
+    .filter((d) => d.type === 'resource')
+    .find((docPart) => docPart.name === resource.plural);
+
+  if (doc) {
+    return `
+      ${marked(doc.content)}
+    `;
+  }
+
+  return '';
+}
+
 export function generateResource(resource, additionalDocs) {
   return `
     <section class="resource">
-      <h3 id="resource-${slug(resource.plural)}" class="h3 header-block">${resource.plural}</h3>
+      <header class="header-block">
+        <h3 id="resource-${slug(resource.plural)}" class="h3">${resource.plural}</h3>
+        ${getResourceDoc(resource, additionalDocs)}
+      </header>
+
       ${resource.operations.map((operation) =>
         generateOperation(operation, additionalDocs)).join('\n')}
     </section>

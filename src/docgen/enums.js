@@ -1,3 +1,5 @@
+import marked from 'marked';
+
 export function slug(string) {
   return string
     .replace(/[^a-zA-Z0-9\-_\s]/gi, '')
@@ -14,12 +16,27 @@ export function generateValue(value) {
   `;
 }
 
-export function generateEnums(enumerator) {
+export function getEnumDoc(enumerator, additionalDocs) {
+  const doc = additionalDocs
+    .filter((d) => d.type === 'enum')
+    .find((docPart) => docPart.name === enumerator.name);
+
+  if (doc) {
+    return `
+      ${marked(doc.content)}
+    `;
+  }
+
+  return '';
+}
+
+export function generateEnums(enumerator, additionalDocs) {
   return `
     <section class="enum">
       <header id="type-${slug(enumerator.name)}">
         <h3 class="h3">${enumerator.name}</h3>
         <p>${enumerator.description}</p>
+        ${getEnumDoc(enumerator, additionalDocs)}
       </header>
       <section class="values">
         <h5 class="h4">Values</h5>
@@ -33,13 +50,13 @@ export function generateEnums(enumerator) {
   `;
 }
 
-export function generate(enums) {
+export function generate(enums, additionalDocs) {
   return `
     <section>
       <header>
         <h2 class="h2">Enums</h2>
       </header>
-      ${enums.map((e) => generateEnums(e)).join('\n')}
+      ${enums.map((e) => generateEnums(e, additionalDocs)).join('\n')}
     </section>
   `;
 }

@@ -1,3 +1,5 @@
+import marked from 'marked';
+
 export function slug(string) {
   return string
     .replace(/[^a-zA-Z0-9\-_\s]/gi, '')
@@ -88,10 +90,25 @@ export function generateField(field) {
     `;
 }
 
-export function generateModel(model) {
+export function getModelDoc(model, additionalDocs) {
+  const doc = additionalDocs
+    .filter((d) => d.type === 'model')
+    .find((docPart) => docPart.name === model.name);
+
+  if (doc) {
+    return `
+      ${marked(doc.content)}
+    `;
+  }
+
+  return '';
+}
+
+export function generateModel(model, additionalDocs) {
   return `
     <section class="model">
       <h3 id="type-${slug(model.name)}" class="h3">${model.name}</h3>
+      ${getModelDoc(model, additionalDocs)}
       <section class="fields">
         <h5 class="h4">Fields</h5>
         <div class="flex my2">
@@ -105,13 +122,13 @@ export function generateModel(model) {
   `;
 }
 
-export function generate(models) {
+export function generate(models, additionalDocs) {
   return `
     <section>
       <header>
         <h2 class="h2">Models</h2>
       </header>
-      ${models.map((model) => generateModel(model)).join('\n')}
+      ${models.map((model) => generateModel(model, additionalDocs)).join('\n')}
     </section>
   `;
 }
