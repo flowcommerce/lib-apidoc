@@ -147,13 +147,17 @@ export function parse(globStr) {
         reject(err);
       }
 
-      const partsOfParts = files.map((f) => {
+      // convert each file in glob to array of DocParts
+      const docsPerFile = files.map((f) => {
         const filePath = path.join(process.cwd(), f);
         const fileContents = fs.readFileSync(filePath).toString('utf-8');
         return parseFile(fileContents, { fileName: filePath });
       });
 
-      resolve(partsOfParts.reduce((prev, next) => prev.concat(next), []));
+      // TODO: Check result for duplicates, throw error/warning if so.
+
+      // flatten the docs
+      resolve(docsPerFile.reduce((prev, next) => prev.concat(next), []));
     });
   });
 }
