@@ -69,7 +69,7 @@ export function parameterDefault(parameter) {
 
 export function optionalRequired(parameter) {
   if (parameter.required) {
-    return '<span class="parameter-required block">required</span>';
+    return '';
   }
 
   return '<span class="parameter-optional block">optional</span>';

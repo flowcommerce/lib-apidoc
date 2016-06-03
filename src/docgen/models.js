@@ -57,7 +57,7 @@ export function fieldDefault(field) {
 
 export function optionalRequired(field) {
   if (field.required) {
-    return '<span class="field-required block">required</span>';
+    return '';
   }
 
   return '<span class="field-optional block">optional</span>';
