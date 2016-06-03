@@ -16,12 +16,7 @@ export function generate(service, additionalDocs = []) {
       <link href="index.css" rel="stylesheet">
     </head>
     <body>
-      <nav class="top-navigation">
-        <img class="logo" src="/assets/0.0.1/img/flow_logo.svg" />
-        <span class="pipe">|</span>
-        <span class="title">API Documentation</span>
-      </nav>
-      <main class="main flex justify-start">
+      <main class="main flex">
         ${navigation.generate(service)}
         <section class="p2 main-content">
           <h1 class="h1">${service.name}</h1>
