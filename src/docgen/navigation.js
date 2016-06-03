@@ -12,7 +12,7 @@ export function resourceGroup(resources, groupName) {
     </header>
     <ul>
       ${resources.map((r) =>
-        `<li><a href="#resource-${slug(r.plural)}">${r.plural}</a></li>`).join('\n')}
+        `<li><a href="${slug(r.plural)}.html">${r.plural}</a></li>`).join('\n')}
     </ul>
   `;
 }
@@ -79,7 +79,9 @@ export function generate(service) {
   return `
     <nav class="left-navigation">
       <header class="header">
-        <img class="logo" src="/assets/0.0.1/img/flow_logo.svg" />
+        <a href="index.html">
+          <img class="logo" src="/assets/0.0.1/img/flow_logo.svg" />
+        </a>
         <section class="title">API Reference</section>
         <p class="version">Version: ${service.version}</p>
       </header>
