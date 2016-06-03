@@ -11,9 +11,16 @@ export function generateValue(value) {
   return `
     <div class="flex my2">
       <div class="value-name col-2 mr3 right-align">${value.name}</div>
-      <div class="value-desc flex-auto">${value.description}</div>
+      <div class="value-desc flex-auto">${value.description || ''}</div>
     </div>
   `;
+}
+
+export function enumDescription(enumerator) {
+  if (enumerator.description) {
+    return `<p>${enumerator.description}</p>`;
+  }
+  return '';
 }
 
 export function getEnumDoc(enumerator, additionalDocs) {
@@ -35,7 +42,7 @@ export function generateEnums(enumerator, additionalDocs) {
     <section class="enum">
       <header id="type-${slug(enumerator.name)}">
         <h3 class="h3">${enumerator.name}</h3>
-        <p>${enumerator.description}</p>
+        ${enumDescription(enumerator)}
         ${getEnumDoc(enumerator, additionalDocs)}
       </header>
       <section class="values">
