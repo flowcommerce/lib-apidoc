@@ -56,7 +56,7 @@ export default class ModelsGenerator extends Generator {
 
   generateField(field) {
     return `
-      <div class="flex my2">
+      <div class="flex my2 table-row">
         <div class="field col-2 mr3 right-align">
           <span class="field-name block">${field.name}</span>
           ${this.optionalRequired(field)}
@@ -94,7 +94,7 @@ export default class ModelsGenerator extends Generator {
         ${this.getModelDoc(model).trim()}
         <section class="fields">
           <h5 class="h4">Fields</h5>
-          <div class="flex my2">
+          <div class="flex my2 table-row">
             <div class="field table-header col-2 mr3 right-align">Name</div>
             <div class="field-type table-header col-1 mr3">Type</div>
             <div class="field-desc table-header col-9">Description</div>

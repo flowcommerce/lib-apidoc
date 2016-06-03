@@ -5,6 +5,10 @@ export function slug(string) {
     .toLowerCase();
 }
 
+export function slugToLabel(str) {
+  return slug(str).replace('-', ' ');
+}
+
 export function linkType(type) {
   let normalizedType = type;
 

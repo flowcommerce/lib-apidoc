@@ -1,7 +1,7 @@
 import marked from 'marked';
 import Generator from './generator';
 import ModelsGenerator from './models';
-import { slug, linkType } from './utils';
+import { slug, slugToLabel, linkType } from './utils';
 
 export default class ResourceGenerator extends Generator {
   constructor(service, resource, additionalDocs) {
@@ -70,7 +70,7 @@ export default class ResourceGenerator extends Generator {
 
   generateParameter(parameter) {
     return `
-      <div class="flex my2">
+      <div class="flex my2 table-row">
         <div class="parameter col-2 mr3 right-align">
           <span class="parameter-name block">${parameter.name}</span>
           ${this.optionalRequired(parameter)}
@@ -99,7 +99,7 @@ export default class ResourceGenerator extends Generator {
 
   generateResponse(response) {
     return `
-      <div class="flex my2">
+      <div class="flex my2 table-row">
         <div class="parameter col-2 mr3 right-align">${response.code.integer.value}</div>
         <div class="parameter-type col-2 mr3">${linkType(response.type)}</div>
       </div>
@@ -132,9 +132,9 @@ export default class ResourceGenerator extends Generator {
 
     return `
       <section class="body">
-        <h5 class="h4">Body</h5>
+        <h3 class="h3">Body</h3>
         <p>This operation accepts a body of type ${linkType(operation.body.type)}.</p>
-        <div class="flex my2">
+        <div class="flex my2 table-row">
           <div class="parameter table-header col-2 mr3 right-align">Name</div>
           <div class="parameter-type table-header col-1 mr3">Type</div>
           <div class="parameter-desc table-header col-9">Description</div>
@@ -152,8 +152,8 @@ export default class ResourceGenerator extends Generator {
       ${this.getResourceOperationDoc(operation)}
 
       <section class="parameters">
-        <h5 class="h4">Parameters</h5>
-        <div class="flex my2">
+        <h3 class="h3">Parameters</h3>
+        <div class="flex my2 table-row">
           <div class="parameter table-header col-2 mr3 right-align">Name</div>
           <div class="parameter-type table-header col-1 mr3">Type</div>
           <div class="parameter-desc table-header col-9">Description</div>
@@ -164,8 +164,8 @@ export default class ResourceGenerator extends Generator {
       ${this.generateOperationBody(operation)}
 
       <section class="responses">
-        <h5 class="h4">Responses</h5>
-        <div class="flex my2">
+        <h3 class="h3">Responses</h3>
+        <div class="flex my2 table-row">
           <div class="parameter table-header col-2 mr3 right-align">Code</div>
           <div class="parameter-type table-header col-2 mr3">Type</div>
         </div>
@@ -193,7 +193,7 @@ export default class ResourceGenerator extends Generator {
 
   generateResource() {
     return `
-      <h1 class="h1">${this.resource.plural}</h1>
+      <h1 class="h1 capitalize">${slugToLabel(this.resource.plural)}</h1>
       <section class="resource-sumamry">
         <h2 class="h2">Summary</h2>
         ${this.getResourceDoc()}

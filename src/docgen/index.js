@@ -3,7 +3,7 @@ import ModelsGenerator from './models';
 import UnionsGenerator from './unions';
 import EnumsGenerator from './enums';
 import Generator from './generator';
-import { slug, getDocAttributeModule, getOrderedModules } from './utils';
+import { slug, slugToLabel, getDocAttributeModule, getOrderedModules } from './utils';
 
 
 export class TypesFileGenerator extends Generator {
@@ -53,7 +53,9 @@ export class IndexFileGenerator extends Generator {
         <section class="header-block">
           <ul>
             ${moduleResources.map((r) => `
-              <li><a href="${slug(r.plural)}.html">${r.plural}</a></li>
+              <li>
+                <a class="resource-link" href="${slug(r.plural)}.html">${slugToLabel(r.plural)}</a>
+              </li>
             `).join('\n')}
           </ul>
         </section>

@@ -1,4 +1,4 @@
-import { slug, getDocAttributeModule, getOrderedModules } from './utils';
+import { slug, slugToLabel, getDocAttributeModule, getOrderedModules } from './utils';
 
 export default class NavigationGenerator {
   constructor(service) {
@@ -17,7 +17,9 @@ export default class NavigationGenerator {
       </header>
       <ul>
         ${resources.map((r) =>
-          `<li><a href="${slug(r.plural)}.html">${r.plural}</a></li>`).join('\n')}
+          `<li>
+              <a href="${slug(r.plural)}.html">${slugToLabel(r.plural)}</a>
+          </li>`).join('\n')}
       </ul>
     `;
   }

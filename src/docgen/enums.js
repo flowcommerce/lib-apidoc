@@ -13,7 +13,7 @@ export default class EnumsGenerator extends Generator {
 
   generateValue(value) {
     return `
-      <div class="flex my2">
+      <div class="flex my2 table-row">
         <div class="value-name col-2 mr3 right-align">${value.name}</div>
         <div class="value-desc flex-auto">${value.description || ''}</div>
       </div>
@@ -44,7 +44,7 @@ export default class EnumsGenerator extends Generator {
         </header>
         <section class="values">
           <h5 class="h4">Values</h5>
-          <div class="flex my2">
+          <div class="flex my2 table-row">
             <div class="value table-header col-2 mr3 right-align">Name</div>
             <div class="value-desc table-header flex-auto">Description</div>
           </div>
