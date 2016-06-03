@@ -1,7 +1,8 @@
 import marked from 'marked';
 import Generator from './generator';
+import { slug, linkType } from './utils';
 
-export class ModelsGenerator extends Generator {
+export default class ModelsGenerator extends Generator {
   fieldMaximum(field) {
     if (field.maximum) {
       return `<span class="block">Maximum: ${field.maximum}</span>`;
@@ -61,7 +62,7 @@ export class ModelsGenerator extends Generator {
           ${this.optionalRequired(field)}
           ${this.fieldDefault(field)}
         </div>
-        <div class="field-type col-1 mr3">${this.linkType(field.type)}</div>
+        <div class="field-type col-1 mr3">${linkType(field.type)}</div>
         <div class="field-desc col-9">
           ${this.fieldDescription(field)}
           ${this.fieldExample(field)}
@@ -89,7 +90,7 @@ export class ModelsGenerator extends Generator {
   generateModel(model) {
     return `
       <section class="model">
-        <h3 id="type-${this.slug(model.name)}" class="h3">${model.name}</h3>
+        <h3 id="type-${slug(model.name)}" class="h3">${model.name}</h3>
         ${this.getModelDoc(model).trim()}
         <section class="fields">
           <h5 class="h4">Fields</h5>
@@ -114,12 +115,4 @@ export class ModelsGenerator extends Generator {
       </section>
     `;
   }
-
 }
-
-export function generate(service, additionalDocs) {
-  const generator = new ModelsGenerator(service, additionalDocs);
-  return generator.generate();
-}
-
-export default { generate };

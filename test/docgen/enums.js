@@ -1,6 +1,6 @@
 /* global describe, it */
 import { expect } from 'chai';
-import { getEnumDoc } from '../../src/docgen/enums';
+import EnumsGenerator from '../../src/docgen/enums';
 
 describe('enums', () => {
   it('should get a enum doc', () => {
@@ -14,9 +14,9 @@ describe('enums', () => {
         content: '\nSome information about calendars\n\n',
       },
     ];
-
+    const generator = new EnumsGenerator({}, docParts);
     const expected = '<p>Some information about calendars</p>';
-    const result = getEnumDoc(enumerator, docParts);
+    const result = generator.getEnumDoc(enumerator, docParts);
 
     expect(result.trim()).to.equal(expected.trim());
   });

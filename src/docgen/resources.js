@@ -1,15 +1,20 @@
 import marked from 'marked';
 import Generator from './generator';
-import { ModelsGenerator } from './models';
+import ModelsGenerator from './models';
+import { slug, linkType } from './utils';
 
-export class ResourceGenerator extends Generator {
+export default class ResourceGenerator extends Generator {
   constructor(service, resource, additionalDocs) {
     super(service, additionalDocs);
     this.resource = resource;
   }
 
   operationSlug(operation) {
-    return this.slug(`${operation.method} ${operation.path}`);
+    return slug(`${operation.method} ${operation.path}`);
+  }
+
+  getModelByType(type) {
+    return this.service.models.find((m) => m.name === type);
   }
 
   parameterMaximum(parameter) {
@@ -71,7 +76,7 @@ export class ResourceGenerator extends Generator {
           ${this.optionalRequired(parameter)}
           ${this.parameterDefault(parameter)}
         </div>
-        <div class="parameter-type col-1 mr3">${this.linkType(parameter.type)}</div>
+        <div class="parameter-type col-1 mr3">${linkType(parameter.type)}</div>
         <div class="parameter-desc col-9">
           ${this.paramaterDescription(parameter)}
           ${this.parameterExample(parameter)}
@@ -96,7 +101,7 @@ export class ResourceGenerator extends Generator {
     return `
       <div class="flex my2">
         <div class="parameter col-2 mr3 right-align">${response.code.integer.value}</div>
-        <div class="parameter-type col-2 mr3">${this.linkType(response.type)}</div>
+        <div class="parameter-type col-2 mr3">${linkType(response.type)}</div>
       </div>
     `;
   }
@@ -128,7 +133,7 @@ export class ResourceGenerator extends Generator {
     return `
       <section class="body">
         <h5 class="h4">Body</h5>
-        <p>This operation accepts a body of type ${this.linkType(operation.body.type)}.</p>
+        <p>This operation accepts a body of type ${linkType(operation.body.type)}.</p>
         <div class="flex my2">
           <div class="parameter table-header col-2 mr3 right-align">Name</div>
           <div class="parameter-type table-header col-1 mr3">Type</div>
@@ -215,10 +220,3 @@ export class ResourceGenerator extends Generator {
     `;
   }
 }
-
-export function generate(service, resource, additionalDocs) {
-  const generator = new ResourceGenerator(service, resource, additionalDocs);
-  return generator.generate();
-}
-
-export default { generate };
