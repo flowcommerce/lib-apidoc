@@ -1,202 +1,224 @@
 import marked from 'marked';
+import Generator from './generator';
+import { ModelsGenerator } from './models';
 
-export function slug(string) {
-  return string
-    .replace(/[^a-zA-Z0-9\-_\s]/gi, '')
-    .replace(/(\s+|_)/gi, '-')
-    .toLowerCase();
-}
-
-export function operationSlug(operation) {
-  return slug(`${operation.method} ${operation.path}`);
-}
-
-export function linkType(type) {
-  let normalizedType = type;
-
-  if (type.startsWith('[')) {
-    normalizedType = type.replace('[', '').replace(']', '');
+export class ResourceGenerator extends Generator {
+  constructor(service, resource, additionalDocs) {
+    super(service, additionalDocs);
+    this.resource = resource;
   }
 
-  return type.replace(
-    normalizedType,
-    `<a href="types.html#type-${slug(normalizedType)}">${normalizedType}</a>`
-  );
-}
-
-export function parameterMaximum(parameter) {
-  if (parameter.maximum) {
-    return `<span class="block">Maximum: ${parameter.maximum}</span>`;
+  operationSlug(operation) {
+    return this.slug(`${operation.method} ${operation.path}`);
   }
 
-  return '';
-}
+  parameterMaximum(parameter) {
+    if (parameter.maximum) {
+      return `<span class="block">Maximum: ${parameter.maximum}</span>`;
+    }
 
-export function parameterMinimum(parameter) {
-  if (parameter.minimum) {
-    return `<span class="block">Minimum: ${parameter.minimum}</span>`;
-  }
-
-  return '';
-}
-
-export function parameterExample(parameter) {
-  if (parameter.example) {
-    return `<span class="block">Example: ${parameter.example}</span>`;
-  }
-
-  return '';
-}
-
-export function paramaterDescription(parameter) {
-  if (parameter.description) {
-    return parameter.description;
-  }
-
-  return '';
-}
-
-export function parameterDefault(parameter) {
-  if (parameter.default) {
-    return `
-    <span class="parameter-default block">
-      default: <strong>${parameter.default}</strong>
-    </span>`;
-  }
-
-  return '';
-}
-
-export function optionalRequired(parameter) {
-  if (parameter.required) {
     return '';
   }
 
-  return '<span class="parameter-optional block">optional</span>';
-}
+  parameterMinimum(parameter) {
+    if (parameter.minimum) {
+      return `<span class="block">Minimum: ${parameter.minimum}</span>`;
+    }
 
-export function generateParameter(parameter) {
-  return `
-    <div class="flex my2">
-      <div class="parameter col-2 mr3 right-align">
-        <span class="parameter-name block">${parameter.name}</span>
-        ${optionalRequired(parameter)}
-        ${parameterDefault(parameter)}
-      </div>
-      <div class="parameter-type col-2 mr3">${linkType(parameter.type)}</div>
-      <div class="parameter-desc col-8">
-        ${paramaterDescription(parameter)}
-        ${parameterExample(parameter)}
-        ${parameterMinimum(parameter)}
-        ${parameterMaximum(parameter)}
-      </div>
-    </div>
-    `;
-}
+    return '';
+  }
 
-export function operationDescription(operation) {
-  if (operation.description) {
+  parameterExample(parameter) {
+    if (parameter.example) {
+      return `<span class="block">Example: ${parameter.example}</span>`;
+    }
+
+    return '';
+  }
+
+  paramaterDescription(parameter) {
+    if (parameter.description) {
+      return parameter.description;
+    }
+
+    return '';
+  }
+
+  parameterDefault(parameter) {
+    if (parameter.default) {
+      return `
+      <span class="parameter-default block">
+        default: <strong>${parameter.default}</strong>
+      </span>`;
+    }
+
+    return '';
+  }
+
+  optionalRequired(parameter) {
+    if (parameter.required) {
+      return '';
+    }
+
+    return '<span class="parameter-optional block">optional</span>';
+  }
+
+  generateParameter(parameter) {
     return `
-      <p class="operation-desc">${operation.description}</p>
+      <div class="flex my2">
+        <div class="parameter col-2 mr3 right-align">
+          <span class="parameter-name block">${parameter.name}</span>
+          ${this.optionalRequired(parameter)}
+          ${this.parameterDefault(parameter)}
+        </div>
+        <div class="parameter-type col-1 mr3">${this.linkType(parameter.type)}</div>
+        <div class="parameter-desc col-9">
+          ${this.paramaterDescription(parameter)}
+          ${this.parameterExample(parameter)}
+          ${this.parameterMinimum(parameter)}
+          ${this.parameterMaximum(parameter)}
+        </div>
+      </div>
+      `;
+  }
+
+  operationDescription(operation) {
+    if (operation.description) {
+      return `
+        <p class="operation-desc">${operation.description}</p>
+      `;
+    }
+
+    return '';
+  }
+
+  generateResponse(response) {
+    return `
+      <div class="flex my2">
+        <div class="parameter col-2 mr3 right-align">${response.code.integer.value}</div>
+        <div class="parameter-type col-2 mr3">${this.linkType(response.type)}</div>
+      </div>
     `;
   }
 
-  return '';
-}
+  getResourceOperationDoc(operation) {
+    const doc = this.docs
+      .filter((d) => d.type === 'resource:operation')
+      .find((docPart) =>
+        docPart.method === operation.method && operation.path === docPart.path
+      );
 
-export function generateResponse(response) {
-  return `
-    <div class="flex my2">
-      <div class="parameter col-2 mr3 right-align">${response.code.integer.value}</div>
-      <div class="parameter-type col-2 mr3">${linkType(response.type)}</div>
-    </div>
-  `;
-}
-
-export function getResourceOperationDoc(operation, additionalDocs) {
-  const doc = additionalDocs
-    .filter((d) => d.type === 'resource:operation')
-    .find((docPart) =>
-      docPart.method === operation.method && operation.path === docPart.path
-    );
-
-  if (doc) {
-    return `
-      ${marked(doc.content)}
-    `;
-  }
-
-  return '';
-}
-
-export function generateOperation(operation, additionalDocs) {
-  return `
-  <section id="${operationSlug(operation)}" class="operation">
-    <pre class="operation-name border rounded p1">${operation.method} ${operation.path}</pre>
-    ${operationDescription(operation)}
-    ${getResourceOperationDoc(operation, additionalDocs)}
-
-    <section class="parameters">
-      <h5 class="h4">Parameters</h5>
-      <div class="flex my2">
-        <div class="parameter table-header col-2 mr3 right-align">Name</div>
-        <div class="parameter-type table-header col-2 mr3">Type</div>
-        <div class="parameter-desc table-header col-8">Description</div>
-      </div>
-      ${operation.parameters.map((parameter) => generateParameter(parameter)).join('\n')}
-    </section>
-
-    <section class="responses">
-      <h5 class="h4">Responses</h5>
-      <div class="flex my2">
-        <div class="parameter table-header col-2 mr3 right-align">Code</div>
-        <div class="parameter-type table-header col-2 mr3">Type</div>
-      </div>
-      ${operation.responses.map((response) => generateResponse(response)).join('\n')}
-    </section>
-  </section>
-  `;
-}
-
-export function getResourceDoc(resource, additionalDocs) {
-  const doc = additionalDocs
-    .filter((d) => d.type === 'resource')
-    .find((docPart) => docPart.name === resource.plural);
-
-  if (doc) {
-    return `
-      <header class="header-block">
+    if (doc) {
+      return `
         ${marked(doc.content)}
-      </header>
+      `;
+    }
+
+    return '';
+  }
+
+  generateOperationBody(operation) {
+    if (!operation.body) {
+      return '';
+    }
+
+    const model = this.getModelByType(operation.body.type);
+    const modelsGenerator = new ModelsGenerator(this.service, this.docs);
+
+    return `
+      <section class="body">
+        <h5 class="h4">Body</h5>
+        <p>This operation accepts a body of type ${this.linkType(operation.body.type)}.</p>
+        <div class="flex my2">
+          <div class="parameter table-header col-2 mr3 right-align">Name</div>
+          <div class="parameter-type table-header col-1 mr3">Type</div>
+          <div class="parameter-desc table-header col-9">Description</div>
+        </div>
+        ${model.fields.map((field) => modelsGenerator.generateField(field)).join('\n')}
+      </section>
     `;
   }
 
-  return '';
+  generateOperation(operation) {
+    return `
+    <section id="${this.operationSlug(operation)}" class="operation">
+      <pre class="operation-name border rounded p1">${operation.method} ${operation.path}</pre>
+      ${this.operationDescription(operation)}
+      ${this.getResourceOperationDoc(operation)}
+
+      <section class="parameters">
+        <h5 class="h4">Parameters</h5>
+        <div class="flex my2">
+          <div class="parameter table-header col-2 mr3 right-align">Name</div>
+          <div class="parameter-type table-header col-1 mr3">Type</div>
+          <div class="parameter-desc table-header col-9">Description</div>
+        </div>
+        ${operation.parameters.map((parameter) => this.generateParameter(parameter)).join('\n')}
+      </section>
+
+      ${this.generateOperationBody(operation)}
+
+      <section class="responses">
+        <h5 class="h4">Responses</h5>
+        <div class="flex my2">
+          <div class="parameter table-header col-2 mr3 right-align">Code</div>
+          <div class="parameter-type table-header col-2 mr3">Type</div>
+        </div>
+        ${operation.responses.map((response) => this.generateResponse(response)).join('\n')}
+      </section>
+    </section>
+    `;
+  }
+
+  getResourceDoc() {
+    const doc = this.docs
+      .filter((d) => d.type === 'resource')
+      .find((docPart) => docPart.name === this.resource.plural);
+
+    if (doc) {
+      return `
+        <header class="header-block">
+          ${marked(doc.content).trim()}
+        </header>
+      `;
+    }
+
+    return '';
+  }
+
+  generateResource() {
+    return `
+      <h1 class="h1">${this.resource.plural}</h1>
+      <section class="resource-sumamry">
+        <h2 class="h2">Summary</h2>
+        ${this.getResourceDoc()}
+        ${this.resource.operations.map((operation) => `
+          <p>
+            <a href="#${this.operationSlug(operation)}">
+              ${operation.method} ${operation.path}
+            </a>
+          </p>
+          `).join('\n')}
+      </section>
+      <section class="resource">
+        ${this.resource.operations.map((operation) =>
+          this.generateOperation(operation)).join('\n')}
+      </section>
+    `;
+  }
+
+  generate() {
+    return `
+      <section>
+        ${this.generateResource()}
+      </section>
+    `;
+  }
 }
 
-export function generateResource(resource, additionalDocs) {
-  return `
-    <h1 class="h1">${resource.plural}</h1>
-    <section class="resource-sumamry">
-      <h2 class="h2">Summary</h2>
-      ${getResourceDoc(resource, additionalDocs)}
-      ${resource.operations.map((operation) => `
-        <p><a href="#${operationSlug(operation)}">${operation.method} ${operation.path}</a></p>
-        `).join('\n')}
-    </section>
-    <section class="resource">
-      ${resource.operations.map((operation) =>
-        generateOperation(operation, additionalDocs)).join('\n')}
-    </section>
-  `;
-}
-
-export function generate(resources, additionalDocs) {
-  return `
-<section>
-  ${resources.map((resource) => generateResource(resource, additionalDocs)).join('\n')}
-</section>
-  `;
+export function generate(service, resource, additionalDocs) {
+  const generator = new ResourceGenerator(service, resource, additionalDocs);
+  return generator.generate();
 }
 
 export default { generate };
