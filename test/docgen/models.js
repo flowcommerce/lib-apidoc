@@ -1,6 +1,6 @@
 /* global describe, it */
 import { expect } from 'chai';
-import { getModelDoc } from '../../src/docgen/models';
+import { ModelsGenerator } from '../../src/docgen/models';
 
 describe('models', () => {
   it('should get a model doc', () => {
@@ -14,9 +14,9 @@ describe('models', () => {
         content: '\nSome information about addresses\n\n',
       },
     ];
-
+    const generator = new ModelsGenerator({}, docParts);
     const expected = '<p>Some information about addresses</p>';
-    const result = getModelDoc(model, docParts);
+    const result = generator.getModelDoc(model, docParts);
 
     expect(result.trim()).to.equal(expected.trim());
   });

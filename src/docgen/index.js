@@ -60,7 +60,7 @@ export function generateTypesFile(service, additionalDocs) {
       ${navigation.generate(service)}
       <section class="p2 main-content flex-auto">
         <h1 class="h1">Types</h1>
-        ${models.generate(service.models, additionalDocs)}
+        ${models.generate(service, additionalDocs)}
         ${enums.generate(service.enums, additionalDocs)}
         ${unions.generate(service.unions, additionalDocs)}
       </section>
@@ -77,7 +77,7 @@ export function generateResourceFile(service, resource, additionalDocs) {
     <main class="main flex">
       ${navigation.generate(service)}
       <section class="p2 main-content flex-auto">
-        ${resources.generate([resource], additionalDocs)}
+        ${resources.generate(service, resource, additionalDocs)}
       </section>
     </main>`);
 

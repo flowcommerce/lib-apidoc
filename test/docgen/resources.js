@@ -1,6 +1,6 @@
 /* global describe, it */
 import { expect } from 'chai';
-import { getResourceDoc, getResourceOperationDoc } from '../../src/docgen/resources';
+import { ResourceGenerator } from '../../src/docgen/resources';
 
 describe('resources', () => {
   it('should get a resource doc', () => {
@@ -15,8 +15,12 @@ describe('resources', () => {
       },
     ];
 
-    const expected = '<p>Some information about bookings</p>';
-    const result = getResourceDoc(resource, docParts);
+    const generator = new ResourceGenerator({}, resource, docParts);
+    const expected = `
+      <header class="header-block">
+          <p>Some information about bookings</p>
+        </header>`;
+    const result = generator.getResourceDoc(resource, docParts);
 
     expect(result.trim()).to.equal(expected.trim());
   });
@@ -25,6 +29,10 @@ describe('resources', () => {
     const operation = {
       method: 'GET',
       path: '/bookings/version',
+    };
+
+    const resource = {
+      operations: [operation],
     };
 
     const content = `Some documentation about \`/bookings/version\`.
@@ -49,8 +57,9 @@ Here are some bullet points
 <li>two</li>
 <li>three</li>
 </ul>`;
+    const generator = new ResourceGenerator({}, resource, docParts);
 
-    const result = getResourceOperationDoc(operation, docParts);
+    const result = generator.getResourceOperationDoc(operation, docParts);
 
     expect(result.trim()).to.equal(expected.trim());
   });
