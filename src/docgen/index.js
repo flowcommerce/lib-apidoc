@@ -4,8 +4,8 @@ import unions from './unions';
 import enums from './enums';
 import navigation from './navigation';
 
-export function generate(service, additionalDocs = []) {
-  return `
+export function generateIndex(service, additionalDocs) {
+  const content = `
   <!DOCTYPE html>
   <html>
     <head>
@@ -31,6 +31,23 @@ export function generate(service, additionalDocs = []) {
     </body>
   </html>
   `;
+
+  return {
+    path: 'index.html',
+    content,
+  };
+}
+
+/**
+ * Returns array of File
+ *
+ * File is: {
+ * 	path: 'index.html',
+ * 	contents: 'file contents',
+ * }
+ */
+export function generate(service, additionalDocs = []) {
+  return [generateIndex(service, additionalDocs)];
 }
 
 export default { generate };
