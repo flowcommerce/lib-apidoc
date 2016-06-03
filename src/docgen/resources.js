@@ -7,6 +7,10 @@ export function slug(string) {
     .toLowerCase();
 }
 
+export function operationSlug(operation) {
+  return slug(`${operation.method} ${operation.path}`);
+}
+
 export function linkType(type) {
   let normalizedType = type;
 
@@ -16,7 +20,7 @@ export function linkType(type) {
 
   return type.replace(
     normalizedType,
-    `<a href="#type-${slug(normalizedType)}">${normalizedType}</a>`
+    `<a href="types.html#type-${slug(normalizedType)}">${normalizedType}</a>`
   );
 }
 
@@ -127,7 +131,7 @@ export function getResourceOperationDoc(operation, additionalDocs) {
 
 export function generateOperation(operation, additionalDocs) {
   return `
-  <section class="operation">
+  <section id="${operationSlug(operation)}" class="operation">
     <pre class="operation-name border rounded p1">${operation.method} ${operation.path}</pre>
     ${operationDescription(operation)}
     ${getResourceOperationDoc(operation, additionalDocs)}
@@ -161,7 +165,9 @@ export function getResourceDoc(resource, additionalDocs) {
 
   if (doc) {
     return `
-      ${marked(doc.content)}
+      <header class="header-block">
+        ${marked(doc.content)}
+      </header>
     `;
   }
 
@@ -170,12 +176,15 @@ export function getResourceDoc(resource, additionalDocs) {
 
 export function generateResource(resource, additionalDocs) {
   return `
+    <h1 class="h1">${resource.plural}</h1>
+    <section class="resource-sumamry">
+      <h2 class="h2">Summary</h2>
+      ${getResourceDoc(resource, additionalDocs)}
+      ${resource.operations.map((operation) => `
+        <p><a href="#${operationSlug(operation)}">${operation.method} ${operation.path}</a></p>
+        `).join('\n')}
+    </section>
     <section class="resource">
-      <header class="header-block">
-        <h3 id="resource-${slug(resource.plural)}" class="h3">${resource.plural}</h3>
-        ${getResourceDoc(resource, additionalDocs)}
-      </header>
-
       ${resource.operations.map((operation) =>
         generateOperation(operation, additionalDocs)).join('\n')}
     </section>
@@ -185,9 +194,6 @@ export function generateResource(resource, additionalDocs) {
 export function generate(resources, additionalDocs) {
   return `
 <section>
-  <header>
-    <h2 class="h2">Resources</h2>
-  </header>
   ${resources.map((resource) => generateResource(resource, additionalDocs)).join('\n')}
 </section>
   `;

@@ -14,7 +14,7 @@ export function linkType(type) {
 
   return type.replace(
     normalizedType,
-    `<a href="#type-${slug(normalizedType)}">${normalizedType}</a>`
+    `<a href="types.html#type-${slug(normalizedType)}">${normalizedType}</a>`
   );
 }
 
