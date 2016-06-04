@@ -76,7 +76,7 @@ export default class ResourceGenerator extends Generator {
           ${this.optionalRequired(parameter)}
           ${this.parameterDefault(parameter)}
         </div>
-        <div class="parameter-type col-1 mr3">${linkType(parameter.type)}</div>
+        <div class="parameter-type col-1 mr3">${this.linkType(parameter.type)}</div>
         <div class="parameter-desc col-9">
           ${this.paramaterDescription(parameter)}
           ${this.parameterExample(parameter)}
@@ -101,7 +101,7 @@ export default class ResourceGenerator extends Generator {
     return `
       <div class="flex my2 table-row">
         <div class="parameter col-2 mr3 right-align">${response.code.integer.value}</div>
-        <div class="parameter-type col-2 mr3">${linkType(response.type)}</div>
+        <div class="parameter-type col-2 mr3">${this.linkType(response.type)}</div>
       </div>
     `;
   }
@@ -133,7 +133,7 @@ export default class ResourceGenerator extends Generator {
     return `
       <section class="body">
         <h3 class="h3">Body</h3>
-        <p>This operation accepts a body of type ${linkType(operation.body.type)}.</p>
+        <p>This operation accepts a body of type ${this.linkType(operation.body.type)}.</p>
         <div class="flex my2 table-row">
           <div class="parameter table-header col-2 mr3 right-align">Name</div>
           <div class="parameter-type table-header col-1 mr3">Type</div>

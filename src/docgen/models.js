@@ -62,7 +62,7 @@ export default class ModelsGenerator extends Generator {
           ${this.optionalRequired(field)}
           ${this.fieldDefault(field)}
         </div>
-        <div class="field-type col-1 mr3">${linkType(field.type)}</div>
+        <div class="field-type col-1 mr3">${this.linkType(field.type)}</div>
         <div class="field-desc col-9">
           ${this.fieldDescription(field)}
           ${this.fieldExample(field)}

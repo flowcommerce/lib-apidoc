@@ -1,9 +1,25 @@
 import NavigationGenerator from './navigation';
+import { linkType as utilLinkType } from './utils';
 
 export default class Generator {
   constructor(service, additionalDocs) {
     this.service = service;
     this.docs = additionalDocs;
+  }
+
+  isType(type) {
+    const cleanedType = type.replace('[', '').replace(']', '');
+    return !!(this.service.models.find((m) => m.name === cleanedType)
+      || this.service.enums.find((m) => m.name === cleanedType)
+      || this.service.unions.find((m) => m.name === cleanedType));
+  }
+
+  linkType(type) {
+    if (this.isType(type)) {
+      return utilLinkType(type);
+    }
+
+    return type;
   }
 
   htmlDocument(body) {

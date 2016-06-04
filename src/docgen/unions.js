@@ -1,9 +1,9 @@
 import Generator from './generator';
-import { slug, linkType } from './utils';
+import { slug } from './utils';
 
 export default class UnionsGenerator extends Generator {
   generateUnion(union) {
-    const types = union.types.map((t) => linkType(t.type));
+    const types = union.types.map((t) => this.linkType(t.type));
     return `
       <div id="type-${slug(union.name)}" class="flex my2 table-row">
         <div class="union-name col-2 mr3 right-align">${union.name}</div>
