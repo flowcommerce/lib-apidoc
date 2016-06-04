@@ -1,6 +1,6 @@
 /* global describe, it */
 import { expect } from 'chai';
-import { ModelsGenerator } from '../../src/docgen/models';
+import ModelsGenerator from '../../src/docgen/models';
 
 describe('models', () => {
   it('should get a model doc', () => {

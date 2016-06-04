@@ -1,131 +1,82 @@
-import resources from './resources';
-import models from './models';
-import unions from './unions';
-import enums from './enums';
-import navigation from './navigation';
+import ResourceGenerator from './resources';
+import ModelsGenerator from './models';
+import UnionsGenerator from './unions';
+import EnumsGenerator from './enums';
+import Generator from './generator';
+import { slug, slugToLabel, getDocAttributeModule, getOrderedModules } from './utils';
 
-export function slug(string) {
-  return string
-    .replace(/[^a-zA-Z0-9\-_\s]/gi, '')
-    .replace(/(\s+|_)/gi, '-')
-    .toLowerCase();
+
+export class TypesFileGenerator extends Generator {
+  generate() {
+    const modelsGenerator = new ModelsGenerator(this.service, this.docs);
+    const enumsGenerator = new EnumsGenerator(this.service, this.docs);
+    const unionsGenerator = new UnionsGenerator(this.service, this.docs);
+
+    const content = this.htmlDocument(`
+      <h1 class="h1">Types</h1>
+      ${modelsGenerator.generate()}
+      ${enumsGenerator.generate()}
+      ${unionsGenerator.generate()}`);
+
+    return {
+      path: 'types.html',
+      content,
+    };
+  }
 }
 
-export function getDocAttributeModule(attributes) {
-  const docs = attributes.find((a) => a.name === 'docs');
-  if (docs.value && docs.value.module) {
-    return docs.value.module;
+export class ResourceFilesGenerator extends Generator {
+  generateResourceFile(resource) {
+    const resourceGenerator = new ResourceGenerator(this.service, resource, this.docs);
+
+    const content = this.htmlDocument(`
+      ${resourceGenerator.generate()}`);
+
+    return {
+      path: `${slug(resource.plural)}.html`,
+      content,
+    };
   }
 
-  return null;
+  generate() {
+    return this.service.resources.map((r) => this.generateResourceFile(r));
+  }
 }
 
-export function getOrderedModules(service) {
-  let ordering = [];
-  service.resources.forEach((resource) => {
-    const module = getDocAttributeModule(resource.attributes);
-    if (!module) {
-      throw new Error(`Expected resource[${resource.plural}] to have a docs.value.module attribute.`); // eslint-disable-line max-len
-    }
-
-    if (!ordering.includes(module)) {
-      ordering = ordering.concat(module);
-    }
-  });
-
-  return ordering;
-}
-
-export function htmlDocument(body) {
-  return `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet">
-        <link href="https://npmcdn.com/basscss@8.0.1/css/basscss.min.css" rel="stylesheet">
-        <link href="index.css" rel="stylesheet">
-      </head>
-      <body>
-        ${body}
-        <script src="index.js"></script>
-      </body>
-    </html>`;
-}
-
-export function generateTypesFile(service, additionalDocs) {
-  const content = htmlDocument(`
-    <main class="main flex">
-      ${navigation.generate(service)}
-      <section class="p2 main-content flex-auto">
-        <h1 class="h1">Types</h1>
-        ${models.generate(service, additionalDocs)}
-        ${enums.generate(service.enums, additionalDocs)}
-        ${unions.generate(service.unions, additionalDocs)}
+export class IndexFileGenerator extends Generator {
+  moduleSection(service, module) {
+    const moduleResources = service.resources
+      .filter((r) => getDocAttributeModule(r.attributes) === module);
+    return `
+      <section class="module">
+        <h3 class="h3 header-block">${module}</h3>
+        <section class="header-block">
+          <ul>
+            ${moduleResources.map((r) => `
+              <li>
+                <a class="resource-link" href="${slug(r.plural)}.html">${slugToLabel(r.plural)}</a>
+              </li>
+            `).join('\n')}
+          </ul>
+        </section>
       </section>
-    </main>`);
+    `;
+  }
 
-  return {
-    path: 'types.html',
-    content,
-  };
-}
+  generate() {
+    const orderedModules = getOrderedModules(this.service.resources);
 
-export function generateResourceFile(service, resource, additionalDocs) {
-  const content = htmlDocument(`
-    <main class="main flex">
-      ${navigation.generate(service)}
-      <section class="p2 main-content flex-auto">
-        ${resources.generate(service, resource, additionalDocs)}
-      </section>
-    </main>`);
+    const content = this.htmlDocument(`
+      <h1 class="h1">${this.service.name}</h1>
+      <p class="service-description">${this.service.description}</p>
+      <h2 class="h2">Modules</h2>
+      ${orderedModules.map((module) => this.moduleSection(this.service, module)).join('\n')}`);
 
-  return {
-    path: `${slug(resource.plural)}.html`,
-    content,
-  };
-}
-
-export function generateResourceFiles(service, additionalDocs) {
-  return service.resources.map((r) => generateResourceFile(service, r, additionalDocs));
-}
-
-export function moduleSection(service, module) {
-  const moduleResources = service.resources
-    .filter((r) => getDocAttributeModule(r.attributes) === module);
-  return `
-    <section class="module">
-      <h3 class="h3 header-block">${module}</h3>
-      <section class="header-block">
-        <ul>
-          ${moduleResources.map((r) => `
-            <li><a href="${slug(r.plural)}.html">${r.plural}</a></li>
-          `).join('\n')}
-        </ul>
-      </section>
-    </section>
-  `;
-}
-
-export function generateIndexFile(service) {
-  const orderedModules = getOrderedModules(service);
-
-  const content = htmlDocument(`
-    <main class="main flex">
-      ${navigation.generate(service)}
-      <section class="p2 main-content flex-auto">
-        <h1 class="h1">${service.name}</h1>
-        <p class="service-description">${service.description}</p>
-        <h2 class="h2">Modules</h2>
-        ${orderedModules.map((module) => moduleSection(service, module)).join('\n')}
-      </section>
-    </main>`);
-
-  return {
-    path: 'index.html',
-    content,
-  };
+    return {
+      path: 'index.html',
+      content,
+    };
+  }
 }
 
 /**
@@ -137,10 +88,13 @@ export function generateIndexFile(service) {
  * }
  */
 export function generate(service, additionalDocs = []) {
+  const indexGenerator = new IndexFileGenerator(service, additionalDocs);
+  const typesGenerator = new TypesFileGenerator(service, additionalDocs);
+  const resourceFilesGenerator = new ResourceFilesGenerator(service, additionalDocs);
   return [
-    generateIndexFile(service),
-    generateTypesFile(service, additionalDocs),
-  ].concat(generateResourceFiles(service, additionalDocs));
+    indexGenerator.generate(service, additionalDocs),
+    typesGenerator.generate(service, additionalDocs),
+  ].concat(resourceFilesGenerator.generate(service, additionalDocs));
 }
 
 export default { generate };

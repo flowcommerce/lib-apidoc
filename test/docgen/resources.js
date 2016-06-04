@@ -1,6 +1,6 @@
 /* global describe, it */
 import { expect } from 'chai';
-import { ResourceGenerator } from '../../src/docgen/resources';
+import ResourceGenerator from '../../src/docgen/resources';
 
 describe('resources', () => {
   it('should get a resource doc', () => {
