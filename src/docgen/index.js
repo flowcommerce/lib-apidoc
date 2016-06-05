@@ -48,9 +48,9 @@ export class IndexFileGenerator extends Generator {
     const moduleResources = service.resources
       .filter((r) => getDocAttributeModule(r.attributes) === module);
     return `
-      <section class="module">
-        <h3 class="h3 header-block">${module}</h3>
-        <section class="header-block">
+      <section class="module header-block">
+        <h3 class="h3">${module}</h3>
+        <section>
           <ul>
             ${moduleResources.map((r) => `
               <li>

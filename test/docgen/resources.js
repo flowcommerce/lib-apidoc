@@ -151,8 +151,8 @@ describe('resources', () => {
           <span class="parameter-optional block">optional</span>
           <span class="parameter-default block"> default: <strong>USA</strong> </span>
         </div>
-        <div class="parameter-type col-1 mr3"><a href="types.html#type-country">country</a></div>
-        <div class="parameter-desc col-9">
+        <div class="parameter-type col-2 mr3"><a href="types.html#type-country">country</a></div>
+        <div class="parameter-desc col-8">
           Three letter ISO code
           <span class="block">Example: USA</span>
           <span class="block">Minimum: 3</span>
@@ -177,12 +177,14 @@ describe('resources', () => {
         },
       },
       type: 'car',
+      description: 'response description',
     };
     const generator = new ResourceGenerator(testService, {}, []);
     const expected = `
       <div class="flex my2 table-row">
         <div class="parameter col-2 mr3 right-align">200</div>
         <div class="parameter-type col-2 mr3"><a href="types.html#type-car">car</a></div>
+        <div class="parameter-type col-8 mr3">response description</div>
       </div>
     `;
     expectHtmlEqual(generator.generateResponse(response), expected);
@@ -280,8 +282,8 @@ Some documentation about \`/bookings/version\`.
         <a href="types.html#type-car-with-fields">car_with_fields</a>.</p>
       <div class="flex my2 table-row">
         <div class="parameter table-header col-2 mr3 right-align">Name</div>
-        <div class="parameter-type table-header col-1 mr3">Type</div>
-        <div class="parameter-desc table-header col-9">Description</div>
+        <div class="parameter-type table-header col-2 mr3">Type</div>
+        <div class="parameter-desc table-header col-8">Description</div>
       </div>
       <div class="flex my2 table-row">
         <div class="field col-2 mr3 right-align">
