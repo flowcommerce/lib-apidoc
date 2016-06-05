@@ -76,8 +76,8 @@ export default class ResourceGenerator extends Generator {
           ${this.optionalRequired(parameter)}
           ${this.parameterDefault(parameter)}
         </div>
-        <div class="parameter-type col-1 mr3">${this.linkType(parameter.type)}</div>
-        <div class="parameter-desc col-9">
+        <div class="parameter-type col-2 mr3">${this.linkType(parameter.type)}</div>
+        <div class="parameter-desc col-8">
           ${this.paramaterDescription(parameter)}
           ${this.parameterExample(parameter)}
           ${this.parameterMinimum(parameter)}
@@ -102,6 +102,7 @@ export default class ResourceGenerator extends Generator {
       <div class="flex my2 table-row">
         <div class="parameter col-2 mr3 right-align">${response.code.integer.value}</div>
         <div class="parameter-type col-2 mr3">${this.linkType(response.type)}</div>
+        <div class="parameter-type col-8 mr3">${response.description || ''}</div>
       </div>`;
   }
 
@@ -131,8 +132,8 @@ export default class ResourceGenerator extends Generator {
     return `
       <div class="flex my2 table-row">
         <div class="parameter table-header col-2 mr3 right-align">Name</div>
-        <div class="parameter-type table-header col-1 mr3">Type</div>
-        <div class="parameter-desc table-header col-9">Description</div>
+        <div class="parameter-type table-header col-2 mr3">Type</div>
+        <div class="parameter-desc table-header col-8">Description</div>
       </div>
       ${model.fields.map((field) => modelsGenerator.generateField(field)).join('\n')}`;
   }
@@ -164,8 +165,8 @@ export default class ResourceGenerator extends Generator {
         <h3 class="h3">Parameters</h3>
         <div class="flex my2 table-row">
           <div class="parameter table-header col-2 mr3 right-align">Name</div>
-          <div class="parameter-type table-header col-1 mr3">Type</div>
-          <div class="parameter-desc table-header col-9">Description</div>
+          <div class="parameter-type table-header col-2 mr3">Type</div>
+          <div class="parameter-desc table-header col-8">Description</div>
         </div>
         ${operation.parameters.map((parameter) => this.generateParameter(parameter)).join('\n')}
       </section>
@@ -177,6 +178,7 @@ export default class ResourceGenerator extends Generator {
         <div class="flex my2 table-row">
           <div class="parameter table-header col-2 mr3 right-align">Code</div>
           <div class="parameter-type table-header col-2 mr3">Type</div>
+          <div class="parameter-desc table-header col-8">Description</div>
         </div>
         ${operation.responses.map((response) => this.generateResponse(response)).join('\n')}
       </section>
@@ -200,12 +202,22 @@ export default class ResourceGenerator extends Generator {
     return '';
   }
 
+  getResourceDescription() {
+    if (this.resource.description) {
+      return `
+        <h2 class="h2">Summary</h2>
+        <p>${this.resource.description}</p>`;
+    }
+    return '';
+  }
+
   generateResource() {
     return `
       <h1 class="h1 capitalize">${slugToLabel(this.resource.plural)}</h1>
       <section class="resource-sumamry">
-        <h2 class="h2">Summary</h2>
+        ${this.getResourceDescription()}
         ${this.getResourceDoc()}
+        <h2 class="h2">Operations</h2>
         ${this.resource.operations.map((operation) => `
           <p>
             <a href="#${this.operationSlug(operation)}">
