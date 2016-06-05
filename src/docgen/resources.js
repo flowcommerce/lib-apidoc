@@ -1,7 +1,7 @@
 import marked from 'marked';
 import Generator from './generator';
 import ModelsGenerator from './models';
-import { slug, slugToLabel, linkType } from './utils';
+import { slug, slugToLabel } from './utils';
 
 export default class ResourceGenerator extends Generator {
   constructor(service, resource, additionalDocs) {
@@ -18,7 +18,7 @@ export default class ResourceGenerator extends Generator {
   }
 
   parameterMaximum(parameter) {
-    if (parameter.maximum) {
+    if (typeof parameter.maximum !== 'undefined' && parameter.maximum !== null) {
       return `<span class="block">Maximum: ${parameter.maximum}</span>`;
     }
 
@@ -26,7 +26,7 @@ export default class ResourceGenerator extends Generator {
   }
 
   parameterMinimum(parameter) {
-    if (parameter.minimum) {
+    if (typeof parameter.minimum !== 'undefined' && parameter.minimum !== null) {
       return `<span class="block">Minimum: ${parameter.minimum}</span>`;
     }
 
@@ -102,8 +102,7 @@ export default class ResourceGenerator extends Generator {
       <div class="flex my2 table-row">
         <div class="parameter col-2 mr3 right-align">${response.code.integer.value}</div>
         <div class="parameter-type col-2 mr3">${this.linkType(response.type)}</div>
-      </div>
-    `;
+      </div>`;
   }
 
   getResourceOperationDoc(operation) {
@@ -122,24 +121,34 @@ export default class ResourceGenerator extends Generator {
     return '';
   }
 
+  generateBodyFields(model) {
+    if (!model || !model.fields || !model.fields.length) {
+      return '';
+    }
+
+    const modelsGenerator = new ModelsGenerator(this.service, this.docs);
+
+    return `
+      <div class="flex my2 table-row">
+        <div class="parameter table-header col-2 mr3 right-align">Name</div>
+        <div class="parameter-type table-header col-1 mr3">Type</div>
+        <div class="parameter-desc table-header col-9">Description</div>
+      </div>
+      ${model.fields.map((field) => modelsGenerator.generateField(field)).join('\n')}`;
+  }
+
   generateOperationBody(operation) {
     if (!operation.body) {
       return '';
     }
 
     const model = this.getModelByType(operation.body.type);
-    const modelsGenerator = new ModelsGenerator(this.service, this.docs);
 
     return `
       <section class="body">
         <h3 class="h3">Body</h3>
         <p>This operation accepts a body of type ${this.linkType(operation.body.type)}.</p>
-        <div class="flex my2 table-row">
-          <div class="parameter table-header col-2 mr3 right-align">Name</div>
-          <div class="parameter-type table-header col-1 mr3">Type</div>
-          <div class="parameter-desc table-header col-9">Description</div>
-        </div>
-        ${model.fields.map((field) => modelsGenerator.generateField(field)).join('\n')}
+        ${this.generateBodyFields(model)}
       </section>
     `;
   }

@@ -35,8 +35,12 @@ describe('docparse', () => {
       .to.equal('enum');
   });
 
+  it('should fail to get type', () => {
+    expect(() => getType('foo')).to.throw('Not a DocParse Statement');
+  });
+
   it('should get a resource operation', () => {
-    const doc = '#doc:resource:operation GET /bookings/versions';
+    const doc = '#doc:resource:operation GET /bookings/versions\n\nMore stuff';
     const expected = {
       type: 'resource:operation',
       method: 'GET',
@@ -77,13 +81,20 @@ describe('docparse', () => {
   });
 
   it('should get arbitrary doc part', () => {
-    const doc = '#doc:resource:operation GET /bookings/versions';
-    const expected = {
-      type: 'resource:operation',
-      method: 'GET',
-      path: '/bookings/versions',
-    };
-    expect(getDocPart(doc)).to.deep.equal(expected);
+    const docExpected = (doc, expected) =>
+      expect(getDocPart(doc)).to.deep.equal(expected);
+
+    docExpected(
+      '#doc:resource:operation GET /bookings/versions',
+      {
+        type: 'resource:operation',
+        method: 'GET',
+        path: '/bookings/versions',
+      }
+    );
+    docExpected('#doc:resource bookings', { type: 'resource', name: 'bookings' });
+    docExpected('#doc:model car', { type: 'model', name: 'car' });
+    docExpected('#doc:enum sizes', { type: 'enum', name: 'sizes' });
   });
 
   it('should fail with unkown type', () => {

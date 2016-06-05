@@ -1,3 +1,7 @@
 {
-  "presets": ["@flowio/babel-preset-flowio"]
+  "presets": ["@flowio/babel-preset-flowio"],
+  "only": [
+    "**/src/**",
+    "**/test/**"
+  ]
 }
