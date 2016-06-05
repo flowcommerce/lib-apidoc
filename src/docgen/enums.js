@@ -13,11 +13,10 @@ export default class EnumsGenerator extends Generator {
 
   generateValue(value) {
     return `
-      <div class="flex my2 table-row">
-        <div class="value-name col-2 mr3 right-align">${value.name}</div>
-        <div class="value-desc flex-auto">${value.description || ''}</div>
-      </div>
-    `;
+          <div class="flex my2 table-row">
+            <div class="value-name col-2 mr3 right-align">${value.name}</div>
+            <div class="value-desc flex-auto">${value.description || ''}</div>
+          </div>`;
   }
 
   getEnumDoc(enumerator) {
@@ -26,15 +25,13 @@ export default class EnumsGenerator extends Generator {
       .find((docPart) => docPart.name === enumerator.name);
 
     if (doc) {
-      return `
-        ${marked(doc.content)}
-      `;
+      return marked(doc.content).trim();
     }
 
     return '';
   }
 
-  generateEnums(enumerator) {
+  generateEnum(enumerator) {
     return `
       <section class="enum">
         <header id="type-${slug(enumerator.name)}">
@@ -50,8 +47,7 @@ export default class EnumsGenerator extends Generator {
           </div>
           ${enumerator.values.map((value) => this.generateValue(value)).join('\n')}
         </section>
-      </section>
-    `;
+      </section>`;
   }
 
   generate() {
@@ -60,8 +56,7 @@ export default class EnumsGenerator extends Generator {
         <header>
           <h2 class="h2">Enums</h2>
         </header>
-        ${this.service.enums.map((e) => this.generateEnums(e)).join('\n')}
-      </section>
-    `;
+        ${this.service.enums.map((e) => this.generateEnum(e)).join('\n')}
+      </section>`;
   }
 }

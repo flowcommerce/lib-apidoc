@@ -1,7 +1,11 @@
 export function slug(string) {
   return string
-    .replace(/[^a-zA-Z0-9\-_\s]/gi, '')
-    .replace(/(\s+|_)/gi, '-')
+    .replace(/[^a-zA-Z0-9\-_\s]/gi, '-')
+    .replace(/_+/gi, '-')
+    .replace(/\s+/gi, '-')
+    .replace(/\-+/gi, '-')
+    .replace(/^\-/, '')
+    .replace(/\-$/, '')
     .toLowerCase();
 }
 
@@ -11,6 +15,10 @@ export function slugToLabel(str) {
 
 export function linkType(type) {
   let normalizedType = type;
+
+  if (!type) {
+    return '';
+  }
 
   if (type.startsWith('[')) {
     normalizedType = type.replace('[', '').replace(']', '');
@@ -22,9 +30,9 @@ export function linkType(type) {
   );
 }
 
-export function getDocAttributeModule(attributes) {
+export function getDocAttributeModule(attributes = []) {
   const docs = attributes.find((a) => a.name === 'docs');
-  if (docs.value && docs.value.module) {
+  if (docs && docs.value && docs.value.module) {
     return docs.value.module;
   }
 

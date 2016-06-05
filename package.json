@@ -1,6 +1,7 @@
 {
   "name": "@flowio/lib-apidoc",
   "version": "1.0.0",
+  "repository": "git@github.com:flowcommerce/lib-apidoc.git",
   "description": "Libraries for generating code and documenation for apidoc projects",
   "main": "lib/index.js",
   "scripts": {
@@ -9,7 +10,8 @@
     "lint": "eslint src",
     "pretest": "npm run lint",
     "test": "npm run test:unit",
-    "test:unit": "mocha --compilers js:babel-core/register --recursive"
+    "test:unit": "mocha --compilers js:babel-core/register --recursive",
+    "test:cover": "babel-node ./node_modules/.bin/isparta cover _mocha -- --recursive"
   },
   "files": [
     "lib"
@@ -22,11 +24,14 @@
     "babel-cli": "6.9.0",
     "babel-core": "6.9.0",
     "babel-eslint": "6.0.4",
+    "babel-polyfill": "6.9.1",
     "chai": "3.5.0",
     "eslint": "2.10.2",
     "eslint-plugin-import": "1.8.0",
     "eslint-plugin-jsx-a11y": "1.2.0",
     "eslint-plugin-react": "5.1.1",
+    "isparta": "4.0.0",
+    "istanbul": "0.4.3",
     "js-beautify": "1.6.2",
     "mocha": "2.4.5"
   },

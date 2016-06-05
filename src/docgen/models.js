@@ -1,6 +1,6 @@
 import marked from 'marked';
 import Generator from './generator';
-import { slug, linkType } from './utils';
+import { slug } from './utils';
 
 export default class ModelsGenerator extends Generator {
   fieldMaximum(field) {
