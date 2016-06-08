@@ -115,7 +115,9 @@ export default class ResourceGenerator extends Generator {
 
     if (doc) {
       return `
-        ${marked(doc.content)}
+        <div class="md-content">
+          ${marked(doc.content)}
+        </div>
       `;
     }
 
@@ -193,7 +195,7 @@ export default class ResourceGenerator extends Generator {
 
     if (doc) {
       return `
-        <header class="header-block">
+        <header class="header-block md-content">
           ${marked(doc.content).trim()}
         </header>
       `;
