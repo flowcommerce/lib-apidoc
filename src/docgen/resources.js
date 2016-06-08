@@ -189,7 +189,7 @@ export default class ResourceGenerator extends Generator {
   getResourceDoc() {
     const doc = this.docs
       .filter((d) => d.type === 'resource')
-      .find((docPart) => docPart.name === this.resource.plural);
+      .find((docPart) => docPart.name.toLowerCase() === this.resource.plural);
 
     if (doc) {
       return `

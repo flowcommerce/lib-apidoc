@@ -25,7 +25,7 @@ export default class Generator {
 
   contentByType(type, name) {
     const doc = this.docs
-      .find((d) => d.type === type && d.name === name);
+      .find((d) => d.type === type && d.name.toLowerCase() === name.toLowerCase());
 
     if (doc) {
       return `
