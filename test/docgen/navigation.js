@@ -69,7 +69,7 @@ describe('navigation', () => {
     const result = generator.resourceGroup(resources, 'foo');
     const expected = `
       <header>
-        <h3 class="h3">foo</h3>
+        <h3 class="h3"><a href="index.html#foo">foo</a></h3>
       </header>
       <ul>
         <li> <a href="cars.html">cars</a> </li>
@@ -113,7 +113,7 @@ describe('navigation', () => {
     const expected = `
       <section class="resources">
         <header>
-          <h3 class="h3">automotive</h3> </header>
+          <h3 class="h3"><a href="index.html#automotive">automotive</a></h3> </header>
         <ul>
           <li> <a href="cars.html">cars</a> </li>
         </ul>
@@ -131,9 +131,20 @@ describe('navigation', () => {
           <section class="title">API Reference</section>
           <p class="version">Version: undefined</p>
         </header>
+        <header>
+          <h3 class="h3"><a href="index.html#api">Getting Started</a></h3> </header>
+        <ul>
+          <li><a href="index.html#register-with-flow-commerce">Register</a></li>
+          <li><a href="index.html#obtain-your-api-key">API Key</a></li>
+          <li><a href="index.html#how-to-authenticate">Authentication</a></li>
+          <li><a href="index.html#native-libraries">Libraries</a></li>
+          <li><a href="index.html#getting-help">Getting Help</a></li>
+          <li><a href="index.html#next-steps">Next Steps</a></li>
+          </li>
+        </ul>
         <section class="resources">
           <header>
-            <h3 class="h3">automotive</h3> </header>
+            <h3 class="h3"><a href="index.html#automotive">automotive</a></h3> </header>
           <ul>
             <li> <a href="cars.html">cars</a> </li>
           </ul>

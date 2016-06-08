@@ -62,8 +62,8 @@ export default class ModelsGenerator extends Generator {
           ${this.optionalRequired(field)}
           ${this.fieldDefault(field)}
         </div>
-        <div class="field-type col-1 mr3">${this.linkType(field.type)}</div>
-        <div class="field-desc col-9">
+        <div class="field-type col-2 mr3">${this.linkType(field.type)}</div>
+        <div class="field-desc col-8">
           ${this.fieldDescription(field)}
           ${this.fieldExample(field)}
           ${this.fieldMinimum(field)}
@@ -89,15 +89,15 @@ export default class ModelsGenerator extends Generator {
 
   generateModel(model) {
     return `
-      <section class="model">
+      <section class="header-block">
         <h3 id="type-${slug(model.name)}" class="h3">${model.name}</h3>
         ${this.getModelDoc(model).trim()}
         <section class="fields">
           <h5 class="h4">Fields</h5>
           <div class="flex my2 table-row">
             <div class="field table-header col-2 mr3 right-align">Name</div>
-            <div class="field-type table-header col-1 mr3">Type</div>
-            <div class="field-desc table-header col-9">Description</div>
+            <div class="field-type table-header col-2 mr3">Type</div>
+            <div class="field-desc table-header col-8">Description</div>
           </div>
           ${model.fields.map((field) => this.generateField(field)).join('\n')}
         </section>

@@ -49,8 +49,12 @@ export class IndexFileGenerator extends Generator {
       .filter((r) => getDocAttributeModule(r.attributes) === module);
     return `
       <section class="module header-block">
-        <h3 class="h3">${module}</h3>
+        <h2 id="${slug(module)}">${module}</h2>
+        <div class="md-content">
+          ${this.contentByType('module', module)}
+        </div>
         <section>
+          <h2>Resources</h2>
           <ul>
             ${moduleResources.map((r) => `
               <li>
@@ -67,8 +71,12 @@ export class IndexFileGenerator extends Generator {
     const orderedModules = getOrderedModules(this.service.resources);
 
     const content = this.htmlDocument(`
-      <h1 class="h1">${this.service.name}</h1>
+      <h1 class="h1">Flow Commerce API Documentation</h1>
       <p class="service-description">${this.service.description}</p>
+      <h2 class="h2" id="api">API</h2>
+      <section class="header-block md-content">
+        ${this.contentByType('section', 'api')}
+      </section>
       <h2 class="h2">Modules</h2>
       ${orderedModules.map((module) => this.moduleSection(this.service, module)).join('\n')}`);
 
