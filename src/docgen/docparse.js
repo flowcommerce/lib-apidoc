@@ -7,6 +7,8 @@ const DOC_TYPE_RESOURCE_OPERATION = 'resource:operation';
 const DOC_TYPE_RESOURCE = 'resource';
 const DOC_TYPE_MODEL = 'model';
 const DOC_TYPE_ENUM = 'enum';
+const DOC_TYPE_SECTION = 'section';
+const DOC_TYPE_MODULE = 'module';
 
 export function isDocParse(str) {
   return str.startsWith(DOC_PARSE_IDENT);
@@ -95,6 +97,38 @@ export function getEnum(part) {
   };
 }
 
+export function getSection(part) {
+  if (getType(part) !== DOC_TYPE_SECTION) {
+    throw new Error(`Expected type to be ${DOC_TYPE_SECTION}, but got ${getType(part)} instead`); // eslint-disable-line max-len
+  }
+
+  const name = part
+    .replace(DOC_PARSE_IDENT, '')
+    .replace(DOC_TYPE_SECTION, '')
+    .trim();
+
+  return {
+    type: DOC_TYPE_SECTION,
+    name,
+  };
+}
+
+export function getModule(part) {
+  if (getType(part) !== DOC_TYPE_MODULE) {
+    throw new Error(`Expected type to be ${DOC_TYPE_MODULE}, but got ${getType(part)} instead`); // eslint-disable-line max-len
+  }
+
+  const name = part
+    .replace(DOC_PARSE_IDENT, '')
+    .replace(DOC_TYPE_MODULE, '')
+    .trim();
+
+  return {
+    type: DOC_TYPE_MODULE,
+    name,
+  };
+}
+
 export function getDocPart(part) {
   const type = getType(part);
   switch (type) {
@@ -106,6 +140,10 @@ export function getDocPart(part) {
     return getModel(part);
   case DOC_TYPE_ENUM:
     return getEnum(part);
+  case DOC_TYPE_SECTION:
+    return getSection(part);
+  case DOC_TYPE_MODULE:
+    return getModule(part);
   default:
     throw new Error(`Type not found: ${type}`);
   }

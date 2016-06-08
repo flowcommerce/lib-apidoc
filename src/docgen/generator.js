@@ -1,3 +1,4 @@
+import marked from 'marked';
 import NavigationGenerator from './navigation';
 import { linkType as utilLinkType } from './utils';
 
@@ -20,6 +21,19 @@ export default class Generator {
     }
 
     return type;
+  }
+
+  contentByType(type, name) {
+    const doc = this.docs
+      .find((d) => d.type === type && d.name === name);
+
+    if (doc) {
+      return `
+        ${marked(doc.content)}
+      `;
+    }
+
+    return '';
   }
 
   htmlDocument(body) {

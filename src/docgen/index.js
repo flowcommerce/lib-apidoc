@@ -50,6 +50,7 @@ export class IndexFileGenerator extends Generator {
     return `
       <section class="module header-block">
         <h3 class="h3">${module}</h3>
+        ${this.contentByType('module', module)}
         <section>
           <ul>
             ${moduleResources.map((r) => `
@@ -67,8 +68,12 @@ export class IndexFileGenerator extends Generator {
     const orderedModules = getOrderedModules(this.service.resources);
 
     const content = this.htmlDocument(`
-      <h1 class="h1">${this.service.name}</h1>
+      <h1 class="h1">Flow Commerce API Documentation</h1>
       <p class="service-description">${this.service.description}</p>
+      <h2 class="h2">API</h2>
+      <section class="header-block">
+        ${this.contentByType('section', 'api')}
+      </section>
       <h2 class="h2">Modules</h2>
       ${orderedModules.map((module) => this.moduleSection(this.service, module)).join('\n')}`);
 
