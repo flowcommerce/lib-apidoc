@@ -18,7 +18,7 @@ export default class UnionsGenerator extends Generator {
         <header>
           <h2 class="h2">Unions</h2>
         </header>
-        <section class="unions">
+        <section class="header-block">
           <div class="flex my2 table-row">
             <div class="union table-header col-2 mr3 right-align">Name</div>
             <div class="union-types table-header flex-auto">Types</div>

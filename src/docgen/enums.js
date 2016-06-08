@@ -33,7 +33,7 @@ export default class EnumsGenerator extends Generator {
 
   generateEnum(enumerator) {
     return `
-      <section class="enum">
+      <section class="header-block">
         <header id="type-${slug(enumerator.name)}">
           <h3 class="h3">${enumerator.name}</h3>
           ${this.enumDescription(enumerator)}

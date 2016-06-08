@@ -158,7 +158,7 @@ export default class ResourceGenerator extends Generator {
 
   generateOperation(operation) {
     return `
-    <section id="${this.operationSlug(operation)}" class="operation">
+    <section id="${this.operationSlug(operation)}" class="header-block">
       <pre class="operation-name border rounded p1">${operation.method} ${operation.path}</pre>
       ${this.operationDescription(operation)}
       ${this.getResourceOperationDoc(operation)}
@@ -195,7 +195,7 @@ export default class ResourceGenerator extends Generator {
 
     if (doc) {
       return `
-        <header class="header-block md-content">
+        <header class="md-content">
           ${marked(doc.content).trim()}
         </header>
       `;
@@ -216,7 +216,7 @@ export default class ResourceGenerator extends Generator {
   generateResource() {
     return `
       <h1 class="h1 capitalize">${slugToLabel(this.resource.plural)}</h1>
-      <section class="resource-sumamry">
+      <section class="header-block">
         ${this.getResourceDescription()}
         ${this.getResourceDoc()}
         <h2 class="h2">Operations</h2>
