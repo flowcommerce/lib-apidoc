@@ -49,7 +49,7 @@ export class IndexFileGenerator extends Generator {
       .filter((r) => getDocAttributeModule(r.attributes) === module);
     return `
       <section class="module header-block">
-        <h2>${module}</h2>
+        <h2 id="${slug(module)}">${module}</h2>
         <div class="md-content">
           ${this.contentByType('module', module)}
         </div>
@@ -73,7 +73,7 @@ export class IndexFileGenerator extends Generator {
     const content = this.htmlDocument(`
       <h1 class="h1">Flow Commerce API Documentation</h1>
       <p class="service-description">${this.service.description}</p>
-      <h2 class="h2">API</h2>
+      <h2 class="h2" id="api">API</h2>
       <section class="header-block md-content">
         ${this.contentByType('section', 'api')}
       </section>

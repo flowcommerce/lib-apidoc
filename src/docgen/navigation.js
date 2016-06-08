@@ -13,7 +13,7 @@ export default class NavigationGenerator {
   resourceGroup(resources, groupName) {
     return `
       <header>
-        <h3 class="h3">${groupName}</h3>
+        <h3 class="h3"><a href="index.html#${slug(groupName)}">${groupName}</a></h3>
       </header>
       <ul>
         ${resources.map((r) =>
@@ -63,6 +63,19 @@ export default class NavigationGenerator {
           <section class="title">API Reference</section>
           <p class="version">Version: ${this.service.version}</p>
         </header>
+
+        <header>
+          <h3 class="h3"><a href="index.html#api">Getting Started</a></h3>
+        </header>
+        <ul>
+          <li><a href="index.html#register-with-flow-commerce">Register</a></li>
+          <li><a href="index.html#obtain-your-api-key">API Key</a></li>
+          <li><a href="index.html#how-to-authenticate">Authentication</a></li>
+          <li><a href="index.html#native-libraries">Libraries</a></li>
+          <li><a href="index.html#getting-help">Getting Help</a></li>
+          <li><a href="index.html#next-steps">Next Steps</a></li>
+          </li>
+        </ul>
 
         ${this.generateResources()}
       </nav>
