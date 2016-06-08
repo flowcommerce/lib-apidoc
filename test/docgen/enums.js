@@ -107,7 +107,7 @@ describe('enums', () => {
     ];
     const generator = new EnumsGenerator({}, docParts);
     const expected = `
-      <section class="enum">
+      <section class="header-block">
         <header id="type-calendar">
           <h3 class="h3">calendar</h3>
           <p>calendar description</p>
@@ -166,7 +166,7 @@ describe('enums', () => {
         <header>
           <h2 class="h2">Enums</h2>
         </header>
-        <section class="enum">
+        <section class="header-block">
           <header id="type-calendar">
             <h3 class="h3">calendar</h3>
             <p>calendar description</p>
@@ -183,7 +183,7 @@ describe('enums', () => {
             </div>
           </section>
         </section>
-        <section class="enum">
+        <section class="header-block">
           <header id="type-colors">
             <h3 class="h3">colors</h3>
             <p>colors</p>

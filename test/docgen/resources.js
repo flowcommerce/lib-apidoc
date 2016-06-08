@@ -204,7 +204,7 @@ describe('resources', () => {
 
     const generator = new ResourceGenerator({}, resource, docParts);
     const expected = `
-      <header class="header-block">
+      <header class="md-content">
         <p>Some information about bookings</p>
       </header>`;
     const result = generator.getResourceDoc(resource, docParts);
@@ -237,13 +237,15 @@ Some documentation about \`/bookings/version\`.
       },
     ];
     const expected = `
-      <p>Some documentation about <code>/bookings/version</code>.</p>
-      <p> Here are some bullet points</p>
-      <ul>
-        <li>one</li>
-        <li>two</li>
-        <li>three</li>
-      </ul>`;
+      <div class="md-content">
+        <p>Some documentation about <code>/bookings/version</code>.</p>
+        <p> Here are some bullet points</p>
+        <ul>
+          <li>one</li>
+          <li>two</li>
+          <li>three</li>
+        </ul>
+      </div>`;
     const generator = new ResourceGenerator({}, resource, docParts);
     const result = generator.getResourceOperationDoc(operation, docParts);
     expectHtmlEqual(result, expected);
@@ -290,8 +292,8 @@ Some documentation about \`/bookings/version\`.
           <span class="field-name block">year</span>
           <span class="field-optional block">optional</span>
         </div>
-        <div class="field-type col-1 mr3">integer</div>
-        <div class="field-desc col-9">
+        <div class="field-type col-2 mr3">integer</div>
+        <div class="field-desc col-8">
           <span class="block">Minimum: 4</span>
           <span class="block">Maximum: 4</span>
         </div>
@@ -301,16 +303,16 @@ Some documentation about \`/bookings/version\`.
           <span class="field-name block">make</span>
           <span class="field-optional block">optional</span>
         </div>
-        <div class="field-type col-1 mr3">string</div>
-        <div class="field-desc col-9"> </div>
+        <div class="field-type col-2 mr3">string</div>
+        <div class="field-desc col-8"> </div>
       </div>
       <div class="flex my2 table-row">
         <div class="field col-2 mr3 right-align">
           <span class="field-name block">model</span>
           <span class="field-optional block">optional</span>
         </div>
-        <div class="field-type col-1 mr3">string</div>
-        <div class="field-desc col-9"> </div>
+        <div class="field-type col-2 mr3">string</div>
+        <div class="field-desc col-8"> </div>
       </div>
     </section>`;
     const result = generator.generateOperationBody(operation);
