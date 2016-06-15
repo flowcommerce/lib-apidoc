@@ -16,6 +16,7 @@ describe('docgen: utils', () => {
 
   it('slugToLabel', () => {
     expect(utils.slugToLabel('#$#$some    \n   text\n')).to.equal('some text');
+    expect(utils.slugToLabel('some-thing-with-lots-of-hypens')).to.equal('some thing with lots of hypens');
   });
 
   it('linkType', () => {

@@ -10,7 +10,7 @@ export function slug(string) {
 }
 
 export function slugToLabel(str) {
-  return slug(str).replace('-', ' ');
+  return slug(str).replace(/\-/g, ' ');
 }
 
 export function linkType(type) {
