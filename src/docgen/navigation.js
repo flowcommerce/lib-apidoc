@@ -57,7 +57,7 @@ export default class NavigationGenerator {
     return `
       <nav class="left-navigation">
         <header class="header">
-          <a href="index.html">
+          <a href="/">
             <img class="logo" src="/assets/0.0.1/img/flow_logo.svg" />
           </a>
           <section class="title">API Reference</section>
