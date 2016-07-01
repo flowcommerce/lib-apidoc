@@ -46,6 +46,7 @@ export default class Generator {
           <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
           <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet">
           <link href="https://npmcdn.com/basscss@8.0.1/css/basscss.min.css" rel="stylesheet">
+          <link href="railscasts.css" rel="stylesheet">
           <link href="index.css" rel="stylesheet">
         </head>
         <body>
@@ -55,7 +56,9 @@ export default class Generator {
               ${body}
             </section>
           </main>
+          <script src="highlight.pack.js"></script>
           <script src="index.js"></script>
+          <script>hljs.initHighlightingOnLoad();</script>
         </body>
       </html>`;
   }
