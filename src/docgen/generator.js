@@ -42,17 +42,21 @@ export default class Generator {
       <!DOCTYPE html>
       <html>
         <head>
+          <title>Flow Commerce API Reference</title>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width" />
           <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'>
           <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
           <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet">
           <link href="https://npmcdn.com/basscss@8.0.1/css/basscss.min.css" rel="stylesheet">
           <link href="railscasts.css" rel="stylesheet">
           <link href="index.css" rel="stylesheet">
+          <link rel="shortcut icon" type="image/png" href="/assets/0.0.1/img/favicon.ico">
         </head>
         <body>
           <main class="main flex">
             ${navigationGenerator.generate()}
-            <section class="p2 main-content flex-auto">
+            <section class="p2 main-content">
               ${body}
             </section>
           </main>
