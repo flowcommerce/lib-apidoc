@@ -1,4 +1,5 @@
 import marked from 'marked';
+import fs from 'fs';
 import Generator from './generator';
 import ModelsGenerator from './models';
 import { slug, slugToLabel } from './utils';
@@ -156,6 +157,48 @@ export default class ResourceGenerator extends Generator {
     `;
   }
 
+  generateOperationExampleRequest(operation) {
+    if (operation.method.toUpperCase() === 'GET') {
+      return `
+      <section class="example-request">
+        <h3 class="h3">Example Request</h3>
+        <p>cURL command:</p>
+        <pre><code>curl -u &lt;api-token&gt;: https://api.flow.io${operation.path}</code></pre>
+      </section>`;
+    }
+
+    // eslint-disable-next-line
+    const filepath = `/tmp/sample-json/0.0.40/${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/request.advanced.json`;
+
+    if (!fs.existsSync(filepath)) {
+      return '';
+    }
+
+    return `
+    <section class="example-request">
+      <h3 class="h3">Example Request</h3>
+      <p>cURL command:</p>
+      <pre><code>curl -X ${operation.method.toUpperCase()} -d @body.json -u &lt;api-token&gt;: https://api.flow.io${operation.path}</code></pre>
+      <p>body.json:</p>
+      <pre><code>${fs.readFileSync(filepath, { encoding: 'utf8' })}</code></pre>
+    </section>`;
+  }
+
+  generateOperationExampleResponse(operation) {
+    // eslint-disable-next-line
+    const filepath = `/tmp/sample-json/0.0.40/${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/response.advanced.json`;
+
+    if (!fs.existsSync(filepath)) {
+      return '';
+    }
+
+    return `
+    <section class="example-response">
+      <h3 class="h3">Example Response</h3>
+      <pre><code>${fs.readFileSync(filepath, { encoding: 'utf8' })}</code></pre>
+    </section>`;
+  }
+
   generateOperation(operation) {
     return `
     <section id="${this.operationSlug(operation)}" class="header-block">
@@ -184,6 +227,9 @@ export default class ResourceGenerator extends Generator {
         </div>
         ${operation.responses.map((response) => this.generateResponse(response)).join('\n')}
       </section>
+
+      ${this.generateOperationExampleRequest(operation)}
+      ${this.generateOperationExampleResponse(operation)}
     </section>
     `;
   }
