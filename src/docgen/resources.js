@@ -1,3 +1,4 @@
+import path from 'path';
 import marked from 'marked';
 import fs from 'fs';
 import Generator from './generator';
@@ -168,7 +169,7 @@ export default class ResourceGenerator extends Generator {
     }
 
     // eslint-disable-next-line
-    const filepath = `/tmp/sample-json/0.0.40/${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/request.advanced.json`;
+    const filepath = path.resolve(__dirname, `./json/${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/request.advanced.json`);
 
     if (!fs.existsSync(filepath)) {
       return '';
@@ -186,7 +187,7 @@ export default class ResourceGenerator extends Generator {
 
   generateOperationExampleResponse(operation) {
     // eslint-disable-next-line
-    const filepath = `/tmp/sample-json/0.0.40/${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/response.advanced.json`;
+    const filepath = path.resolve(__dirname, `./json/${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/response.advanced.json`);
 
     if (!fs.existsSync(filepath)) {
       return '';
