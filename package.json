@@ -5,13 +5,15 @@
   "description": "Libraries for generating code and documenation for apidoc projects",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "babel src --copy-files --out-dir lib",
+    "build": "babel src --copy-files --out-dir lib",
+    "prepublish": "npm run build",
     "postpublish": "rm -rf lib",
     "lint": "eslint src",
     "pretest": "npm run lint",
     "test": "npm run test:unit",
     "test:unit": "mocha --compilers js:babel-core/register --recursive",
-    "test:cover": "babel-node ./node_modules/.bin/isparta cover _mocha -- --recursive"
+    "test:cover": "babel-node ./node_modules/.bin/isparta cover _mocha -- --recursive",
+    "watch:build": "nodemon --exec 'npm run build' --watch src"
   },
   "files": [
     "lib"
@@ -33,7 +35,8 @@
     "isparta": "4.0.0",
     "istanbul": "0.4.3",
     "js-beautify": "1.6.2",
-    "mocha": "2.4.5"
+    "mocha": "2.4.5",
+    "nodemon": "1.9.2"
   },
   "dependencies": {
     "handlebars": "4.0.5",
