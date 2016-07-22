@@ -57,9 +57,9 @@ The methods listed below can be accessed from `docgen`.
 
   - `options: Object`: If specified, further customizes the behavior of the generator.
 
-    - `additionalDocumentation: Array`: List of DocParts created by `docparse`. Will inject additional documentation in the appropriate place in generated documentation. Defaults to an empty Array.
+    - `additionalDocs: Array`: List of DocParts created by `docparse`. Will inject additional documentation in the appropriate place in generated documentation. Defaults to an empty Array.
 
-    - `examplePath: String` - The location for request/response examples. Will inject request and responses examples in the appropriate place in generated documentation.
+    - `examplePath: String` - The absolute path to a directory containing example request/response JSON files. If specified, the generator will inject request and response examples in the appropriate place of the generated documentation.
 
 ### `docparse`
 
