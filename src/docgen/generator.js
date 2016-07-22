@@ -8,8 +8,12 @@ export default class Generator {
     this.docs = additionalDocs;
   }
 
+  cleanType(type) {
+    return type.replace('[', '').replace(']', '');
+  }
+
   isType(type) {
-    const cleanedType = type.replace('[', '').replace(']', '');
+    const cleanedType = this.cleanType(type);
     return !!(this.service.models.find((m) => m.name === cleanedType)
       || this.service.enums.find((m) => m.name === cleanedType)
       || this.service.unions.find((m) => m.name === cleanedType));
