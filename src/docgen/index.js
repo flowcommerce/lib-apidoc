@@ -26,8 +26,8 @@ export class TypesFileGenerator extends Generator {
 }
 
 export class ResourceFilesGenerator extends Generator {
-  generateResourceFile(resource) {
-    const resourceGenerator = new ResourceGenerator(this.service, resource, this.docs);
+  generateResourceFile(resource, examplePath) {
+    const resourceGenerator = new ResourceGenerator(this.service, resource, this.docs, examplePath);
 
     const content = this.htmlDocument(`
       ${resourceGenerator.generate()}`);
@@ -38,8 +38,9 @@ export class ResourceFilesGenerator extends Generator {
     };
   }
 
-  generate() {
-    return this.service.resources.map((r) => this.generateResourceFile(r));
+  generate(examplePath) {
+    return this.service.resources.map((resource) =>
+      this.generateResourceFile(resource, examplePath));
   }
 }
 
@@ -95,14 +96,15 @@ export class IndexFileGenerator extends Generator {
  * 	contents: 'file contents',
  * }
  */
-export function generate(service, additionalDocs = []) {
+export function generate(service, { additionalDocs = [], examplePath = '' }) {
   const indexGenerator = new IndexFileGenerator(service, additionalDocs);
   const typesGenerator = new TypesFileGenerator(service, additionalDocs);
   const resourceFilesGenerator = new ResourceFilesGenerator(service, additionalDocs);
+
   return [
     indexGenerator.generate(service, additionalDocs),
     typesGenerator.generate(service, additionalDocs),
-  ].concat(resourceFilesGenerator.generate(service, additionalDocs));
+  ].concat(resourceFilesGenerator.generate(examplePath));
 }
 
 export default { generate };
