@@ -260,6 +260,31 @@ export default class ResourceGenerator extends Generator {
     return '';
   }
 
+  getRelatedModels() {
+    const responseAndBodyTypes = this.resource.operations.reduce((types, operation) => {
+      let typesToAppend = [];
+      const responseTypes = operation.responses.reduce((rTypes, response) => {
+        if (response.code.integer.value < 300) {
+          return rTypes.concat(response.type);
+        }
+        return rTypes;
+      }, []);
+      typesToAppend = typesToAppend.concat(responseTypes);
+      if (operation.body && operation.body.type) {
+        typesToAppend = typesToAppend.concat(operation.body.type);
+      }
+
+      return types.concat(typesToAppend);
+    }, []);
+    const filteredTypes =
+      responseAndBodyTypes
+        .map((t) => this.cleanType(t))
+        .filter((t) => this.isType(t));
+    const uniqueTypes = [...new Set(filteredTypes)];
+
+    return `<p>${uniqueTypes.sort().map((t) => this.linkType(t)).join(', ')}</p>`;
+  }
+
   generateResource() {
     return `
       <h1 class="h1 capitalize">${slugToLabel(this.resource.plural)}</h1>
@@ -274,6 +299,8 @@ export default class ResourceGenerator extends Generator {
             </a>
           </p>
           `).join('\n')}
+        <h2>Related Models</h2>
+        ${this.getRelatedModels()}
       </section>
       <section class="resource">
         ${this.resource.operations.map((operation) =>
