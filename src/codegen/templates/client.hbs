@@ -18,6 +18,11 @@ export default class Client extends EventEmitter {
     this.auth = opts.auth;
     this.host = opts.host;
     this.headers = opts.headers;
+
+    // Convert auth if provided in constructor
+    if (this.auth) {
+      this.auth = this.possiblyConvertAuthorizationHeader(this.auth);
+    }
   }
 
   logRequest(opts) {
@@ -35,7 +40,7 @@ export default class Client extends EventEmitter {
 
   validateAuth(auth) {
     // string type === default to Basic auth.
-    if (typeof auth === 'string') {
+    if (typeof auth === 'undefined' || typeof auth === 'string') {
       return;
     }
 

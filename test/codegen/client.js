@@ -2,16 +2,16 @@ import Client from '../dist/client';
 import { expect } from 'chai';
 
 describe('client', () => {
-  context('auth', () => {
+  function toBase64(str) {
+    return new Buffer(str).toString('base64');
+  }
+
+  context('auth - core functionality', () => {
     const client = new Client({ host: 'https://localhost:7001' });
     let requests = [];
     client.on('request', (data) => {
       requests = requests.concat(data);
     });
-
-    function toBase64(str) {
-      return new Buffer(str).toString('base64');
-    }
 
     it('should not validate an auth wrong type', () => {
       expect(() =>
@@ -85,6 +85,14 @@ describe('client', () => {
       // eslint-disable-next-line no-unused-expressions
       expect(requests[0].headers.Authorization).to.exist;
       expect(requests[0].headers.Authorization).to.equal('Basic c29tZUF1dGg=');
+    });
+  });
+
+  context('auth - passed to constructor', () => {
+    const client = new Client({ auth: 'constructorAuth' });
+
+    it('should have converted auth header', () => {
+      expect(client.auth).to.equal(`Basic ${toBase64('constructorAuth')}`);
     });
   });
 });

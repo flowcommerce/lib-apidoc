@@ -37,4 +37,4 @@ node_modules
 
 lib
 coverage
-test/dist/client.js
+test/dist/*.js

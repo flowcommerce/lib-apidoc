@@ -1,7 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import client from '../src/codegen/files/client';
+import service from './codegen/fulfillment.service.json';
+import apidoc from '../src';
 
-const file = client.generate();
+const clientBasePath = path.join(__dirname, './dist');
+const client = apidoc.codegen.generate(service);
 
-fs.writeFileSync(path.join('test/dist', file.path), file.contents);
+console.log('[flow/api] writing client files...');
+client.files.forEach((file) => {
+  fs.writeFileSync(path.join(clientBasePath, file.path), file.contents);
+});
