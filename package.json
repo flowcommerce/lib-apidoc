@@ -9,10 +9,11 @@
     "prepublish": "npm run build",
     "postpublish": "rm -rf lib",
     "lint": "eslint src",
-    "pretest": "npm run lint",
+    "pretest": "npm-run-all test:build-client lint",
     "test": "npm run test:unit",
     "test:unit": "mocha --compilers js:babel-core/register --recursive",
     "test:cover": "babel-node ./node_modules/.bin/isparta cover _mocha -- --recursive",
+    "test:build-client": "babel-node test/generate-client.js",
     "watch:build": "nodemon --exec 'npm run build' --watch src"
   },
   "files": [
@@ -36,7 +37,9 @@
     "istanbul": "0.4.3",
     "js-beautify": "1.6.2",
     "mocha": "2.4.5",
-    "nodemon": "1.9.2"
+    "node-fetch": "1.5.3",
+    "nodemon": "1.9.2",
+    "npm-run-all": "2.3.0"
   },
   "dependencies": {
     "handlebars": "4.0.5",

@@ -4,11 +4,10 @@ export default class {{objectName plural}} extends Client {
   constructor(host, auth, headers) {
     super({
       serviceName: '{{serviceName}}',
+      host,
+      auth,
+      headers,
     });
-
-    this.host = host;
-    this.auth = auth;
-    this.headers = headers;
   }
 
   {{#operations}}
