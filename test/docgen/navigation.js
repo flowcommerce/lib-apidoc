@@ -144,6 +144,8 @@ describe('navigation', () => {
           <li><a href="/#next-steps">Next Steps</a></li>
           </li>
         </ul>
+        <header>
+          <h3 class="h3"><a href="/#integration-overview">Integration</a></h3> </header>
         <section class="resources">
           <header>
             <h3 class="h3"><a href="/#automotive">automotive</a></h3> </header>
