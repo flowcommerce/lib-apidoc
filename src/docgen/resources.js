@@ -6,9 +6,12 @@ import ModelsGenerator from './models';
 import { slug, slugToLabel } from './utils';
 
 export default class ResourceGenerator extends Generator {
-  constructor(service, resource, additionalDocs) {
+  constructor(service, resource, additionalDocs, examplePath) {
     super(service, additionalDocs);
+
     this.resource = resource;
+    this.examplePath = examplePath;
+    this.examplePathExists = fs.existsSync(this.examplePath);
   }
 
   operationSlug(operation) {
@@ -159,6 +162,8 @@ export default class ResourceGenerator extends Generator {
   }
 
   generateOperationExampleRequest(operation) {
+    // We have not agreed on a way to parse query strings for GET requests. Therefore, here we
+    // assume that all GET requests are straightforward and examples can be written for them.
     if (operation.method.toUpperCase() === 'GET') {
       return `
       <section class="example-request">
@@ -168,9 +173,16 @@ export default class ResourceGenerator extends Generator {
       </section>`;
     }
 
-    // eslint-disable-next-line
-    const filepath = path.resolve(__dirname, `./json/${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/request.advanced.json`);
+    // Bail if a path to an example directory does not exist
+    if (!this.examplePathExists) {
+      return '';
+    }
 
+
+    // eslint-disable-next-line
+    const filepath = path.resolve(this.examplePath, `./${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/request.advanced.json`);
+
+    // Bail if a request.json file does not exist
     if (!fs.existsSync(filepath)) {
       return '';
     }
@@ -186,8 +198,13 @@ export default class ResourceGenerator extends Generator {
   }
 
   generateOperationExampleResponse(operation) {
+    // Bail if a path to an example directory does not exist
+    if (!this.examplePathExists) {
+      return '';
+    }
+
     // eslint-disable-next-line
-    const filepath = path.resolve(__dirname, `./json/${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/response.advanced.json`);
+    const filepath = path.resolve(this.examplePath, `./${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/response.advanced.json`);
 
     if (!fs.existsSync(filepath)) {
       return '';
