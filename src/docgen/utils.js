@@ -1,3 +1,15 @@
+export function getCurlCommandFromOperation(operation) {
+  const method = operation.method.toUpperCase();
+  const path = operation.path;
+
+  switch (method) {
+  case 'GET':
+    return `curl -u &lt;api-token&gt;: https://api.flow.io${path}`;
+  default:
+    return `curl -X ${method} -d @body.json -u &lt;api-token&gt;: https://api.flow.io${path}`;
+  }
+}
+
 export function slug(string) {
   return string
     .replace(/[^a-zA-Z0-9\-_\s]/gi, '-')

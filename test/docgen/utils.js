@@ -4,6 +4,32 @@ import { expect } from 'chai';
 import * as utils from '../../src/docgen/utils';
 
 describe('docgen: utils', () => {
+  context('getCurlCommandFromOperation', () => {
+    it('should return curl command for GET operations', () => {
+      const operation = { method: 'get', path: '/resource' };
+      const command = utils.getCurlCommandFromOperation(operation);
+      expect(command).to.equal('curl -u &lt;api-token&gt;: https://api.flow.io/resource');
+    });
+
+    it('should return curl command for POST operations', () => {
+      const operation = { method: 'post', path: '/resource' };
+      const command = utils.getCurlCommandFromOperation(operation);
+      expect(command).to.equal('curl -X POST -d @body.json -u &lt;api-token&gt;: https://api.flow.io/resource');
+    });
+
+    it('should return curl command for PUT operations', () => {
+      const operation = { method: 'put', path: '/resource' };
+      const command = utils.getCurlCommandFromOperation(operation);
+      expect(command).to.equal('curl -X PUT -d @body.json -u &lt;api-token&gt;: https://api.flow.io/resource');
+    });
+
+    it('should return curl command for DELETE operations', () => {
+      const operation = { method: 'delete', path: '/resource' };
+      const command = utils.getCurlCommandFromOperation(operation);
+      expect(command).to.equal('curl -X DELETE -d @body.json -u &lt;api-token&gt;: https://api.flow.io/resource');
+    });
+  });
+
   it('slug', () => {
     expect(utils.slug('some_text')).to.equal('some-text');
     expect(utils.slug('some text')).to.equal('some-text');
