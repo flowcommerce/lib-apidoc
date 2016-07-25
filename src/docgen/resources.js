@@ -180,7 +180,7 @@ export default class ResourceGenerator extends Generator {
 
 
     // eslint-disable-next-line
-    const filepath = path.resolve(this.examplePath, `./${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/request.advanced.json`);
+    const filepath = path.resolve(this.examplePath, `./${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/simple.request.json`);
 
     // Bail if a request.json file does not exist
     if (!fs.existsSync(filepath)) {
@@ -204,7 +204,7 @@ export default class ResourceGenerator extends Generator {
     }
 
     // eslint-disable-next-line
-    const filepath = path.resolve(this.examplePath, `./${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/response.advanced.json`);
+    const filepath = path.resolve(this.examplePath, `./${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/simple.response.json`);
 
     if (!fs.existsSync(filepath)) {
       return '';
