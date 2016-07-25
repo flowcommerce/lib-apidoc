@@ -79,6 +79,10 @@ export default class NavigationGenerator {
           </li>
         </ul>
 
+        <header>
+          <h3 class="h3"><a href="/#integration-overview">Integration</a></h3>
+        </header>
+
         ${this.generateResources()}
       </nav>
     `;
