@@ -1,7 +1,7 @@
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
-import { getCurlCommandFromOperation } from './utils';
+import { getCurlCommandFromOperation, getMarkdownCodeBlock } from './utils';
 
 const DOC_PARSE_IDENT = '#doc:';
 const DOC_TYPE_RESOURCE_OPERATION = 'resource:operation';
@@ -159,10 +159,6 @@ export function getJsonExample(part) {
     throw new Error(`Expected type to be ${DOC_TYPE_JSON_EXAMPLE}, but got ${getType(part)} instead`); // eslint-disable-line max-len
   }
 
-  const MD_BEGIN_BLOCK = '```';
-  const MD_BEGIN_JSON_BLOCK = '```JSON';
-  const MD_END_BLOCK = '```';
-
   // #doc:json:example [[[experiences/post/:organization/experiences/simple]]]
   const jsonPath = part
     .replace(DOC_PARSE_IDENT, '')
@@ -197,25 +193,18 @@ export function getJsonExample(part) {
 
   if (typeof requestJson !== 'undefined') {
     requestBlock = `body.json
-${MD_BEGIN_JSON_BLOCK}
-${requestJson.trim()}
-${MD_END_BLOCK}
+${getMarkdownCodeBlock(requestJson, 'JSON')}
 `;
   }
 
   if (typeof responseJson !== 'undefined') {
     responseBlock = `API Respone
-${MD_BEGIN_JSON_BLOCK}
-${responseJson.trim()}
-${MD_END_BLOCK}
+${getMarkdownCodeBlock(responseJson, 'JSON')}
 `;
   }
 
   return `
-${MD_BEGIN_BLOCK}Bash
-  ${curl}
-${MD_END_BLOCK}
-
+${getMarkdownCodeBlock(curl, 'Bash')}
 ${requestBlock}
 ${responseBlock}`;
 }
