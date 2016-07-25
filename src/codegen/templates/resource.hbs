@@ -1,14 +1,13 @@
 import Client from '{{clientImportPath}}/client';
 
 export default class {{objectName plural}} extends Client {
-  constructor(host, auth, headers) {
-    super({
-      serviceName: '{{serviceName}}',
-    });
-
-    this.host = host;
-    this.auth = auth;
-    this.headers = headers;
+  constructor(opts) {
+    let options = opts;
+    if (typeof opts === 'string') {
+      options = { host: opts }; // convert host string to options object
+    }
+    options.serviceName = '{{serviceName}}';
+    super(options);
   }
 
   {{#operations}}

@@ -3,9 +3,13 @@ import {{objectName plural}} from './{{slug plural}}';
 {{/resources}}
 
 export default class {{className name}}Client {
-  constructor(host, auth, headers) {
+  constructor(opts) {
+    let options = opts;
+    if (typeof opts === 'string') {
+      options = { host: opts }; // convert host string to options object
+    }
     {{#resources}}
-    this.{{plural}} = new {{objectName plural}}(host, auth, headers);
+    this.{{plural}} = new {{objectName plural}}(options);
     {{/resources}}
   }
 }
