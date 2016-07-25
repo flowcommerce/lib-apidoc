@@ -3,7 +3,7 @@ import marked from 'marked';
 import fs from 'fs';
 import Generator from './generator';
 import ModelsGenerator from './models';
-import { slug, slugToLabel } from './utils';
+import { slug, slugToLabel, getCurlCommandFromOperation } from './utils';
 
 export default class ResourceGenerator extends Generator {
   constructor(service, resource, additionalDocs, examplePath) {
@@ -169,7 +169,7 @@ export default class ResourceGenerator extends Generator {
       <section class="example-request">
         <h3 class="h3">Example Request</h3>
         <p>cURL command:</p>
-        <pre><code>curl -u &lt;api-token&gt;: https://api.flow.io${operation.path}</code></pre>
+        <pre><code>${getCurlCommandFromOperation(operation)}</code></pre>
       </section>`;
     }
 
@@ -191,7 +191,7 @@ export default class ResourceGenerator extends Generator {
     <section class="example-request">
       <h3 class="h3">Example Request</h3>
       <p>cURL command:</p>
-      <pre><code>curl -X ${operation.method.toUpperCase()} -d @body.json -u &lt;api-token&gt;: https://api.flow.io${operation.path}</code></pre>
+      <pre><code>${getCurlCommandFromOperation(operation)}</code></pre>
       <p>body.json:</p>
       <pre><code>${fs.readFileSync(filepath, { encoding: 'utf8' })}</code></pre>
     </section>`;
