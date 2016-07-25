@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import {
   getType,
   isDocParse,
+  getJsonExample,
   getResource,
   getResourceOperation,
   getModel,
@@ -152,7 +153,7 @@ Some documentation about \`/bookings/version\`.
         type: 'resource:operation',
       },
       {
-        content: '\nSome documentation about `/bookings`.\n\n',
+        content: '\nSome documentation about `/bookings`.\n\n\n',
         method: 'GET',
         path: '/bookings',
         type: 'resource:operation',
@@ -163,7 +164,7 @@ Some documentation about \`/bookings/version\`.
         type: 'resource',
       },
       {
-        content: '\nSome documentation about addresses.\n\n',
+        content: '\nSome documentation about addresses.\n\n\n',
         name: 'address',
         type: 'model',
       },
@@ -174,5 +175,72 @@ Some documentation about \`/bookings/version\`.
       done();
     })
     .catch((err) => done(err));
+  });
+
+  context('example json', () => {
+    it('should parse a json example', () => {
+      const doc = '#doc:json:example items/post/:organization/catalog/items/simple';
+      const MD_BEGIN_BLOCK = '```';
+      const MD_BEGIN_JSON_BLOCK = '```JSON';
+      const MD_END_BLOCK = '```';
+      // '```\n    curl -X POST -d @body.json -u <api-token>: https://api.flow.io/:organization/catalog/items\n  ```'
+      expect(getJsonExample(doc).trim()).to.deep.equal(`
+${MD_BEGIN_BLOCK}
+  curl -X POST -d @body.json -u <api-token>: https://api.flow.io/:organization/catalog/items
+${MD_END_BLOCK}
+
+body.json
+${MD_BEGIN_JSON_BLOCK}
+{
+  "number": "sku-1",
+  "name": "3-Tier Ceramic Hanging Planter",
+  "locale": "en_US",
+  "price": 150.00,
+  "currency": "USD"
+}
+${MD_END_BLOCK}
+
+API Respone
+${MD_BEGIN_JSON_BLOCK}
+{
+  "id": "cit-20160725-1984376339",
+  "number": "sku-1",
+  "locale": "en_US",
+  "name": "3-Tier Ceramic Hanging Planter",
+  "price": {
+    "amount": 150,
+    "currency": "USD",
+    "label": "USD 150.0"
+  },
+  "categories": [],
+  "attributes": [],
+  "dimensions": [],
+  "images": []
+}
+${MD_END_BLOCK}`.trim());
+    });
+
+    it('should parse a json example with only a response', () => {
+      const doc = '#doc:json:example items/delete/:organization/catalog/items/:number/simple';
+      const MD_BEGIN_BLOCK = '```';
+      const MD_BEGIN_JSON_BLOCK = '```JSON';
+      const MD_END_BLOCK = '```';
+
+      expect(getJsonExample(doc).trim()).to.deep.equal(`
+${MD_BEGIN_BLOCK}
+  curl -X DELETE -d @body.json -u <api-token>: https://api.flow.io/:organization/catalog/items/:number
+${MD_END_BLOCK}
+
+
+API Respone
+${MD_BEGIN_JSON_BLOCK}
+
+${MD_END_BLOCK}`.trim());
+    });
+
+    it('should throw an error with no request or response present', () => {
+      const doc = '#doc:json:example experiences/post/:organization/experiences/simple';
+      expect(() => getJsonExample(doc)).to.throw(/Could not find request or response json/);
+    });
   });
 });

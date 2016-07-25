@@ -1,6 +1,7 @@
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
+import { getCurlCommandFromOperation } from './utils';
 
 const DOC_PARSE_IDENT = '#doc:';
 const DOC_TYPE_RESOURCE_OPERATION = 'resource:operation';
@@ -9,9 +10,14 @@ const DOC_TYPE_MODEL = 'model';
 const DOC_TYPE_ENUM = 'enum';
 const DOC_TYPE_SECTION = 'section';
 const DOC_TYPE_MODULE = 'module';
+const DOC_TYPE_JSON_EXAMPLE = 'json:example';
 
 export function isDocParse(str) {
   return str.startsWith(DOC_PARSE_IDENT);
+}
+
+export function isJsonDocParse(str) {
+  return str.startsWith(`${DOC_PARSE_IDENT}json`);
 }
 
 export function getType(str) {
@@ -129,6 +135,69 @@ export function getModule(part) {
   };
 }
 
+export function maybeGetFileContents(filePath) {
+  try {
+    return fs.readFileSync(filePath).toString('utf-8');
+  } catch (e) {
+    return void 0;
+  }
+}
+
+export function getJsonExample(part) {
+  if (getType(part) !== DOC_TYPE_JSON_EXAMPLE) {
+    throw new Error(`Expected type to be ${DOC_TYPE_JSON_EXAMPLE}, but got ${getType(part)} instead`); // eslint-disable-line max-len
+  }
+
+  const MD_BEGIN_BLOCK = '```';
+  const MD_BEGIN_JSON_BLOCK = '```JSON';
+  const MD_END_BLOCK = '```';
+  const jsonPath = part
+    .replace(DOC_PARSE_IDENT, '')
+    .replace(DOC_TYPE_JSON_EXAMPLE, '')
+    .trim();
+  const method = jsonPath.split('/')[1];
+  const operationPath = jsonPath.split('/').slice(2, -1).join('/');
+  const curl = getCurlCommandFromOperation({
+    method,
+    path: `/${operationPath}`,
+  }).replace('&lt;', '<').replace('&gt;', '>');
+  const jsonBasePath = path.resolve(process.cwd(), 'examples');
+  const requestJson = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.request.json`);
+  const responseJson = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.response.json`);
+
+  if (typeof requestJson === 'undefined' && typeof responseJson === 'undefined') {
+    // eslint-disable-next-line max-len
+    throw new Error(`Could not find request or response json at ${jsonBasePath}/${jsonPath}. Expected at least one in order to display example to user.`);
+  }
+
+  let requestBlock = '';
+  let responseBlock = '';
+
+  if (typeof requestJson !== 'undefined') {
+    requestBlock = `body.json
+${MD_BEGIN_JSON_BLOCK}
+${requestJson.trim()}
+${MD_END_BLOCK}
+`;
+  }
+
+  if (typeof responseJson !== 'undefined') {
+    responseBlock = `API Respone
+${MD_BEGIN_JSON_BLOCK}
+${responseJson.trim()}
+${MD_END_BLOCK}
+`;
+  }
+
+  return `
+${MD_BEGIN_BLOCK}Bash
+  ${curl}
+${MD_END_BLOCK}
+
+${requestBlock}
+${responseBlock}`;
+}
+
 export function getDocPart(part) {
   const type = getType(part);
   switch (type) {
@@ -178,6 +247,24 @@ export function parseFile(fileContents, opts) {
   return docParts;
 }
 
+export function replaceJsonReferences(fileContents, opts) {
+  const lines = fileContents.split('\n');
+  let replacedContent = '';
+  lines.forEach((line, lineNumber) => {
+    try {
+      if (isJsonDocParse(line)) {
+        replacedContent += `${getJsonExample(line)}\n`;
+      } else {
+        replacedContent += `${line}\n`;
+      }
+    } catch (err) {
+      throw new Error(`Error parsing file[${opts.fileName}] on line ${lineNumber + 1}:\n\n ${line}\n\n ${err.stack}`); // eslint-disable-line max-len
+    }
+  });
+
+  return replacedContent;
+}
+
 export function parse(globStr) {
   return new Promise((resolve, reject) => {
     glob(globStr, (err, files) => {
@@ -189,7 +276,8 @@ export function parse(globStr) {
       const docsPerFile = files.map((f) => {
         const filePath = path.join(process.cwd(), f);
         const fileContents = fs.readFileSync(filePath).toString('utf-8');
-        return parseFile(fileContents, { fileName: filePath });
+        const fileContentsReplaced = replaceJsonReferences(fileContents, { fileName: filePath });
+        return parseFile(fileContentsReplaced, { fileName: filePath });
       });
 
       // TODO: Check result for duplicates, throw error/warning if so.
