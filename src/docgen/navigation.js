@@ -82,6 +82,14 @@ export default class NavigationGenerator {
         <header>
           <h3 class="h3"><a href="/#integration-overview">Integration</a></h3>
         </header>
+        <ul>
+          <li><a href="/#product-catalog">Product Catalog</a></li>
+          <li><a href="/#experiences">Experiences</a></li>
+          <li><a href="/#landed-cost-integration">Landed Cost Integration</a></li>
+          <li><a href="/#orders">Orders</a></li>
+          <li><a href="/#payment-integration">Payment Integration</a></li>
+          <li><a href="/#bookings">Bookings</a></li>
+        </ul>
 
         ${this.generateResources()}
       </nav>
