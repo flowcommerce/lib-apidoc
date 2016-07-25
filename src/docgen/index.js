@@ -78,6 +78,9 @@ export class IndexFileGenerator extends Generator {
       <section class="header-block md-content">
         ${this.contentByType('section', 'api')}
       </section>
+      <section class="header-block md-content">
+        ${this.contentByType('section', 'integration')}
+      </section>
       <h2 class="h2">Modules</h2>
       ${orderedModules.map((module) => this.moduleSection(this.service, module)).join('\n')}`);
 
