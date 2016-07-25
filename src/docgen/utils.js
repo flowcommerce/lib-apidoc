@@ -1,3 +1,17 @@
+export function getMarkdownCodeBlock(content, lang = '') {
+  if (typeof content === 'undefined') {
+    return '';
+  }
+
+  const MD_BEGIN_BLOCK = '```';
+  const MD_END_BLOCK = '```';
+
+  return `${MD_BEGIN_BLOCK}${lang}
+${content.trim()}
+${MD_END_BLOCK}
+`;
+}
+
 export function getCurlCommandFromOperation(operation) {
   const method = operation.method.toUpperCase();
   const path = operation.path;

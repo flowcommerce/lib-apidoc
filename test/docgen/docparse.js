@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import {
   getType,
   isDocParse,
+  getJsonExample,
   getResource,
   getResourceOperation,
   getModel,
@@ -11,6 +12,7 @@ import {
   getDocPart,
   parseFile,
   parse } from '../../src/docgen/docparse';
+import { getMarkdownCodeBlock } from '../../src/docgen/utils';
 
 describe('docparse', () => {
   it('should detect doc parse lines', () => {
@@ -152,7 +154,7 @@ Some documentation about \`/bookings/version\`.
         type: 'resource:operation',
       },
       {
-        content: '\nSome documentation about `/bookings`.\n\n',
+        content: '\nSome documentation about `/bookings`.\n\n\n',
         method: 'GET',
         path: '/bookings',
         type: 'resource:operation',
@@ -163,7 +165,7 @@ Some documentation about \`/bookings/version\`.
         type: 'resource',
       },
       {
-        content: '\nSome documentation about addresses.\n\n',
+        content: '\nSome documentation about addresses.\n\n\n',
         name: 'address',
         type: 'model',
       },
@@ -174,5 +176,68 @@ Some documentation about \`/bookings/version\`.
       done();
     })
     .catch((err) => done(err));
+  });
+
+  context('example json', () => {
+    it('should parse a json example', () => {
+      const doc = '#doc:json:example items/post/:organization/catalog/items/simple';
+      const curlBlock = getMarkdownCodeBlock(
+        'curl -X POST -d @body.json -u <api-token>: https://api.flow.io/:organization/catalog/items',
+        'Bash'
+      );
+      const bodyBlock = getMarkdownCodeBlock(`
+{
+  "number": "sku-1",
+  "name": "3-Tier Ceramic Hanging Planter",
+  "locale": "en_US",
+  "price": 150.00,
+  "currency": "USD"
+}`, 'JSON');
+      const responseBlock = getMarkdownCodeBlock(`
+{
+  "id": "cit-20160725-1984376339",
+  "number": "sku-1",
+  "locale": "en_US",
+  "name": "3-Tier Ceramic Hanging Planter",
+  "price": {
+    "amount": 150,
+    "currency": "USD",
+    "label": "USD 150.0"
+  },
+  "categories": [],
+  "attributes": [],
+  "dimensions": [],
+  "images": []
+}
+      `, 'JSON');
+
+      expect(getJsonExample(doc).trim()).to.deep.equal(`
+${curlBlock}
+body.json
+${bodyBlock}
+
+API Respone
+${responseBlock}`.trim());
+    });
+
+    it('should parse a json example with only a response', () => {
+      const doc = '#doc:json:example items/delete/:organization/catalog/items/:number/simple';
+      const curlBlock = getMarkdownCodeBlock(
+        'curl -X DELETE -d @body.json -u <api-token>: https://api.flow.io/:organization/catalog/items/:number',
+        'Bash'
+      );
+      const responseBlock = getMarkdownCodeBlock('\n', 'JSON');
+
+      expect(getJsonExample(doc).trim()).to.deep.equal(`
+${curlBlock}
+
+API Respone
+${responseBlock}`.trim());
+    });
+
+    it('should throw an error with no request or response present', () => {
+      const doc = '#doc:json:example experiences/post/:organization/experiences/simple';
+      expect(() => getJsonExample(doc)).to.throw(/Could not find request or response json/);
+    });
   });
 });

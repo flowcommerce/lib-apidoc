@@ -1,6 +1,7 @@
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
+import { getCurlCommandFromOperation, getMarkdownCodeBlock } from './utils';
 
 const DOC_PARSE_IDENT = '#doc:';
 const DOC_TYPE_RESOURCE_OPERATION = 'resource:operation';
@@ -9,9 +10,14 @@ const DOC_TYPE_MODEL = 'model';
 const DOC_TYPE_ENUM = 'enum';
 const DOC_TYPE_SECTION = 'section';
 const DOC_TYPE_MODULE = 'module';
+const DOC_TYPE_JSON_EXAMPLE = 'json:example';
 
 export function isDocParse(str) {
   return str.startsWith(DOC_PARSE_IDENT);
+}
+
+export function isJsonDocParse(str) {
+  return str.startsWith(`${DOC_PARSE_IDENT}json`);
 }
 
 export function getType(str) {
@@ -129,6 +135,80 @@ export function getModule(part) {
   };
 }
 
+/**
+ * Eat the expection if a file is not found and return undefined instead.
+ */
+export function maybeGetFileContents(filePath) {
+  try {
+    return fs.readFileSync(filePath).toString('utf-8');
+  } catch (e) {
+    return void 0;
+  }
+}
+
+/**
+ * Convert a `#doc:json:example` doc part into example request and response json.
+ *
+ * This is meant to replace content in an existing markdown file, not return
+ * meta data about the doc type to be referenced later.
+ *
+ * @param  {string} part a `#doc:json:example <json_example_path>` doctype
+ */
+export function getJsonExample(part) {
+  if (getType(part) !== DOC_TYPE_JSON_EXAMPLE) {
+    throw new Error(`Expected type to be ${DOC_TYPE_JSON_EXAMPLE}, but got ${getType(part)} instead`); // eslint-disable-line max-len
+  }
+
+  // #doc:json:example [[[experiences/post/:organization/experiences/simple]]]
+  const jsonPath = part
+    .replace(DOC_PARSE_IDENT, '')
+    .replace(DOC_TYPE_JSON_EXAMPLE, '')
+    .trim();
+
+  // experiences/[[[post]]]/:organization/experiences/simple
+  const method = jsonPath.split('/')[1];
+
+  // experiences/post/[[[:organization/experiences]]]/simple
+  const operationPath = jsonPath.split('/').slice(2, -1).join('/');
+
+  const curl = getCurlCommandFromOperation({
+    method,
+    path: `/${operationPath}`,
+  })
+  // getCurlCommandFromOperation return html entities, replace them with the
+  // actual characters
+  .replace('&lt;', '<').replace('&gt;', '>');
+
+  const jsonBasePath = path.resolve(process.cwd(), 'examples');
+  const requestJson = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.request.json`);
+  const responseJson = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.response.json`);
+
+  if (typeof requestJson === 'undefined' && typeof responseJson === 'undefined') {
+    // eslint-disable-next-line max-len
+    throw new Error(`Could not find request or response json at ${jsonBasePath}/${jsonPath}. Expected at least one in order to display example to user.`);
+  }
+
+  let requestBlock = '';
+  let responseBlock = '';
+
+  if (typeof requestJson !== 'undefined') {
+    requestBlock = `body.json
+${getMarkdownCodeBlock(requestJson, 'JSON')}
+`;
+  }
+
+  if (typeof responseJson !== 'undefined') {
+    responseBlock = `API Respone
+${getMarkdownCodeBlock(responseJson, 'JSON')}
+`;
+  }
+
+  return `
+${getMarkdownCodeBlock(curl, 'Bash')}
+${requestBlock}
+${responseBlock}`;
+}
+
 export function getDocPart(part) {
   const type = getType(part);
   switch (type) {
@@ -178,6 +258,33 @@ export function parseFile(fileContents, opts) {
   return docParts;
 }
 
+/**
+ * Given a markdown file, locate the `#doc:json:example` references and replace
+ * them with new markdown with example curl, request and response code blocks.
+ *
+ * @param  {string} fileContents the contents of a markdown file
+ * @param  {Object} opts
+ * @param  {Object} opts.filePath   The filesystem location of `fileContents`
+ * @return {[type]}                 The replaced content
+ */
+export function replaceJsonReferences(fileContents, opts) {
+  const lines = fileContents.split('\n');
+  let replacedContent = '';
+  lines.forEach((line, lineNumber) => {
+    try {
+      if (isJsonDocParse(line)) {
+        replacedContent += `${getJsonExample(line)}\n`;
+      } else {
+        replacedContent += `${line}\n`;
+      }
+    } catch (err) {
+      throw new Error(`Error parsing file[${opts.fileName}] on line ${lineNumber + 1}:\n\n ${line}\n\n ${err.stack}`); // eslint-disable-line max-len
+    }
+  });
+
+  return replacedContent;
+}
+
 export function parse(globStr) {
   return new Promise((resolve, reject) => {
     glob(globStr, (err, files) => {
@@ -189,7 +296,8 @@ export function parse(globStr) {
       const docsPerFile = files.map((f) => {
         const filePath = path.join(process.cwd(), f);
         const fileContents = fs.readFileSync(filePath).toString('utf-8');
-        return parseFile(fileContents, { fileName: filePath });
+        const fileContentsReplaced = replaceJsonReferences(fileContents, { fileName: filePath });
+        return parseFile(fileContentsReplaced, { fileName: filePath });
       });
 
       // TODO: Check result for duplicates, throw error/warning if so.
