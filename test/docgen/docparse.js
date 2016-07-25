@@ -185,7 +185,7 @@ Some documentation about \`/bookings/version\`.
       const MD_END_BLOCK = '```';
       // '```\n    curl -X POST -d @body.json -u <api-token>: https://api.flow.io/:organization/catalog/items\n  ```'
       expect(getJsonExample(doc).trim()).to.deep.equal(`
-${MD_BEGIN_BLOCK}
+${MD_BEGIN_BLOCK}Bash
   curl -X POST -d @body.json -u <api-token>: https://api.flow.io/:organization/catalog/items
 ${MD_END_BLOCK}
 
@@ -227,7 +227,7 @@ ${MD_END_BLOCK}`.trim());
       const MD_END_BLOCK = '```';
 
       expect(getJsonExample(doc).trim()).to.deep.equal(`
-${MD_BEGIN_BLOCK}
+${MD_BEGIN_BLOCK}Bash
   curl -X DELETE -d @body.json -u <api-token>: https://api.flow.io/:organization/catalog/items/:number
 ${MD_END_BLOCK}
 
