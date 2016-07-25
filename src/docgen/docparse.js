@@ -135,6 +135,9 @@ export function getModule(part) {
   };
 }
 
+/**
+ * Eat the expection if a file is not found and return undefined instead.
+ */
 export function maybeGetFileContents(filePath) {
   try {
     return fs.readFileSync(filePath).toString('utf-8');
@@ -143,6 +146,14 @@ export function maybeGetFileContents(filePath) {
   }
 }
 
+/**
+ * Convert a `#doc:json:example` doc part into example request and response json.
+ *
+ * This is meant to replace content in an existing markdown file, not return
+ * meta data about the doc type to be referenced later.
+ *
+ * @param  {string} part a `#doc:json:example <json_example_path>` doctype
+ */
 export function getJsonExample(part) {
   if (getType(part) !== DOC_TYPE_JSON_EXAMPLE) {
     throw new Error(`Expected type to be ${DOC_TYPE_JSON_EXAMPLE}, but got ${getType(part)} instead`); // eslint-disable-line max-len
@@ -151,16 +162,27 @@ export function getJsonExample(part) {
   const MD_BEGIN_BLOCK = '```';
   const MD_BEGIN_JSON_BLOCK = '```JSON';
   const MD_END_BLOCK = '```';
+
+  // #doc:json:example [[[experiences/post/:organization/experiences/simple]]]
   const jsonPath = part
     .replace(DOC_PARSE_IDENT, '')
     .replace(DOC_TYPE_JSON_EXAMPLE, '')
     .trim();
+
+  // experiences/[[[post]]]/:organization/experiences/simple
   const method = jsonPath.split('/')[1];
+
+  // experiences/post/[[[:organization/experiences]]]/simple
   const operationPath = jsonPath.split('/').slice(2, -1).join('/');
+
   const curl = getCurlCommandFromOperation({
     method,
     path: `/${operationPath}`,
-  }).replace('&lt;', '<').replace('&gt;', '>');
+  })
+  // getCurlCommandFromOperation return html entities, replace them with the
+  // actual characters
+  .replace('&lt;', '<').replace('&gt;', '>');
+
   const jsonBasePath = path.resolve(process.cwd(), 'examples');
   const requestJson = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.request.json`);
   const responseJson = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.response.json`);
@@ -247,6 +269,15 @@ export function parseFile(fileContents, opts) {
   return docParts;
 }
 
+/**
+ * Given a markdown file, locate the `#doc:json:example` references and replace
+ * them with new markdown with example curl, request and response code blocks.
+ *
+ * @param  {string} fileContents the contents of a markdown file
+ * @param  {Object} opts
+ * @param  {Object} opts.filePath   The filesystem location of `fileContents`
+ * @return {[type]}                 The replaced content
+ */
 export function replaceJsonReferences(fileContents, opts) {
   const lines = fileContents.split('\n');
   let replacedContent = '';
