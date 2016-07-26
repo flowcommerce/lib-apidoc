@@ -216,7 +216,7 @@ ${curlBlock}
 body.json
 ${bodyBlock}
 
-API Respone
+API Response
 ${responseBlock}`.trim());
     });
 
@@ -231,7 +231,7 @@ ${responseBlock}`.trim());
       expect(getJsonExample(doc).trim()).to.deep.equal(`
 ${curlBlock}
 
-API Respone
+API Response
 ${responseBlock}`.trim());
     });
 
