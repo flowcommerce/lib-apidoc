@@ -1,7 +1,7 @@
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
-import { getCurlCommandFromOperation, getMarkdownCodeBlock } from './utils';
+import { getCurlCommandFromOperation, getMarkdownCodeBlock, maybeGetFileContents } from './utils';
 
 const DOC_PARSE_IDENT = '#doc:';
 const DOC_TYPE_RESOURCE_OPERATION = 'resource:operation';
@@ -136,17 +136,6 @@ export function getModule(part) {
 }
 
 /**
- * Eat the expection if a file is not found and return undefined instead.
- */
-export function maybeGetFileContents(filePath) {
-  try {
-    return fs.readFileSync(filePath).toString('utf-8');
-  } catch (e) {
-    return void 0;
-  }
-}
-
-/**
  * Convert a `#doc:json:example` doc part into example request and response json.
  *
  * This is meant to replace content in an existing markdown file, not return
@@ -171,17 +160,17 @@ export function getJsonExample(part) {
   // experiences/post/[[[:organization/experiences]]]/simple
   const operationPath = jsonPath.split('/').slice(2, -1).join('/');
 
+  const jsonBasePath = path.resolve(process.cwd(), 'examples');
+  const requestJson = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.request.json`);
+  const requestJsonQuery = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.request.query`);
+  const responseJson = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.response.json`);
   const curl = getCurlCommandFromOperation({
     method,
     path: `/${operationPath}`,
-  })
+  }, requestJsonQuery)
   // getCurlCommandFromOperation return html entities, replace them with the
   // actual characters
   .replace('&lt;', '<').replace('&gt;', '>');
-
-  const jsonBasePath = path.resolve(process.cwd(), 'examples');
-  const requestJson = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.request.json`);
-  const responseJson = maybeGetFileContents(`${jsonBasePath}/${jsonPath}.response.json`);
 
   if (typeof requestJson === 'undefined' && typeof responseJson === 'undefined') {
     // eslint-disable-next-line max-len

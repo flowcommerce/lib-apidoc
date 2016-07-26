@@ -1,9 +1,10 @@
+import isUndefined from 'lodash/isUndefined';
 import path from 'path';
 import marked from 'marked';
 import fs from 'fs';
 import Generator from './generator';
 import ModelsGenerator from './models';
-import { slug, slugToLabel, getCurlCommandFromOperation } from './utils';
+import { slug, slugToLabel, getCurlCommandFromOperation, maybeGetFileContents } from './utils';
 
 export default class ResourceGenerator extends Generator {
   constructor(service, resource, additionalDocs, examplePath) {
@@ -162,38 +163,31 @@ export default class ResourceGenerator extends Generator {
   }
 
   generateOperationExampleRequest(operation) {
-    // We have not agreed on a way to parse query strings for GET requests. Therefore, here we
-    // assume that all GET requests are straightforward and examples can be written for them.
-    if (operation.method.toUpperCase() === 'GET') {
-      return `
-      <section class="example-request">
-        <h3 class="h3">Example Request</h3>
-        <p>cURL command:</p>
-        <pre><code>${getCurlCommandFromOperation(operation)}</code></pre>
-      </section>`;
-    }
+    // eslint-disable-next-line max-len
+    const fileBasePath = path.resolve(this.examplePath, `./${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}`);
+    const requestJson = maybeGetFileContents(`${fileBasePath}/simple.request.json`);
+    const queryString = maybeGetFileContents(`${fileBasePath}/simple.request.query`);
 
     // Bail if a path to an example directory does not exist
     if (!this.examplePathExists) {
       return '';
     }
 
-
-    // eslint-disable-next-line
-    const filepath = path.resolve(this.examplePath, `./${this.resource.plural}/${operation.method.toLowerCase()}/${operation.path}/simple.request.json`);
-
-    // Bail if a request.json file does not exist
-    if (!fs.existsSync(filepath)) {
+    // Bail if there is no request information
+    if (isUndefined(requestJson) && isUndefined(queryString)) {
       return '';
     }
+
+    const requestBody = isUndefined(requestJson) ? '' : `
+    <p>body.json:</p>
+    <pre><code>${requestJson}</code></pre>`.trim();
 
     return `
     <section class="example-request">
       <h3 class="h3">Example Request</h3>
       <p>cURL command:</p>
-      <pre><code>${getCurlCommandFromOperation(operation)}</code></pre>
-      <p>body.json:</p>
-      <pre><code>${fs.readFileSync(filepath, { encoding: 'utf8' })}</code></pre>
+      <pre><code>${getCurlCommandFromOperation(operation, queryString)}</code></pre>
+      ${requestBody}
     </section>`;
   }
 

@@ -1,3 +1,16 @@
+import fs from 'fs';
+
+/**
+ * Eat the expection if a file is not found and return undefined instead.
+ */
+export function maybeGetFileContents(filePath) {
+  try {
+    return fs.readFileSync(filePath).toString('utf-8');
+  } catch (e) {
+    return void 0;
+  }
+}
+
 export function getMarkdownCodeBlock(content, lang = '') {
   if (typeof content === 'undefined') {
     return '';
@@ -12,15 +25,17 @@ ${MD_END_BLOCK}
 `;
 }
 
-export function getCurlCommandFromOperation(operation) {
+export function getCurlCommandFromOperation(operation, queryParams) {
   const method = operation.method.toUpperCase();
   const path = operation.path;
+  const search = queryParams ? `?${queryParams}` : '';
+  const uri = queryParams ? `'https://api.flow.io${path}${search}'` : `https://api.flow.io${path}${search}`;
 
   switch (method) {
   case 'GET':
-    return `curl -u &lt;api-token&gt;: https://api.flow.io${path}`;
+    return `curl -u &lt;api-token&gt;: ${uri}`;
   default:
-    return `curl -X ${method} -d @body.json -u &lt;api-token&gt;: https://api.flow.io${path}`;
+    return `curl -X ${method} -d @body.json -u &lt;api-token&gt;: ${uri}`;
   }
 }
 
