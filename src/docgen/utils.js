@@ -25,11 +25,11 @@ ${MD_END_BLOCK}
 `;
 }
 
-export function getCurlCommandFromOperation(operation, queryParams) {
+export function getCurlCommandFromOperation(operation, queryString) {
   const method = operation.method.toUpperCase();
   const path = operation.path;
-  const search = queryParams ? `?${queryParams}` : '';
-  const uri = queryParams ? `'https://api.flow.io${path}${search}'` : `https://api.flow.io${path}${search}`;
+  const search = queryString ? `?${queryString}` : '';
+  const uri = queryString ? `'https://api.flow.io${path}${search}'` : `https://api.flow.io${path}${search}`;
 
   switch (method) {
   case 'GET':
