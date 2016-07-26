@@ -198,7 +198,7 @@ ${getMarkdownCodeBlock(requestJson, 'JSON')}
   }
 
   if (typeof responseJson !== 'undefined') {
-    responseBlock = `API Respone
+    responseBlock = `API Response
 ${getMarkdownCodeBlock(responseJson, 'JSON')}
 `;
   }
