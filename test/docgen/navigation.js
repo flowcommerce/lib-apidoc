@@ -150,6 +150,7 @@ describe('navigation', () => {
           <li><a href="/#product-catalog">Product Catalog</a></li>
           <li><a href="/#experiences">Experiences</a></li>
           <li><a href="/#landed-cost-integration">Landed Cost Integration</a></li>
+          <li><a href="/#logistics-setup">Logistics Setup</a></li>
           <li><a href="/#orders">Orders</a></li>
           <li><a href="/#payment-integration">Payment Integration</a></li>
           <li><a href="/#bookings">Bookings</a></li>
