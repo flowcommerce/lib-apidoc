@@ -14,7 +14,7 @@ export default class EnumsGenerator extends Generator {
   generateValue(value) {
     return `
           <div class="flex my2 table-row">
-            <div class="value-name col-2 mr3 right-align">${value.name}</div>
+            <div class="value-name col-2 mr3 right-align">${this.linkType(value.name)}</div>
             <div class="value-desc flex-auto">${value.description || ''}</div>
           </div>`;
   }

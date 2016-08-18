@@ -14,9 +14,9 @@ export default class Generator {
 
   isType(type) {
     const cleanedType = this.cleanType(type);
-    return !!(this.service.models.find((m) => m.name === cleanedType)
-      || this.service.enums.find((m) => m.name === cleanedType)
-      || this.service.unions.find((m) => m.name === cleanedType));
+    return !!(this.service.models && this.service.models.find((m) => m.name === cleanedType)
+      || this.service.enums && this.service.enums.find((m) => m.name === cleanedType)
+      || this.service.unions && this.service.unions.find((m) => m.name === cleanedType));
   }
 
   linkType(type) {
