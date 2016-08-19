@@ -14,7 +14,8 @@
     "test:unit": "mocha --compilers js:babel-core/register --recursive",
     "test:cover": "babel-node ./node_modules/.bin/isparta cover _mocha -- --recursive",
     "test:build-client": "babel-node test/generate-client.js",
-    "watch:build": "nodemon --exec 'npm run build' --watch src"
+    "watch:build": "nodemon --exec 'npm run build' --watch src",
+    "watch:codegen": "nodemon --exec 'npm run test' --watch test/codegen"
   },
   "files": [
     "lib"

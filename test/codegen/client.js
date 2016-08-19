@@ -95,4 +95,34 @@ describe('client', () => {
       expect(client.auth).to.equal(`Basic ${toBase64('constructorAuth')}`);
     });
   });
+
+  context('headers - withHeaders', () => {
+    const client = new Client();
+
+    it('should not have any headers', () => {
+      expect(client.headers).to.deep.equal({});
+    });
+
+    it('should add to headers', () => {
+      const newHeader = { new: 'header' };
+      const updatedClient = client.withHeaders(newHeader);
+      expect(updatedClient.headers).to.deep.equal(newHeader);
+    });
+  });
+
+  context('headers - from constructor', () => {
+    const original = { original: 'headers' };
+    const client = new Client({ headers: original });
+
+    it('should have original headers', () => {
+      expect(client.headers).to.deep.equal(original);
+    });
+
+    it('should add to headers', () => {
+      const newHeader = { new: 'header' };
+      const updatedClient = client.withHeaders(newHeader);
+      const expected = Object.assign({}, original, newHeader);
+      expect(updatedClient.headers).to.deep.equal(expected);
+    });
+  });
 });
