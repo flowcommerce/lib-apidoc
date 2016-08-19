@@ -17,7 +17,7 @@ export default class Client extends EventEmitter {
     this.serviceName = opts.serviceName;
     this.auth = opts.auth;
     this.host = opts.host;
-    this.headers = opts.headers;
+    this.headers = opts.headers || {};
 
     // Convert auth if provided in constructor
     if (this.auth) {
@@ -35,6 +35,11 @@ export default class Client extends EventEmitter {
 
   withAuth(auth) {
     this.auth = this.possiblyConvertAuthorizationHeader(auth);
+    return this;
+  }
+
+  withHeaders(headers) {
+    this.headers = Object.assign({}, this.headers, headers);
     return this;
   }
 
