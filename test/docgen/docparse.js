@@ -5,6 +5,7 @@ import {
   getType,
   isDocParse,
   getJsonExample,
+  getInclude,
   getResource,
   getResourceOperation,
   getModel,
@@ -13,6 +14,7 @@ import {
   parseFile,
   parse } from '../../src/docgen/docparse';
 import { getMarkdownCodeBlock } from '../../src/docgen/utils';
+import { createRandomTmpFile } from '../util';
 
 describe('docparse', () => {
   it('should detect doc parse lines', () => {
@@ -154,7 +156,7 @@ Some documentation about \`/bookings/version\`.
         type: 'resource:operation',
       },
       {
-        content: '\nSome documentation about `/bookings`.\n\n\n',
+        content: '\nSome documentation about `/bookings`.\n\n\n\n',
         method: 'GET',
         path: '/bookings',
         type: 'resource:operation',
@@ -165,7 +167,7 @@ Some documentation about \`/bookings/version\`.
         type: 'resource',
       },
       {
-        content: '\nSome documentation about addresses.\n\n\n',
+        content: '\nSome documentation about addresses.\n\n\n\n',
         name: 'address',
         type: 'model',
       },
@@ -238,6 +240,24 @@ ${responseBlock}`.trim());
     it('should throw an error with no request or response present', () => {
       const doc = '#doc:json:example experiences/post/:organization/experiences/simple';
       expect(() => getJsonExample(doc)).to.throw(/Could not find request or response json/);
+    });
+  });
+
+  context('include markdown', () => {
+    it('should include external markdown file (relative)', () => {
+      const doc = '#doc:include test/docgen/tmp/externally-generated.md';
+      const result = getInclude(doc);
+      expect(result.trim()).to.equal(`
+Temp - Generated Markdown file
+
+**Bold text**`.trim());
+    });
+
+    it('should include external markdown file (absolute)', () => {
+      const tmpPath = createRandomTmpFile();
+      const doc = `#doc:include ${tmpPath}`;
+      const result = getInclude(doc);
+      expect(result).to.equal(tmpPath);
     });
   });
 });

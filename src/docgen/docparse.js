@@ -11,6 +11,7 @@ const DOC_TYPE_ENUM = 'enum';
 const DOC_TYPE_SECTION = 'section';
 const DOC_TYPE_MODULE = 'module';
 const DOC_TYPE_JSON_EXAMPLE = 'json:example';
+const DOC_TYPE_INCLUDE = 'include';
 
 export function isDocParse(str) {
   return str.startsWith(DOC_PARSE_IDENT);
@@ -18,6 +19,10 @@ export function isDocParse(str) {
 
 export function isJsonDocParse(str) {
   return str.startsWith(`${DOC_PARSE_IDENT}json`);
+}
+
+export function isIncludeDocParse(str) {
+  return str.startsWith(`${DOC_PARSE_IDENT}${DOC_TYPE_INCLUDE}`);
 }
 
 export function getType(str) {
@@ -198,6 +203,30 @@ ${requestBlock}
 ${responseBlock}`;
 }
 
+export function getInclude(part) {
+  if (getType(part) !== DOC_TYPE_INCLUDE) {
+    throw new Error(`Expected type to be ${DOC_TYPE_INCLUDE}, but got ${getType(part)} instead`); // eslint-disable-line max-len
+  }
+
+  // #doc:include [path/to/markdown.md]
+  const mdPath = part
+    .replace(DOC_PARSE_IDENT, '')
+    .replace(DOC_TYPE_INCLUDE, '')
+    .trim();
+
+  let filePath;
+
+  if (mdPath.startsWith('/')) {
+    filePath = mdPath;
+  } else {
+    filePath = path.resolve(process.cwd(), mdPath);
+  }
+
+  const fileContents = maybeGetFileContents(filePath);
+
+  return fileContents;
+}
+
 export function getDocPart(part) {
   const type = getType(part);
   switch (type) {
@@ -274,6 +303,24 @@ export function replaceJsonReferences(fileContents, opts) {
   return replacedContent;
 }
 
+export function replaceIncludes(fileContents, opts) {
+  const lines = fileContents.split('\n');
+  let replacedContent = '';
+  lines.forEach((line, lineNumber) => {
+    try {
+      if (isIncludeDocParse(line)) {
+        replacedContent += `${getInclude(line)}\n`;
+      } else {
+        replacedContent += `${line}\n`;
+      }
+    } catch (err) {
+      throw new Error(`Error parsing file[${opts.fileName}] on line ${lineNumber + 1}:\n\n ${line}\n\n ${err.stack}`); // eslint-disable-line max-len
+    }
+  });
+
+  return replacedContent;
+}
+
 export function parse(globStr) {
   return new Promise((resolve, reject) => {
     glob(globStr, (err, files) => {
@@ -285,7 +332,8 @@ export function parse(globStr) {
       const docsPerFile = files.map((f) => {
         const filePath = path.join(process.cwd(), f);
         const fileContents = fs.readFileSync(filePath).toString('utf-8');
-        const fileContentsReplaced = replaceJsonReferences(fileContents, { fileName: filePath });
+        const replaceOpts = { fileName: filePath };
+        const fileContentsReplaced = replaceIncludes(replaceJsonReferences(fileContents, replaceOpts), replaceOpts); // eslint-disable-line max-len
         return parseFile(fileContentsReplaced, { fileName: filePath });
       });
 
