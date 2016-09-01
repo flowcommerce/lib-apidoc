@@ -222,9 +222,7 @@ export function getInclude(part) {
     filePath = path.resolve(process.cwd(), mdPath);
   }
 
-  const fileContents = maybeGetFileContents(filePath);
-
-  return fileContents;
+  return maybeGetFileContents(filePath);
 }
 
 export function getDocPart(part) {
