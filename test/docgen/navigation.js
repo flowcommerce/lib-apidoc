@@ -152,7 +152,8 @@ describe('navigation', () => {
           <li><a href="/#landed-cost-integration">Landed Cost Integration</a></li>
           <li><a href="/#logistics-setup">Logistics Setup</a></li>
           <li><a href="/#orders">Orders</a></li>
-          <li><a href="/#payment-integration">Payment Integration</a></li>
+          <li><a href="/#payment-apis">Payment APIs</a></li>
+          <li><a href="/#payment-javascript">Payment JavaScript</a></li>
           <li><a href="/#bookings">Bookings</a></li>
         </ul>
         <section class="resources">
