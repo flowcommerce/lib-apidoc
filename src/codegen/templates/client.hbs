@@ -34,12 +34,18 @@ export default class Client extends EventEmitter {
   }
 
   withAuth(auth) {
-    this.auth = this.possiblyConvertAuthorizationHeader(auth);
+    if (auth) {
+      this.auth = this.possiblyConvertAuthorizationHeader(auth);
+    }
+
     return this;
   }
 
   withHeaders(headers) {
-    this.headers = Object.assign({}, this.headers, headers);
+    if (headers) {
+      this.headers = Object.assign({}, this.headers, headers);
+    }
+
     return this;
   }
 
