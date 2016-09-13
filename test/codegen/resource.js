@@ -19,6 +19,10 @@ describe('client', () => {
       // eslint-disable-next-line no-unused-expressions
       expect(requests[0].url).to.equal('https://localhost:7001/someOrg/experiences');
     });
+
+    it('should default operation options to empty object', () => {
+      expect(() => client.post('someOrg')).to.not.throw(Error);
+    });
   });
 
   context('resource - with auth constructor', () => {
