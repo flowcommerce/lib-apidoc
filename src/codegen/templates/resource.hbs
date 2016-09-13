@@ -11,7 +11,7 @@ export default class {{objectName plural}} extends Client {
   }
 
   {{#operations}}
-  {{operationName this ../path}}({{parameterList this}}) {
+  {{operationName this ../path}}({{{parameterList this}}}) {
     {{#nonGetMethod this}}
     Object.assign(options, { method: '{{../method}}' });
     {{/nonGetMethod}}

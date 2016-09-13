@@ -6,7 +6,7 @@ function getPathParameters(operation) {
 
 export function getFunctionParamsStr(operation) {
   const params = getPathParameters(operation).map((p) => toCamelCase(p.name));
-  return params.concat(['options']).join(', ');
+  return params.concat(['options = {}']).join(', ');
 }
 
 /**
