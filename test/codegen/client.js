@@ -86,6 +86,13 @@ describe('client', () => {
       expect(requests[0].headers.Authorization).to.exist;
       expect(requests[0].headers.Authorization).to.equal('Basic c29tZUF1dGg=');
     });
+
+    it('should not set any auth for undefined', () => {
+      client.auth = void 0;
+      const withAuth = client.withAuth();
+      // eslint-disable-next-line no-unused-expressions
+      expect(withAuth.auth).to.be.undefined;
+    });
   });
 
   context('auth - passed to constructor', () => {
@@ -107,6 +114,13 @@ describe('client', () => {
       const newHeader = { new: 'header' };
       const updatedClient = client.withHeaders(newHeader);
       expect(updatedClient.headers).to.deep.equal(newHeader);
+    });
+
+    it('should not modify headers for undefined', () => {
+      client.headers = void 0;
+      const withHeaders = client.withHeaders();
+      // eslint-disable-next-line no-unused-expressions
+      expect(withHeaders.headers).to.be.undefined;
     });
   });
 
