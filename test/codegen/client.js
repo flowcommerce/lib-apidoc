@@ -1,10 +1,17 @@
 import Client from '../dist/client';
+import Api from '../dist';
 import { expect } from 'chai';
 
 describe('client', () => {
   function toBase64(str) {
     return new Buffer(str).toString('base64');
   }
+
+  it('should expose enums from service json', () => {
+    const api = new Api({ host: 'https://localhost:7001' });
+    expect(api.enums, 'api.enums').to.exist; // eslint-disable-line no-unused-expressions
+    expect(api.enums.calendar, 'api.enums.caledar').to.exist; // eslint-disable-line no-unused-expressions,max-len
+  });
 
   context('auth - core functionality', () => {
     const client = new Client({ host: 'https://localhost:7001' });

@@ -2,12 +2,23 @@
 import {{objectName plural}} from './{{slug plural}}';
 {{/resources}}
 
+
+const enums = {
+{{#enums}}
+  {{toCamelCase name}}: {{{jsArrayStr values}}}
+{{/enums}}
+};
+
+
 export default class {{className name}}Client {
   constructor(opts) {
     let options = opts;
     if (typeof opts === 'string') {
       options = { host: opts }; // convert host string to options object
     }
+
+    this.enums = enums;
+
     {{#resources}}
     this.{{plural}} = new {{objectName plural}}(options);
     {{/resources}}

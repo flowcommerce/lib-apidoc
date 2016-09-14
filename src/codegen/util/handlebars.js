@@ -13,6 +13,11 @@ handlebars.registerHelper('className', (str) =>
 handlebars.registerHelper('slug', (str) =>
   slug(str));
 
+handlebars.registerHelper('toCamelCase', (str) => toCamelCase(str));
+
+handlebars.registerHelper('jsArrayStr', (values) =>
+  serviceUtil.getJsArrayStr(values));
+
 handlebars.registerHelper('operationName', (operation, resourcePath) =>
   serviceUtil.getFunctionName(operation, resourcePath));
 
@@ -28,7 +33,6 @@ handlebars.registerHelper('nonGetMethod', (operation, options) => {
   }
   return '';
 });
-
 
 export function loadTemplate(path) {
   const fileContents = fs.readFileSync(path).toString('utf-8');
