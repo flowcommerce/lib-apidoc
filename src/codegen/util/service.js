@@ -9,6 +9,10 @@ export function getFunctionParamsStr(operation) {
   return params.concat(['options = {}']).join(', ');
 }
 
+export function getJsArrayStr(values) {
+  return `[${values.map((v) => `'${v.name}'`).join(', ')}],`;
+}
+
 /**
  * Turn 'GET /:id/passengers' into 'getPassengersById'
  */
@@ -56,4 +60,4 @@ function getEndpointUriStr(operation) {
   return `${parts.join('')}`;
 }
 
-export default { getFunctionName, getFunctionParamsStr, getEndpointUriStr };
+export default { getFunctionName, getFunctionParamsStr, getEndpointUriStr, getJsArrayStr };
