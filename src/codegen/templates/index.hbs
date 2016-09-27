@@ -20,7 +20,7 @@ export default class {{className name}}Client {
     this.enums = enums;
 
     {{#resources}}
-    this.{{plural}} = new {{objectName plural}}(options);
+    this.{{toCamelCase plural}} = new {{objectName plural}}(options);
     {{/resources}}
   }
 }
