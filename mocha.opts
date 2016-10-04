@@ -1,5 +1,7 @@
 --ui bdd
 --require babel-register
+--require ./mocha.js
 --recursive
 --colors
 --check-leaks
+--reporter dot

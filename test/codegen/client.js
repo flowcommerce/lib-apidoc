@@ -1,6 +1,5 @@
 import Client from '../dist/client';
 import Api from '../dist';
-import { expect } from 'chai';
 
 describe('client', () => {
   function toBase64(str) {
@@ -144,6 +143,36 @@ describe('client', () => {
       const updatedClient = client.withHeaders(newHeader);
       const expected = Object.assign({}, original, newHeader);
       expect(updatedClient.headers).to.deep.equal(expected);
+    });
+  });
+
+  context('makeRequest', () => {
+    const client = new Client({ host: 'https://localhost:7001' });
+    let requests = [];
+    client.on('request', (data) => {
+      requests = requests.concat(data);
+    });
+
+    it('should not reject on a 5xx from server', () => {
+      nock('https://localhost:7001')
+        .get('/make/request/internal_server_error')
+        .reply(500);
+      const response = client.makeRequest('https://localhost:7001/make/request/internal_server_error');
+
+      return expect(response).to.eventually.deep.equal({ ok: false, result: '', status: 500 });
+    });
+
+    it('should not reject on a 4xx from server', () => {
+      nock('https://localhost:7001')
+        .get('/make/request/internal_server_error')
+        .reply(422, { error: { messages: ['An error occurred'] } });
+      const response = client.makeRequest('https://localhost:7001/make/request/internal_server_error');
+
+      return expect(response).to.eventually.deep.equal({
+        ok: false,
+        result: { error: { messages: ['An error occurred'] } },
+        status: 422,
+      });
     });
   });
 });

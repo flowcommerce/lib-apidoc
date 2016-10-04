@@ -5,5 +5,10 @@
         "node": true,
         "mocha": true,
     },
+    "globals": {
+      "chai": true,
+      "expect": true,
+      "nock": true
+    },
     "extends": "@flowio/flowio"
 }
