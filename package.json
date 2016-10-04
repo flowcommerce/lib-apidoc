@@ -11,7 +11,7 @@
     "lint": "eslint src",
     "pretest": "npm-run-all test:build-client lint",
     "test": "npm run test:unit",
-    "test:unit": "mocha --compilers js:babel-core/register --recursive",
+    "test:unit": "mocha --opts ./mocha.opts --recursive test",
     "test:cover": "babel-node ./node_modules/.bin/isparta cover _mocha -- --recursive",
     "test:build-client": "babel-node test/generate-client.js",
     "watch:build": "nodemon --exec 'npm run build' --watch src",
