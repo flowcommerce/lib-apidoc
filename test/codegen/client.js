@@ -164,9 +164,9 @@ describe('client', () => {
 
     it('should not reject on a 4xx from server', () => {
       nock('https://localhost:7001')
-        .get('/make/request/internal_server_error')
+        .get('/make/request/unprocessable_entity')
         .reply(422, { error: { messages: ['An error occurred'] } });
-      const response = client.makeRequest('https://localhost:7001/make/request/internal_server_error');
+      const response = client.makeRequest('https://localhost:7001/make/request/unprocessable_entity');
 
       return expect(response).to.eventually.deep.equal({
         ok: false,
