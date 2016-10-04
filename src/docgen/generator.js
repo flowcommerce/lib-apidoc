@@ -46,7 +46,7 @@ export default class Generator {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Flow Commerce API Reference</title>
+          <title>Documentation</title>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width" />
           <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'>
@@ -55,7 +55,7 @@ export default class Generator {
           <link href="https://npmcdn.com/basscss@8.0.1/css/basscss.min.css" rel="stylesheet">
           <link href="railscasts.css" rel="stylesheet">
           <link href="index.css" rel="stylesheet">
-          <link rel="shortcut icon" type="image/png" href="/assets/0.0.1/img/favicon.ico">
+          <link rel="shortcut icon" type="image/png" href="https://flowcdn.io/www/favicon/black/favicon-96x96.png">
         </head>
         <body>
           <main class="main flex">
