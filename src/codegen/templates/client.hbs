@@ -124,13 +124,20 @@ export default class Client extends EventEmitter {
       }
     );
 
-    function handleResponse(response, time, logger) {
+    this.logRequest(Object.assign({}, options, { url }));
+
+    return fetch(finalUrl, options)
+    .then((response) => {
+      const endTimeMs = new Date().getTime();
+      const roundTripMs = endTimeMs - startTimeMs;
+
       return new Promise((resolve, reject) => {
         response.text().then((text) => {
           let result = text;
 
-          logger({ status: response.status, body: result, requestId, time });
+          this.logResponse({ status: response.status, body: result, requestId, time: roundTripMs });
 
+          // Return JSON if text can parse as such
           try {
             if (text.length > 0) {
               result = JSON.parse(text);
@@ -140,33 +147,15 @@ export default class Client extends EventEmitter {
           }
 
           const envelope = {
-            status: response.status,
+            ok: response.ok,
             result,
+            status: response.status,
           };
 
           resolve(envelope);
-        }).catch((err) => reject(err));
+        })
+        .catch((err) => reject(err)); // Only reject on implementation error, not response
       });
-    }
-
-    this.logRequest(Object.assign({}, options, { url }));
-    const logResponse = this.logResponse.bind(this);
-
-    return fetch(finalUrl, options)
-    .then((response) => {
-      const endTimeMs = new Date().getTime();
-      const roundTripMs = endTimeMs - startTimeMs;
-
-      if (response.ok || response.status < 500) {
-        return handleResponse(response, roundTripMs, logResponse);
-      }
-
-      return response.text().then((text) =>
-        Promise.reject({
-          status: response.status,
-          error: new Error(`Request to url[${finalUrl}] failed with status[${response.status}].`),
-          result: text,
-        }));
     });
   }
 }
