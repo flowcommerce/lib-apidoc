@@ -13,7 +13,7 @@ export default class NavigationGenerator {
   resourceGroup(resources, groupName) {
     return `
       <header>
-        <h3 class="h3"><a href="#${slug(groupName)}">${groupName}</a></h3>
+        <h3 class="h3"><a href="index.html#${slug(groupName)}">${groupName}</a></h3>
       </header>
       <ul>
         ${resources.map((r) =>
@@ -65,32 +65,32 @@ export default class NavigationGenerator {
         </header>
 
         <header>
-          <h3 class="h3"><a href="#api">Getting Started</a></h3>
+          <h3 class="h3"><a href="index.html#api">Getting Started</a></h3>
         </header>
         <ul>
-          <li><a href="#register-with-flow-commerce">Register</a></li>
-          <li><a href="#obtain-your-api-key">API Key</a></li>
-          <li><a href="#how-to-authenticate">Authentication</a></li>
-          <li><a href="#types">Types</a></li>
-          <li><a href="#operations-and-responses">Operations and Responses</a></li>
-          <li><a href="#native-libraries">Libraries</a></li>
-          <li><a href="#getting-help">Getting Help</a></li>
-          <li><a href="#next-steps">Next Steps</a></li>
+          <li><a href="index.html#register-with-flow-commerce">Register</a></li>
+          <li><a href="index.html#obtain-your-api-key">API Key</a></li>
+          <li><a href="index.html#how-to-authenticate">Authentication</a></li>
+          <li><a href="index.html#types">Types</a></li>
+          <li><a href="index.html#operations-and-responses">Operations and Responses</a></li>
+          <li><a href="index.html#native-libraries">Libraries</a></li>
+          <li><a href="index.html#getting-help">Getting Help</a></li>
+          <li><a href="index.html#next-steps">Next Steps</a></li>
           </li>
         </ul>
 
         <header>
-          <h3 class="h3"><a href="#integration-overview">Integration</a></h3>
+          <h3 class="h3"><a href="index.html#integration-overview">Integration</a></h3>
         </header>
         <ul>
-          <li><a href="#product-catalog">Product Catalog</a></li>
-          <li><a href="#experiences">Experiences</a></li>
-          <li><a href="#landed-cost-integration">Landed Cost Integration</a></li>
-          <li><a href="#logistics-setup">Logistics Setup</a></li>
-          <li><a href="#orders">Orders</a></li>
-          <li><a href="#payment-apis">Payment APIs</a></li>
-          <li><a href="#payment-javascript">Payment JavaScript</a></li>
-          <li><a href="#bookings">Bookings</a></li>
+          <li><a href="index.html#product-catalog">Product Catalog</a></li>
+          <li><a href="index.html#experiences">Experiences</a></li>
+          <li><a href="index.html#landed-cost-integration">Landed Cost Integration</a></li>
+          <li><a href="index.html#logistics-setup">Logistics Setup</a></li>
+          <li><a href="index.html#orders">Orders</a></li>
+          <li><a href="index.html#payment-apis">Payment APIs</a></li>
+          <li><a href="index.html#payment-javascript">Payment JavaScript</a></li>
+          <li><a href="index.html#bookings">Bookings</a></li>
         </ul>
 
         ${this.generateResources()}
