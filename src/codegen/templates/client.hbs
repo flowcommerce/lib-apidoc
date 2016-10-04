@@ -125,7 +125,6 @@ export default class Client extends EventEmitter {
     );
 
     this.logRequest(Object.assign({}, options, { url }));
-    const logResponse = this.logResponse.bind(this);
 
     return fetch(finalUrl, options)
     .then((response) => {
@@ -136,7 +135,7 @@ export default class Client extends EventEmitter {
         response.text().then((text) => {
           let result = text;
 
-          logResponse({ status: response.status, body: result, requestId, time: roundTripMs });
+          this.logResponse({ status: response.status, body: result, requestId, time: roundTripMs });
 
           // Return JSON if text can parse as such
           try {
