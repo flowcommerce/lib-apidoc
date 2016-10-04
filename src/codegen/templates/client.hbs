@@ -147,7 +147,7 @@ export default class Client extends EventEmitter {
           }
 
           const envelope = {
-            ok: response.status >= 200 && response.status <= 299,
+            ok: response.ok,
             result,
             status: response.status,
           };
