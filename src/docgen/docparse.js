@@ -269,7 +269,10 @@ export function parseFile(fileContents, opts) {
     }
   });
 
-  docParts = docParts.concat(Object.assign(docPart, { content: docPartContent }));
+  // if docPart is null, there weren't any docparts in the file.
+  if (docPart) {
+    docParts = docParts.concat(Object.assign(docPart, { content: docPartContent }));
+  }
 
   return docParts;
 }

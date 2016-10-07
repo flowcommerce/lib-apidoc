@@ -133,6 +133,17 @@ Some documentation about \`/bookings/version\`.
     expect(result).to.deep.equal(expected);
   });
 
+  it('should parse a file with no docparts', () => {
+    const content = `# Header
+no
+doc
+parts
+`;
+    const expected = [];
+    const result = parseFile(content);
+    expect(result).to.deep.equal(expected);
+  });
+
   it('should fail parseFile with specific line number', () => {
     const content = `
 #doc:resource:operation GET /bookings/versions
