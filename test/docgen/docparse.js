@@ -140,7 +140,7 @@ doc
 parts
 `;
     const expected = [];
-    const result = parseFile(content);
+    const result = parseFile(content, { fileName: 'warning-expected.md' });
     expect(result).to.deep.equal(expected);
   });
 
