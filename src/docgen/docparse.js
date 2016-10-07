@@ -272,6 +272,9 @@ export function parseFile(fileContents, opts) {
   // if docPart is null, there weren't any docparts in the file.
   if (docPart) {
     docParts = docParts.concat(Object.assign(docPart, { content: docPartContent }));
+  } else {
+    // eslint-disable-next-line max-len,no-console
+    console.log(`[warn] Could not find any #doc: parts in file [${opts.fileName}]. Any content in this file will not be displayed.`);
   }
 
   return docParts;
