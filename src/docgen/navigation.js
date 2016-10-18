@@ -58,7 +58,7 @@ export default class NavigationGenerator {
       <nav class="left-navigation">
         <header class="header">
           <a href="/">
-            <img class="logo" src="/assets/0.0.1/img/flow_logo.svg" />
+            <img class="logo" src="/assets/0.0.2/img/flow-logo-white.svg" />
           </a>
           <section class="title">API Reference</section>
           <p class="version">Version: ${this.service.version}</p>
