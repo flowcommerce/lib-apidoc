@@ -1,6 +1,0 @@
-[
-  {
-    "code": "invalid_json",
-    "message": "JsError(List((/attributes(0)/key,List(ValidationError(List(error.path.missing),WrappedArray()))), (/attributes(0)/value,List(ValidationError(List(error.path.missing),WrappedArray()))), (/attributes(1)/key,List(ValidationError(List(error.path.missing),WrappedArray()))), (/attributes(1)/value,List(ValidationError(List(error.path.missing),WrappedArray())))))"
-  }
-]
