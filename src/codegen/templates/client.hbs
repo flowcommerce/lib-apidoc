@@ -113,6 +113,7 @@ export default class Client extends EventEmitter {
     const finalUrl = this.getFinalUrl(url, opts);
     const requestId = crypto.randomBytes(20).toString('hex');
     const headers = this.calculateFinalHeaders(opts);
+    const body = opts.body && typeof opts.body !== 'string' ? JSON.stringify(opts.body) : opts.body;
     const options = Object.assign(
       {
         credentials: 'same-origin',
@@ -121,6 +122,7 @@ export default class Client extends EventEmitter {
       opts,
       {
         headers,
+        body,
       }
     );
 
