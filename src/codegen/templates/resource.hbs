@@ -1,6 +1,6 @@
 import Client from '{{clientImportPath}}/client';
 
-export default class {{objectName plural}} extends Client {
+export default class {{resourceClassName this}} extends Client {
   constructor(opts) {
     let options = opts;
     if (typeof opts === 'string') {

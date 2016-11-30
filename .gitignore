@@ -37,4 +37,6 @@ node_modules
 
 lib
 coverage
+dist
 test/dist/*.js
+api-internal.json

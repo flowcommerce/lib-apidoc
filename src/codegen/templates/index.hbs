@@ -1,5 +1,5 @@
 {{#resources}}
-import {{objectName plural}} from './{{slug plural}}';
+import {{resourceClassName this}} from './{{resourceFileName this}}';
 {{/resources}}
 
 
@@ -20,7 +20,7 @@ export default class {{className name}}Client {
     this.enums = enums;
 
     {{#resources}}
-    this.{{toCamelCase plural}} = new {{objectName plural}}(options);
+    this.{{resourceInstanceName this}} = new {{resourceClassName this}}(options);
     {{/resources}}
   }
 }
