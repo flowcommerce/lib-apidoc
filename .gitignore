@@ -35,6 +35,8 @@ node_modules
 # OSX
 .DS_Store
 
+dist
+api-internal.json
 lib
 coverage
 test/dist/*.js

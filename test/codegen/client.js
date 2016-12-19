@@ -21,42 +21,42 @@ describe('client', () => {
 
     it('should not validate an auth wrong type', () => {
       expect(() =>
-        client.validateAuth({ type: 'foo', value: 'dfsf' })
+        Client.validateAuth({ type: 'foo', value: 'dfsf' })
       ).to.throw('Auth type must be one of: basic, bearer, jwt');
     });
 
     it('should not validate auth without type', () => {
       expect(() =>
-        client.validateAuth({ value: 'asdf', bar: 'asdfs' })
+        Client.validateAuth({ value: 'asdf', bar: 'asdfs' })
       ).to.throw(/Expected auth to be either a string or a valid auth object/);
     });
 
     it('should not validate auth without value', () => {
       expect(() =>
-        client.validateAuth({ type: 'basic', bar: 'sfff' })
+        Client.validateAuth({ type: 'basic', bar: 'sfff' })
       ).to.throw(/Expected auth to be either a string or a valid auth object/);
     });
 
     it('should not validate auth with none of the expected props', () => {
       expect(() =>
-        client.validateAuth({ foo: 'basic', bar: 'sfds' })
+        Client.validateAuth({ foo: 'basic', bar: 'sfds' })
       ).to.throw(/Expected auth to be either a string or a valid auth object/);
     });
 
     it('should not validate auth with the wrong size', () => {
       expect(() =>
-        client.validateAuth({})
+        Client.validateAuth({})
       ).to.throw(/Expected auth to be either a string or a valid auth object/);
     });
 
     it('should validate a basic auth string', () => {
       expect(() =>
-        client.validateAuth('some basic auth string')
+        Client.validateAuth('some basic auth string')
       ).to.not.throw(Error);
     });
 
     it('should create encoded basic header value', () => {
-      expect(client.getBasicAuthHeaderValue('basicauth'))
+      expect(Client.getBasicAuthHeaderValue('basicauth'))
         .to.equal(`Basic ${toBase64('basicauth')}`);
     });
 
