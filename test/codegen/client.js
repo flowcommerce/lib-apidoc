@@ -61,22 +61,22 @@ describe('client', () => {
     });
 
     it('should create a header from a string', () => {
-      expect(client.possiblyConvertAuthorizationHeader('basicauth'))
+      expect(Client.possiblyConvertAuthorizationHeader('basicauth'))
         .to.equal(`Basic ${toBase64('basicauth')}`);
     });
 
     it('should create a basic header from an object', () => {
-      expect(client.possiblyConvertAuthorizationHeader({ type: 'basic', value: 'helloworld' }))
+      expect(Client.possiblyConvertAuthorizationHeader({ type: 'basic', value: 'helloworld' }))
         .to.equal(`Basic ${toBase64('helloworld')}`);
     });
 
     it('should create a bearer header from an object (bearer type)', () => {
-      expect(client.possiblyConvertAuthorizationHeader({ type: 'bearer', value: 'jwttoken' }))
+      expect(Client.possiblyConvertAuthorizationHeader({ type: 'bearer', value: 'jwttoken' }))
         .to.equal('Bearer jwttoken');
     });
 
     it('should create a bearer header from an object (jwt type)', () => {
-      expect(client.possiblyConvertAuthorizationHeader({ type: 'jwt', value: 'jwttoken' }))
+      expect(Client.possiblyConvertAuthorizationHeader({ type: 'jwt', value: 'jwttoken' }))
         .to.equal('Bearer jwttoken');
     });
 

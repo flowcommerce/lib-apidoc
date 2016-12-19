@@ -41,44 +41,7 @@ export default class Client extends EventEmitter {
     return `${url}${paramString}`;
   }
 
-  constructor(opts = {}) {
-    super();
-    this.serviceName = opts.serviceName;
-    this.auth = opts.auth;
-    this.host = opts.host;
-    this.headers = opts.headers || {};
-
-    // Convert auth if provided in constructor
-    if (this.auth) {
-      this.auth = this.possiblyConvertAuthorizationHeader(this.auth);
-    }
-  }
-
-  logRequest(opts) {
-    this.emit('request', opts);
-  }
-
-  logResponse(response) {
-    this.emit('response', response);
-  }
-
-  withAuth(auth) {
-    if (auth) {
-      this.auth = this.possiblyConvertAuthorizationHeader(auth);
-    }
-
-    return this;
-  }
-
-  withHeaders(headers) {
-    if (headers) {
-      this.headers = Object.assign({}, this.headers, headers);
-    }
-
-    return this;
-  }
-
-  possiblyConvertAuthorizationHeader(auth) {
+  static possiblyConvertAuthorizationHeader(auth) {
     Client.validateAuth(auth);
 
     if (typeof auth === 'string') {
@@ -94,6 +57,43 @@ export default class Client extends EventEmitter {
     }
 
     throw new Error(`Cannot create authorization header of type[${auth.type}]`);
+  }
+
+  constructor(opts = {}) {
+    super();
+    this.serviceName = opts.serviceName;
+    this.auth = opts.auth;
+    this.host = opts.host;
+    this.headers = opts.headers || {};
+
+    // Convert auth if provided in constructor
+    if (this.auth) {
+      this.auth = Client.possiblyConvertAuthorizationHeader(this.auth);
+    }
+  }
+
+  logRequest(opts) {
+    this.emit('request', opts);
+  }
+
+  logResponse(response) {
+    this.emit('response', response);
+  }
+
+  withAuth(auth) {
+    if (auth) {
+      this.auth = Client.possiblyConvertAuthorizationHeader(auth);
+    }
+
+    return this;
+  }
+
+  withHeaders(headers) {
+    if (headers) {
+      this.headers = Object.assign({}, this.headers, headers);
+    }
+
+    return this;
   }
 
   calculateFinalHeaders(opts) {
