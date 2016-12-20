@@ -39,4 +39,6 @@ dist
 api-internal.json
 lib
 coverage
+dist
 test/dist/*.js
+api-internal.json

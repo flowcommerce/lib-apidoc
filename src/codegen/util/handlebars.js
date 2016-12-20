@@ -1,8 +1,34 @@
 import fs from 'fs';
+import camelCase from 'lodash/camelCase';
+import kebabCase from 'lodash/kebabCase';
+import startCase from 'lodash/startCase';
 import handlebars from 'handlebars';
 import serviceUtil from './service';
-
 import { toCamelCase, capitalizeFirstLetter, slug } from './strings';
+
+handlebars.registerHelper('resourceClassName', (resource) => {
+  if (resource.path.startsWith('/internal')) {
+    return startCase(resource.path).replace(/\s/g, '');
+  }
+
+  return startCase(resource.plural).replace(/\s/g, '');
+});
+
+handlebars.registerHelper('resourceFileName', (resource) => {
+  if (resource.path.startsWith('/internal')) {
+    return kebabCase(resource.path);
+  }
+
+  return kebabCase(resource.plural);
+});
+
+handlebars.registerHelper('resourceInstanceName', (resource) => {
+  if (resource.path.startsWith('/internal')) {
+    return camelCase(resource.path);
+  }
+
+  return camelCase(resource.plural);
+});
 
 handlebars.registerHelper('objectName', (str) =>
   capitalizeFirstLetter(toCamelCase(slug(str))));
