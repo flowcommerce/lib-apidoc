@@ -40,7 +40,7 @@ client.files.forEach((file) => {
 
 ## API Reference
 
-### `codegen`
+### codegen
 
 #### Methods
 
@@ -54,7 +54,7 @@ The argument passed to the `generate` function is:
 - `options`
   - `clientImportPath` - path to where generated client.js file will be located relative to service resource js files. Default is `.` (the current directory).
 
-Returns a list of file objects that look like:
+Returns an array of file objects that have this shape:
 
 ```JavaScript
 {
