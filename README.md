@@ -72,12 +72,14 @@ objects representing files.
 
 If you write all of the files based on their `path` property you will end up with a directory structure that looks like the below.
 
-- `./client.js` - Class that handles bootstrapping a client and http (via `fetch`) request / response handling
-- `./index.js` - The entrypoint to the client
-- `./logger.js` - Logging utility
-- `./resource_1.js` - A service resource that would be located at (in service.json): `.resources[plural=resource_1]`
-- `./resource_2.js` - A service resource that would be located at (in service.json): `.resources[plural=resource_2]`
-- `./resource_3.js` - A service resource that would be located at (in service.json): `.resources[plural=resource_3]`
+| Path              | Description
+| ----------------- | -----------
+| `./client.js`     | Class that handles bootstrapping a client and http (via `fetch`) request / response handling
+| `./index.js`      | The entrypoint to the client
+| `./logger.js`     | Logging utility
+| `./resource_1.js` | A service resource that would be located at (in service.json): `.resources[plural=resource_1]`
+| `./resource_2.js` | A service resource that would be located at (in service.json): `.resources[plural=resource_2]`
+| `./resource_3.js` | A service resource that would be located at (in service.json): `.resources[plural=resource_3]`
 
 ### Client Usage
 
