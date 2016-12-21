@@ -1,15 +1,41 @@
 # lib-apidoc
 
-Code and Document Generators for apidoc
+> Create JavaScript apidoc clients
+
+![Travis Build](https://travis-ci.com/flowcommerce/lib-apidoc.svg?token=7zKwz4c4Spi2bnQ6UDw6&branch=master "Travis Build")
+
+Code generator for apidoc that will take in an object representing an apidoc service and return a list of objects representing files for the client.
+
+The generated code is isomorphic, depending on a native `fetch` implementation
+in the browser and `node-fetch` in a node.js environment.
 
 ## Requirements
 
-- **apidoc** - This library depends on data from apidoc - [http://www.apidoc.me](http://www.apidoc.me). An api hosted here generates a `service.json` file. The JSON representation of the service.
+- **apidoc** - This library depends on data from apidoc - [http://www.apidoc.me](http://www.apidoc.me). An api hosted here generates a `service.json` file - the JSON representation of the service.
+- **node-fetch** - In a node.js environment the generated code depends on - [https://www.npmjs.com/package/node-fetch](https://www.npmjs.com/package/node-fetch)
 
 ## Installation
 
 ```bash
 npm install --save-dev @flowio/lib-apidoc
+```
+
+## Usage
+
+A basic example of generating a JavaScipt client from an apidoc service.
+
+```JavaScript
+import fs from 'fs';
+import path from 'path';
+import service from './service.json';
+import { codegen } from '@flowio/lib-apidoc';
+
+const clientBasePath = path.join(__dirname, './dist');
+const client = codegen.generate(service);
+
+client.files.forEach((file) => {
+  fs.writeFileSync(path.join(clientBasePath, file.path), file.contents);
+});
 ```
 
 ## API Reference
@@ -20,110 +46,105 @@ npm install --save-dev @flowio/lib-apidoc
 
 The methods listed below can be accessed from `codegen`.
 
-- `generate(service: Object): Array`
+`generate(service: Object, options: Object): Array`
 
-  The argument passed to the `generate` function is:
+The argument passed to the `generate` function is:
 
-  - `service: Object`: JSON representation of a service. The `service.json` provided by apidoc
+- `service` - JSON representation of a service. The `service.json` provided by apidoc
+- `options`
+  - `clientImportPath` - path to where generated client.js file will be located relative to service resource js files. Default is `.` (the current directory).
 
-### `docgen`
+Returns a list of file objects that look like:
 
-Generates pretty API documentation for a service from its service JSON document provided by [apidoc.me](http://www.apidoc.me).
-
-This function only outputs the HTML, with some assumptions on the location of the css and javascript assets.
-
-#### Usage
-
-```javascript
-import fs from 'fs';
-import path from 'path';
-import { docgen } from '@flowio/lib-apidoc';
-
-const apiJson = fs.readFileSync(path.join(process.cwd(), 'service.json'));
-const markup = docgen.generate(fulfillment);
-
-fs.writeFile(path.join(process.cwd(), 'dist/index.html'));
+```JavaScript
+{
+  contents: "import Client from './client'\nexport default class Resource...",
+  path: 'resource.js'
+}
 ```
 
-#### Methods
+## Generated Code
 
-The methods listed below can be accessed from `docgen`.
+By default lib-apidoc will take in a service json object and return a list of
+objects representing files.
 
-- `generate(service: Object[, options: Object]): Array`
+### Directory Layout
 
-  The two arguments passed to the `generate` function are:
+If you write all of the files based on their `path` property you will end up with a directory structure that looks like the below.
 
-  - `service: Object`: JSON representation of a service. The `service.json` provided by apidoc.
+- `./client.js` - Class that handles bootstrapping a client and http (via `fetch`) request / response handling
+- `./index.js` - The entrypoint to the client
+- `./logger.js` - Logging utility
+- `./resource_1.js` - A service resource that would be located at (in service.json): `.resources[plural=resource_1]`
+- `./resource_2.js` - A service resource that would be located at (in service.json): `.resources[plural=resource_2]`
+- `./resource_3.js` - A service resource that would be located at (in service.json): `.resources[plural=resource_3]`
 
-  - `options: Object`: If specified, further customizes the behavior of the generator.
+### Client Usage
 
-    - `additionalDocs: Array`: List of DocParts created by `docparse`. Will inject additional documentation in the appropriate place in generated documentation. Defaults to an empty Array.
+Example creating a module that exposes a function to create an instance of a
+client with a default value for the api host.
 
-    - `examplePath: String` - The absolute path to a directory containing example request/response JSON files. If specified, the generator will inject request and response examples in the appropriate place of the generated documentation.
+```JavaScript
+import Client from './client';
 
-### `docparse`
+export default function CreateClient(opts) {
+  let options = {
+    host: 'https://api.example.com',
+  };
 
-Parses markdown files for supplementary documentation for the service JSON parsed by `docgen`.
+  if (typeof opts === 'string') {
+    options.auth = opts;
+  } else {
+    options = Object.assign({}, options, opts);
+  }
 
-#### Example File
-
-```markdown
-#doc:resource bookings
-
-Bookings are... and they're used for...
-
-#doc:resource:operation GET /bookings/versions
-
-Some documentation about `/bookings/versions`.
-
-Here are some bullet points
-
-- one
-- two
-- three
-
-#doc:resource:operation GET /bookings
-
-Some documentation about `/bookings`.
+  return new Client(options);
+}
 ```
 
-#### Syntax
+**Options**
 
-`DocParts` are a line that starts with `#doc:`. The full syntax is:
+| Name          | Type   |  Description                       
+| ------------- | -----  | ---------------------------------
+| host          | String | The http host / uri of the api    
+| auth          | String | Converted to a Basic Authorization
+| auth          | Object | Basic or Bearer authorization     
+| -- auth.type  | String | One of: `basic`, `bearer`, `jwt`. bearer and jwt are synonymous with each other
+| -- auth.value | String | The value of the Authorization header
+| headers       | Object | Headers to be passed with all http requests from the client
+| serviceName   | String | The name of the service (currently unused)
 
+### Resource Usage
+
+```JavaScript
+import Client from './client'
+
+const client = new Client({ host: 'https://api.example.com' })
+
+// Example of using the 'get' operation on the 'users' resource.
+client.users.get().then((response) => {
+  switch(response.status) {
+    case 200:
+      response.result.map((user) =>
+        console.log(`Found User: ${user.email}`))
+    case 401:
+      throw new Error('Was not authorized to get users!')
+    default:
+      throw new Error(`Response code[${response.status}] not handled!`)
+  }
+})
 ```
-#doc:<type> [<type specific data>]
-```
 
-Valid types are:
+**Options**
 
-- **resource** - `resource <resource_name>` - the 'plural' name of the resource from service.json
+All options mentioned above in the client usage and any `fetch` options can be
+provided as the only or last parameter to a resource operation.
 
-- **resource:operation** - `resource:operation <method> <path>` - the method (GET, POST, etc) and operation path. Must match exactly as defined in the service.json.
 
-- **model** - `model <model_name>`
+## Contributing / Issues / Questions
 
-- **enum** - `enum <enum_name>`
+If you would like to contribute to lib-apidoc, have any bugs to report or have general questions, please see our [contributing guidelines](CONTRIBUTING.md).
 
-#### Usage
+## License
 
-```javascript
-import fs from 'fs';
-import path from 'path';
-import { docgen, docparse } from '@flowio/lib-apidoc';
-
-const apiJson = fs.readFileSync(path.join(process.cwd(), 'service.json'));
-
-docparse.parse('doc/*.md').then((docParts) => {
-  const markup = docgen.generate(fulfillment);
-  fs.writeFile(path.join(process.cwd(), 'dist/index.html'));
-});
-```
-
-#### Methods
-
-The methods listed below can be accessed from `docparse`.
-
-- `parse(glob: String)`
-
-  - `glob: String`: A [glob](https://www.npmjs.com/package/glob) for files to parse
+[MIT](LICENSE)
