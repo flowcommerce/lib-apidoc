@@ -56,7 +56,7 @@ The argument passed to the `generate` function is:
 
 Returns a list of file objects that look like:
 
-```JSON
+```JavaScript
 {
   contents: "import Client from './client'\nexport default class Resource...",
   path: 'resource.js'
