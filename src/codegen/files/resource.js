@@ -16,7 +16,8 @@ const template = loadTemplate(path.join(__dirname, '../templates/resource.hbs'))
  *                  files.path         Path (recommended) of the file
  */
 export function generate(resource, serviceName, clientImportPath) {
-  const contents = template(Object.assign({}, resource, { serviceName, clientImportPath }));
+  const context = Object.assign({}, resource, { serviceName, clientImportPath });
+  const contents = template(context);
   const filePath = `${slug(resource.plural)}.js`;
 
   return { contents, path: filePath };
