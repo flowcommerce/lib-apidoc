@@ -27,11 +27,9 @@ handlebars.registerHelper('parameterList', (operation) =>
 handlebars.registerHelper('operationPath', (operation) =>
   serviceUtil.getEndpointUriStr(operation));
 
-handlebars.registerHelper('nonGetMethod', (operation, options) => {
-  if (operation.method !== 'GET') {
-    return options.fn(this);
-  }
-  return '';
+// eslint-disable-next-line func-names
+handlebars.registerHelper('nonGetMethod', function (operation, options) {
+  return operation.method !== 'GET' ? options.fn(this) : options.inverse(this);
 });
 
 export function loadTemplate(path) {

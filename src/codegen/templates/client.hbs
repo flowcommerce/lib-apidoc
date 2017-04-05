@@ -91,7 +91,7 @@ export default class Client extends EventEmitter {
 
   withHeaders(headers) {
     if (headers) {
-      this.headers = Object.assign({}, this.headers, headers);
+      this.headers = { ...this.headers, ...headers };
     }
 
     return this;
@@ -107,7 +107,7 @@ export default class Client extends EventEmitter {
       headers.Authorization = this.auth;
     }
 
-    return Object.assign(headers, opts.headers);
+    return { ...headers, ...opts.headers };
   }
 
   makeRequest(url, opts = {}) {
@@ -116,19 +116,15 @@ export default class Client extends EventEmitter {
     const requestId = crypto.randomBytes(20).toString('hex');
     const headers = this.calculateFinalHeaders(opts);
     const body = opts.body && typeof opts.body !== 'string' ? JSON.stringify(opts.body) : opts.body;
-    const options = Object.assign(
-      {
-        credentials: 'same-origin',
-        requestId,
-      },
-      opts,
-      {
-        headers,
-        body,
-      },
-    );
+    const options = {
+      credentials: 'same-origin',
+      requestId,
+      ...opts,
+      headers,
+      body,
+    };
 
-    this.logRequest(Object.assign({}, options, { url }));
+    this.logRequest({ ...options, url });
 
     return fetch(finalUrl, options)
     .then((response) => {
