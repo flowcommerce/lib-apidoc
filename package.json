@@ -6,6 +6,10 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src --copy-files --out-dir lib",
+    "build:validators": "babel-node ./script/generate-validations.js",
+    "download": "npm-run-all download:*",
+    "download:api": "apidoc download flow api latest service > api.json",
+    "download:api-internal": "apidoc download flow api-internal latest service > api-internal.json",
     "prepublish": "npm run build",
     "postpublish": "rm -rf lib",
     "lint": "eslint src",
@@ -47,6 +51,7 @@
   "dependencies": {
     "handlebars": "4.0.5",
     "lodash": "4.15.0",
-    "marked": "0.3.5"
+    "marked": "0.3.5",
+    "mkdirp": "^0.5.1"
   }
 }

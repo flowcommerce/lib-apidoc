@@ -2,6 +2,7 @@
   "presets": ["@flowio/babel-preset-flowio"],
   "only": [
     "mocha.js",
+    "**/script/**",
     "**/src/**",
     "**/test/**"
   ]
