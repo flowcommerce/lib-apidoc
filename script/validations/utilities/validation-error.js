@@ -27,7 +27,8 @@ export const fieldRequiredError = (name) => ({
 
 export const typeMismatchError = (value, expected, other) => ({
   code: TYPE_MISMATCH_ERROR,
-  value: typeof value,
+  value,
+  actual: typeof value,
   expected,
   ...other,
 });

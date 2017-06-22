@@ -2,7 +2,7 @@ import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 
 import { typeMismatchError, invalidValueFormat, genericError } from '../utilities/validation-error';
-import getBaseType from './get-base-type';
+import { getArrayType, getBaseType } from './get-base-type';
 
 export const validateBoolean = value =>
   (typeof value === 'boolean'
@@ -49,17 +49,6 @@ export const validateObject = (value) =>
     ? undefined
     : typeMismatchError(value, 'object'));
 
-
-export const validateObjectValues = (value, type) => {
-  const base = getBaseType(type);
-
-  return validateObject(value) || reduce(
-    (item, obj) => ({ ...obj, ...item }),
-    {},
-    map((k) => ({ [k]: validateType(base, value[k]) }), Object.keys(value))
-  );
-};
-
 export const validateUnit = value =>
   (value === null || value === undefined
     ? undefined
@@ -98,7 +87,13 @@ export const validateType = (type, value) => {
   default:
     // Maps
     if (/^map/.test(type)) {
-      return validateObjectValues(value, type);
+      const base = getBaseType(type);
+
+      return validateObject(value) || reduce(
+        (item, obj) => ({ ...obj, ...item }),
+        {},
+        map((k) => ({ [k]: validateType(base, value[k]) }), Object.keys(value))
+      );
     }
 
     // Arrays
@@ -107,7 +102,7 @@ export const validateType = (type, value) => {
         return typeMismatchError(value, 'Array');
       }
 
-      return value.map(v => validateType(getBaseType(type), v));
+      return value.map(v => validateType(getArrayType(type), v));
     }
 
     return genericError(value, 'Expected primitive apidoc type');

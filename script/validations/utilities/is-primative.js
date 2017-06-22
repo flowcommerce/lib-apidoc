@@ -16,6 +16,8 @@ const PRIMATIVES = [
 
 const APIDOC_MAP_ARRAY_REGEX = /\[([\w-]+)\]/;
 
+export const isPrimativeSimple = type => includes(type, PRIMATIVES);
+
 export default function isPrimative(type) {
   const mapOrArray = APIDOC_MAP_ARRAY_REGEX.exec(type);
 
@@ -23,5 +25,5 @@ export default function isPrimative(type) {
     return includes(mapOrArray[1], PRIMATIVES);
   }
 
-  return includes(type, PRIMATIVES);
+  return isPrimativeSimple(type);
 }
