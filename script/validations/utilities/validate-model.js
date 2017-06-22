@@ -48,7 +48,7 @@ const removeValidValidProperties = (validated) => omitBy(isNil, validated);
  */
 const validateModel = curry((spec, validator, model) => {
   if (typeof model !== 'object') {
-    return typeMismatchError(typeof model, 'object');
+    return typeMismatchError(model, 'object');
   }
 
   return flow(

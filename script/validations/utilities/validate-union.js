@@ -12,7 +12,7 @@ const validateUnion = curry((spec, validators, union) => {
 
   const validDiscriminators = map(t => t.type, spec.types);
 
-  if (!includes(validDiscriminators, union.discriminator)) {
+  if (!includes(union.discriminator, validDiscriminators)) {
     return invalidDiscriminatorError(union.discriminator, validDiscriminators);
   }
 
