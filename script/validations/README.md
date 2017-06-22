@@ -114,6 +114,9 @@ import validateType from '@flowio/lib-apidoc/lib/validations/utilities/validate-
 import validateModel from '@flowio/lib-apidoc/lib/validations/utilities/validate-model';
 import { genericError } from '@flowio/lib-apidoc/lib/validations/utilities/validation-error';
 
+// const spec = ...
+// const validator = ...
+
 const validate = validateModel(spec, validator);
 
 export default validate;
