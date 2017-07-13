@@ -107,7 +107,7 @@ export default class Client extends EventEmitter {
       headers.Authorization = this.auth;
     }
 
-    return { ...headers, ...opts.headers };
+    return { ...headers, ...this.headers, ...opts.headers };
   }
 
   makeRequest(url, opts = {}) {
