@@ -36,7 +36,9 @@ node_modules
 .DS_Store
 
 dist
+api.json
 api-internal.json
 lib
 coverage
 test/dist/*.js
+src/validations
