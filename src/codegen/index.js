@@ -1,7 +1,7 @@
-import loggerFile from './files/logger';
-import clientFile from './files/client';
-import indexFile from './files/index';
-import resourceFile from './files/resource';
+import { generate as generateLoggerFile } from './files/logger';
+import { generate as generateClientFile } from './files/client';
+import { generate as generateIndexFile } from './files/index';
+import { generate as generateResourceFile } from './files/resource';
 
 const defaultOpts = {
   /**
@@ -25,14 +25,13 @@ const defaultOpts = {
  */
 export function generate(service, opts = defaultOpts) {
   const staticFiles = [
-    loggerFile.generate(),
-    clientFile.generate(),
-    indexFile.generate(service),
+    generateLoggerFile(),
+    generateClientFile(),
+    generateIndexFile(service),
   ];
 
-  const resourceFiles = service.resources.map(
-    (resource) => resourceFile.generate(resource, service.name, opts.clientImportPath)
-  );
+  const resourceFiles = service.resources.map(resource =>
+    generateResourceFile(resource, service.name, opts.clientImportPath));
 
   const files = staticFiles.concat(resourceFiles);
 

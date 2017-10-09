@@ -4,8 +4,8 @@ export function capitalizeFirstLetter(string) {
 
 export function toCamelCase(string) {
   const parts = string
-    .split(/(\-|_)/)
-    .filter((p) => p !== '-' && p !== '_');
+    .split(/(-|_)/)
+    .filter(p => p !== '-' && p !== '_');
   const capitalized = parts.map((part, idx) => {
     if (idx > 0) {
       return capitalizeFirstLetter(part);
@@ -28,4 +28,6 @@ export function slug(string) {
     .toLowerCase();
 }
 
-export default { toCamelCase, capitalizeFirstLetter, alphaNumOnly, slug };
+export default {
+  toCamelCase, capitalizeFirstLetter, alphaNumOnly, slug,
+};
