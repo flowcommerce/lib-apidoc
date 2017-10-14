@@ -1,13 +1,13 @@
 import { toCamelCase, slug } from './strings';
-import serviceUtil from './service';
+import { getFunctionName, getFunctionParamsStr } from './service';
 
 function getOperation(operation, path) {
-  const parametersPath = operation.parameters.filter((p) => p.location === 'Path');
-  const parametersQuery = operation.parameters.filter((p) => p.location === 'Query');
+  const parametersPath = operation.parameters.filter(p => p.location === 'Path');
+  const parametersQuery = operation.parameters.filter(p => p.location === 'Query');
 
   const op = {
-    name: serviceUtil.getFunctionName(operation, path),
-    parameterString: serviceUtil.getFunctionParamsStr(operation),
+    name: getFunctionName(operation, path),
+    parameterString: getFunctionParamsStr(operation),
     parameters: operation.parameters,
     parametersPath,
     parametersQuery,
@@ -23,9 +23,9 @@ function getOperation(operation, path) {
 }
 
 export default function serviceToJson(service) {
-  const resources = service.resources.map((resource) => ({
+  const resources = service.resources.map(resource => ({
     name: toCamelCase(slug(resource.plural)),
-    operations: resource.operations.map((operation) => getOperation(operation, resource.path)),
+    operations: resource.operations.map(operation => getOperation(operation, resource.path)),
     description: resource.description,
   }));
 

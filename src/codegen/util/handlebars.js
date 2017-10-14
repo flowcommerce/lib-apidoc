@@ -1,31 +1,31 @@
 import fs from 'fs';
 import handlebars from 'handlebars';
-import serviceUtil from './service';
+import { getJsArrayStr, getFunctionName, getFunctionParamsStr, getEndpointUriStr } from './service';
 
 import { toCamelCase, capitalizeFirstLetter, slug } from './strings';
 
-handlebars.registerHelper('objectName', (str) =>
+handlebars.registerHelper('objectName', str =>
   capitalizeFirstLetter(toCamelCase(slug(str))));
 
-handlebars.registerHelper('className', (str) =>
+handlebars.registerHelper('className', str =>
   capitalizeFirstLetter(toCamelCase(slug(str))));
 
-handlebars.registerHelper('slug', (str) =>
+handlebars.registerHelper('slug', str =>
   slug(str));
 
-handlebars.registerHelper('toCamelCase', (str) => toCamelCase(str));
+handlebars.registerHelper('toCamelCase', str => toCamelCase(str));
 
-handlebars.registerHelper('jsArrayStr', (values) =>
-  serviceUtil.getJsArrayStr(values));
+handlebars.registerHelper('jsArrayStr', values =>
+  getJsArrayStr(values));
 
 handlebars.registerHelper('operationName', (operation, resourcePath) =>
-  serviceUtil.getFunctionName(operation, resourcePath));
+  getFunctionName(operation, resourcePath));
 
-handlebars.registerHelper('parameterList', (operation) =>
-  serviceUtil.getFunctionParamsStr(operation));
+handlebars.registerHelper('parameterList', operation =>
+  getFunctionParamsStr(operation));
 
-handlebars.registerHelper('operationPath', (operation) =>
-  serviceUtil.getEndpointUriStr(operation));
+handlebars.registerHelper('operationPath', operation =>
+  getEndpointUriStr(operation));
 
 // eslint-disable-next-line func-names
 handlebars.registerHelper('nonGetMethod', function (operation, options) {
