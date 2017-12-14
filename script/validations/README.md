@@ -5,7 +5,7 @@ Code generated validation functions for apidoc models.
 
 ## Installation
 
-`yarn add @flowio/lib-apidoc`
+`npm install @flowio/lib-apidoc`
 
 ## Usage
 
@@ -17,7 +17,7 @@ import * as ErrorCodes from '@flowio/lib-apidoc/lib/validations/utilities/valida
 function formatError(error) {
   switch (error.code) {
   case ErrorCodes.TYPE_MISMATCH_ERROR:
-    return `Invalid value for field. Expected ${error.expected}, but got ${error.actual} instead.`;  
+    return `Invalid value for field. Expected ${error.expected}, but got ${error.actual} instead.`;
   }
 }
 
