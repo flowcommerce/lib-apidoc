@@ -1,79 +1,21 @@
 import EventEmitter from 'events';
 import querystring from 'querystring';
 
-/**
- * Use the right implementation of fetch depending on the execution environment
- */
 let fetch;
+let base64Encode;
 
+/**
+ * Use the right implementation depending on the execution environment.
+ *
+ * NOTE: Consumer is expected to polyfill the browser environment when
+ * implementation for btoa or fetch is not available.
+ */
 if (process.browser) {
   fetch = window.fetch;
+  base64Encode = window.btoa;
 } else {
+  base64Encode = value => new Buffer(value).toString('base64');
   fetch = require('node-fetch'); // eslint-disable-line global-require
-}
-
-/**
- * Random string generator based on this article:
- * https://benjaminjurke.com/content/articles/2015/java-script-random-string-generator/
- */
-
-let seed = [
-  ((new Date()).getTime() * 41 ^ (Math.random() * Math.pow(2, 32))) >>> 0,
-  ((new Date()).getTime() * 41 ^ (Math.random() * Math.pow(2, 32))) >>> 0,
-  ((new Date()).getTime() * 41 ^ (Math.random() * Math.pow(2, 32))) >>> 0,
-  ((new Date()).getTime() * 41 ^ (Math.random() * Math.pow(2, 32))) >>> 0,
-];
-
-function addRandomSeed() {
-  const x = Math.floor(Math.random() * 1920);
-  const y = Math.floor(Math.random() * 1080);
-
-  seed[0] = ((seed[3] * 37)
-    ^ (new Date()).getTime() * 41
-    ^ Math.floor(Math.random() * Math.pow(2, 32))
-    + x
-    + y * 17) >>> 0;
-
-  seed[1] = ((seed[0] * 31)
-    ^ (new Date()).getTime() * 43
-    ^ Math.floor(Math.random() * Math.pow(2, 32))
-    + x
-    + y * 19) >>> 0;
-
-  seed[2] = ((seed[1] * 29)
-    ^ (new Date()).getTime() * 47
-    ^ Math.floor(Math.random() * Math.pow(2, 32))
-    + x
-    + y * 23) >>> 0;
-
-  seed[3] = ((seed[2] * 23)
-    ^ (new Date()).getTime() * 51
-    ^ Math.floor(Math.random() * Math.pow(2, 32))
-    + x
-    + y * 29) >>> 0;
-}
-
-function unsignedRandom(maxval, index) {
-  return Math.abs((
-    Math.floor(Math.random() * Math.pow(2, 32))
-    ^ (seed[index % 4] >>> (index % 23)))
-    % (maxval + 1));
-}
-
-function randomString(length) {
-  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const charsLength = chars.length;
-
-  let result = '';
-  let index;
-
-  addRandomSeed();
-
-  for (index = length; index > 0; --index) {
-    result += chars[unsignedRandom(charsLength - 1, index)];
-  }
-
-  return result;
 }
 
 export default class Client extends EventEmitter {
@@ -177,12 +119,10 @@ export default class Client extends EventEmitter {
   makeRequest(url, opts = {}) {
     const startTimeMs = new Date().getTime();
     const finalUrl = Client.getFinalUrl(url, opts);
-    const requestId = randomString(20);
     const headers = this.calculateFinalHeaders(opts);
     const body = opts.body && typeof opts.body !== 'string' ? JSON.stringify(opts.body) : opts.body;
     const options = {
       credentials: 'same-origin',
-      requestId,
       ...opts,
       headers,
       body,
@@ -199,7 +139,7 @@ export default class Client extends EventEmitter {
         response.text().then((text) => {
           let result = text;
 
-          this.logResponse({ status: response.status, body: result, requestId, time: roundTripMs });
+          this.logResponse({ status: response.status, body: result, time: roundTripMs });
 
           // Return JSON if text can parse as such
           try {
