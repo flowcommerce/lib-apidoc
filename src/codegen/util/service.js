@@ -52,7 +52,7 @@ export function getEndpointUriStr(operation) {
   const parts = fullPath.split('/')
     .map((part) => {
       if (part.indexOf(':') === 0) {
-        return `/${START_LITERAL}${toCamelCase(part.slice(1))}${END_LITERAL}`;
+        return `/${START_LITERAL}encodeURIComponent(${toCamelCase(part.slice(1))})${END_LITERAL}`;
       }
       return `/${part}`;
     });
