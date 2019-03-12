@@ -1,6 +1,6 @@
 {
   "name": "@flowio/lib-apidoc",
-  "version": "1.5.37",
+  "version": "1.5.38",
   "repository": "git@github.com:flowcommerce/lib-apidoc.git",
   "description": "Libraries for generating code and documenation for apidoc projects",
   "main": "lib/index.js",
