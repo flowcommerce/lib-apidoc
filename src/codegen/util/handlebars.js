@@ -36,9 +36,9 @@ handlebars.registerHelper('parameterList', operation => getFunctionParamsStr(ope
 
 handlebars.registerHelper('operationPath', operation => getEndpointUriStr(operation));
 
-handlebars.registerHelper('nonGetMethod', (operation, options) => (
-  operation.method !== 'GET' ? options.fn(this) : options.inverse(this)
-));
+handlebars.registerHelper('nonGetMethod', function nonGetMethod(operation, options) {
+  return operation.method !== 'GET' ? options.fn(this) : options.inverse(this);
+});
 
 export function loadTemplate(path) {
   const fileContents = fs.readFileSync(path).toString('utf-8');
