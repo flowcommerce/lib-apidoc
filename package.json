@@ -42,7 +42,7 @@
     "eslint-plugin-react": "^7.12.4",
     "isparta": "^4.1.1",
     "istanbul": "^0.4.5",
-    "js-beautify": "^1.7.4",
+    "js-beautify": "^1.9.0",
     "mocha": "^4.0.1",
     "nock": "^9.0.22",
     "node-fetch": "^1.7.3",
