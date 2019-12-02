@@ -120,7 +120,17 @@ export default class Client extends EventEmitter {
     const startTimeMs = new Date().getTime();
     const finalUrl = Client.getFinalUrl(url, opts);
     const headers = this.calculateFinalHeaders(opts);
-    const body = opts.body && typeof opts.body !== 'string' ? JSON.stringify(opts.body) : opts.body;
+
+    let body
+    if (opts.body != null) {
+      if (Buffer.isBuffer(opts.body))
+        body = opts.body
+      else if (typeof opts.body === 'string')
+        body = opts.body
+      else
+        body = JSON.stringify(opts.body)
+    }
+
     const options = {
       credentials: 'same-origin',
       ...opts,
