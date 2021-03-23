@@ -2,7 +2,7 @@
 
 > Create JavaScript apidoc clients
 
-![Travis Build](https://travis-ci.com/flowcommerce/lib-apidoc.svg?token=7zKwz4c4Spi2bnQ6UDw6&branch=master "Travis Build")
+![Travis Build](https://travis-ci.com/flowcommerce/lib-apidoc.svg?token=7zKwz4c4Spi2bnQ6UDw6&branch=primary "Travis Build")
 [![npm version](https://badge.fury.io/js/%40flowio%2Flib-apidoc.svg)](https://badge.fury.io/js/%40flowio%2Flib-apidoc)
 
 Code generator for apidoc that will take in an object representing an apidoc service and return a list of objects representing files for the client.
